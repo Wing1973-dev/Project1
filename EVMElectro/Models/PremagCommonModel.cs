@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace IVMElectro.Models {
-    class PremagCommonModel : DataOperation, IDataErrorInfo {
+    class PremagCommonModel : DatasetFromModels {
         public string this[string columnName] {
             get {
                 string error = string.Empty;
@@ -73,13 +73,13 @@ namespace IVMElectro.Models {
         public string MarkSteel { get; set; }
         #endregion
         public PremagCommonModel() {
-            IsValidInputData = new Dictionary<string, bool> { { "Bδ", false } , { "ρx", false }, { "ρГ", false }, { "R0", false }, { "dпз1", false },
-            { "dвст", false }, { "Δk1", false }, { "dм", false }, { "dиз", false } };
+            //IsValidInputData = new Dictionary<string, bool> { { "Bδ", false } , { "ρx", false }, { "ρГ", false }, { "R0", false }, { "dпз1", false },
+            //{ "dвст", false }, { "Δk1", false }, { "dм", false }, { "dиз", false } };
             //инициализация
             Bδ = ρx = ρГ = R0 = dпз1 = dвст = Δk1 = dм = dиз = 0;
             MarkSteel = "09X17H"; 
         }
-        protected override void MakeInputData() => InputData = new Dictionary<string, double> {
+        protected override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "Bδ", Bδ } , { "ρx", ρx }, { "ρГ", ρГ }, { "R0", R0 }, { "dпз1", dпз1 }, { "dвст", dвст }, { "Δk1", Δk1 }, { "dм", dм }, { "dиз", dиз } };
     }
 }

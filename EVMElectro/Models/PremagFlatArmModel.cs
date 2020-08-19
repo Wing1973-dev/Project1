@@ -6,7 +6,7 @@ using static IVMElectro.Services.ServiceIO;
 using static IVMElectro.Services.ServiceDT;
 
 namespace IVMElectro.Models {
-    class PremagFlatArmModel : DataOperation, IDataErrorInfo {
+    class PremagFlatArmModel : DatasetFromModels {
         public string this[string columnName] {
             get {
                 string error = string.Empty;
@@ -37,7 +37,7 @@ namespace IVMElectro.Models {
         public DataTable VariationalParameters { get; set; }
         #endregion
         public PremagFlatArmModel() {
-            IsValidInputData = new Dictionary<string, bool> { { "hяр", false } , { "hяк", false }, { "R0ʹ", false } };
+            //IsValidInputData = new Dictionary<string, bool> { { "hяр", false } , { "hяк", false }, { "R0ʹ", false } };
             //инициализация
             hяр = hяк = R0ʹ = 0;
             VariationalParameters = new DataTable();
@@ -48,7 +48,7 @@ namespace IVMElectro.Models {
             ID.AutoIncrementSeed = 1; ID.AutoIncrementStep = 1;
             VariationalParameters.Columns.AddRange(new DataColumn[] { ID, U, δ, q, h, R1, R2, R3, qm, Ws });
         }
-        protected override void MakeInputData() => InputData = new Dictionary<string, double> { { "hяр", hяр } , { "hяк", hяк }, { "R0ʹ", R0ʹ } };
+        protected override void CreationDataset() => Dataset = new Dictionary<string, double> { { "hяр", hяр } , { "hяк", hяк }, { "R0ʹ", R0ʹ } };
         //TODO edit here
         public bool IsValidVariationalParameters() {
             if (VariationalParameters == null || VariationalParameters.Rows.Count == 0) {
