@@ -2,10 +2,10 @@
 using System.Windows.Input;
 
 namespace IVMElectro.Commands {
-    class CalculationCommand : ICommand {
+    class UserCommand : ICommand {
         readonly Action execute;
         readonly Func<bool> canExecute;
-        public CalculationCommand(Action action, Func<bool> func) {
+        public UserCommand(Action action, Func<bool> func) {
             execute = action ?? throw new ArgumentNullException("trouble execute");
             canExecute = func;
         }

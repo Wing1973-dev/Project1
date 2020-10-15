@@ -1,14 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static IVMElectro.Services.DataSharedContent;
+using static IVMElectro.Services.DataSharedASDNContent;
 
 namespace IVMElectro.Models {
-    class AsdnRedSingleModel : DatasetFromModels, IValidatableObject {
+    public class AsdnRedSingleModel : DatasetFromModels, IValidatableObject {
         #region свойства
-        #region stator parameters
-        //double Da { get; set; } //private
-        #endregion
-        #region rotor parameters
         public double dв { get; set; } //диаметр вала 
         public string PAS { get; set; } //is defined in the interface (not checked) (1 - круглый, 2 - прямоугольный, 3 - грушевидный, 4 - двойная клетка)
         public double hш { get; set; }
@@ -19,26 +15,13 @@ namespace IVMElectro.Models {
         public double bкн { get; set; }
         public double aкн { get; set; }
         public double aк { get; set; } //высота кольца к.з. клетки
-        //double Dpст { get; set; }
-        //double Z2 { get; set; }
-        //double hp { get; set; }
-        #endregion
         #endregion
         public AsdnRedSingleModel() {
-            //commonModel.NotifyDa += Set_Da; 
-            //commonModel.NotifyDpст += Set_Dpст; 
-            //commonModel.NotifyZ2 += Set_Z2; 
-            //commonModel.Notifyhp += Set_hp;
-            //IsValidInputData = new Dictionary<string, bool> { { "dв", true }, { "hш", false }, { "bш", false }, { "dкп", false }, { "hр2", false }, { "aкн", false },
-            //    { "aк", false }, { "bкн", false }, { "bZH", false}  };
             //инициализация
             hш = bш = dкп = hp2 = aкн = aк = bкн = bZH = 0;
             dв = 0.19; PAS = "круглый";
         }
-        //internal double Get_dпн() => Math.PI * (Dpст - hp) / (Z2 - Math.PI) - bZH;
-        //internal double Get_hp1() => (hp - hш - dкп - hp2 - Get_dпн()) / (1 + Math.Sin(2 * Math.PI / Z2));
-        //internal double Get_dпв() => Get_dпн() + 2 * Get_hp1() * Math.Sin(2 * Math.PI / Z2);
-        protected override void CreationDataset() => 
+        public override void CreationDataset() => 
             Dataset = new Dictionary<string, double> { { "dв", dв }, { "hш", hш }, { "bш", bш }, { "dкп", dкп }, { "hр2", hp2 },  { "aкн", aкн }, { "aк", aк }, { "bкн", bкн }, { "bZH", bZH} };
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -72,13 +55,5 @@ namespace IVMElectro.Models {
         public void SetParametersForModelValidation(double Dpст, double Z2, double hp, double Da) {
             paramsModelValid.Dpст = Dpст; paramsModelValid.Z2 = Z2; paramsModelValid.hp = hp; paramsModelValid.Da = Da; 
         }
-
-
-
-        //void Set_Da(object sender, SingleValueEventArgs e) => Da = e.Value;
-        //void Set_Dpст(object sender, SingleValueEventArgs e) => Dpст = e.Value;
-        //void Set_Z2(object sender, SingleValueEventArgs e) => Z2 = e.Value;
-        //void Set_hp(object sender, SingleValueEventArgs e) => hp = e.Value;
-        //double aкн_bound() => 0.5 * (Get_dпн() + Get_dпв()) + Get_hp1();
     }
 }

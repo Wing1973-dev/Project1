@@ -3,7 +3,7 @@ using System.Data;
 using System.ComponentModel;
 using System.Collections.Generic;
 using static IVMElectro.Services.ServiceIO;
-using static IVMElectro.Services.ServiceDT;
+using static LibraryAlgorithm.Services.ServiceDT;
 
 namespace IVMElectro.Models {
     class PremagFlatArmModel : DatasetFromModels {
@@ -48,7 +48,7 @@ namespace IVMElectro.Models {
             ID.AutoIncrementSeed = 1; ID.AutoIncrementStep = 1;
             VariationalParameters.Columns.AddRange(new DataColumn[] { ID, U, δ, q, h, R1, R2, R3, qm, Ws });
         }
-        protected override void CreationDataset() => Dataset = new Dictionary<string, double> { { "hяр", hяр } , { "hяк", hяк }, { "R0ʹ", R0ʹ } };
+        public override void CreationDataset() => Dataset = new Dictionary<string, double> { { "hяр", hяр } , { "hяк", hяк }, { "R0ʹ", R0ʹ } };
         //TODO edit here
         public bool IsValidVariationalParameters() {
             if (VariationalParameters == null || VariationalParameters.Rows.Count == 0) {

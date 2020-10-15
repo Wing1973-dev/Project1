@@ -93,13 +93,12 @@ namespace IVMElectro.Services {
             }
         }
         /// <summary>
-        /// Сохранение XML в файл (возможность определения имени файла отсутствует)
+        /// Сохранение XML в файл 
         /// </summary>
         /// <param name="data"></param>
         /// <param name="nameFile">имя файла</param>
         public static void SaveToXMLFile_fixName( XElement data, string nameFile ) {
             string fileName = string.Empty;
-            string fix_name = string.Empty;
             SaveFileDialog dlg = new SaveFileDialog() {
                 Title = "Сохранение данных",
                 InitialDirectory = pathFolder,
@@ -110,7 +109,7 @@ namespace IVMElectro.Services {
                 fileName = dlg.FileName.Trim();
             if ( fileName != "" ) {
                 pathFolder = fileName.Substring(0, fileName.LastIndexOf("\\"));
-                fix_name = pathFolder + "\\" + nameFile;
+                string fix_name = pathFolder + "\\" + nameFile;
                 using ( FileStream stream = new FileStream(fix_name, FileMode.Create) ) {
                     data.Save(stream);
                 }
@@ -133,6 +132,10 @@ namespace IVMElectro.Services {
             }
             return outData;
         }
+        public static XElement LoadFromFile(ref string fileName) {
+            fileName = Get_OpenFileName();
+            return !string.IsNullOrEmpty(fileName) ? LoadFromFile(fileName) : null;
+        }
         /// <summary>
         /// Сохранить объект класса в XML-файл по умолчанию
         /// </summary>
@@ -147,7 +150,7 @@ namespace IVMElectro.Services {
         /// Сохранить объект класса в XML-файл с выбором имени файла
         /// </summary>
         /// <param name="data">Объект класса для сериализации</param>
-        public static void SaveObjectToXMLFile(object data) {
+        public static string SaveObjectToXMLFile(object data) {
             string nameFile = Get_DateTimeNow() + ".xml";
             SaveFileDialog dlg = new SaveFileDialog() {
                 Title = "Сохранение данных",
@@ -166,11 +169,12 @@ namespace IVMElectro.Services {
                 }
                 catch (IOException e) {
                     ErrorReport(e.Message);
-                    return;
+                    return string.Empty;
                 }
                 s.Serialize(sw, data);
                 sw.Close();
             }
+            return nameFile;
         }
         /// <summary>
         /// Загрузить (десериализовать) объект класса из XML-файла

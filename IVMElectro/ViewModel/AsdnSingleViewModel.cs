@@ -1,47 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
+using System.Windows.Input;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using IVMElectro.Models;
 using IVMElectro.Commands;
-using System.Windows.Input;
-using static IVMElectro.Services.ServiceDT;
-using System.Data;
 using IVMElectro.Services.Directories.WireDirectory;
 using IVMElectro.Services.Directories;
-using static IVMElectro.Services.DataSharedContent;
-using System.ComponentModel.DataAnnotations;
+using static IVMElectro.Services.DataSharedASDNContent;
+using static LibraryAlgorithm.Services.ServiceDT;
+using LibraryAlgorithm;
+using NLog;
+
 
 namespace IVMElectro.ViewModel {
-    abstract class AsdnSingleViewModel : INotifyPropertyChanged, IDataErrorInfo {
-        #region string error
+    public class AsdnSingleViewModel : INotifyPropertyChanged, IDataErrorInfo {
+        static Logger logger = LogManager.GetCurrentClassLogger();
+        // string error
         private const string errora2 = "Значение параметра a2 должено принадлежать [0 : 30].";
-        
-        
-        
-
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
         private const string errorB = "Значение параметра B должено принадлежать [0 : 20].";
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        #endregion
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string property) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
         string IDataErrorInfo.this[string columnName] {
@@ -126,7 +105,7 @@ namespace IVMElectro.ViewModel {
                             error = errorh4;
                         break;
                     case "h5":
-                        if (!((0.1 <= Model.Common.h5) && (Model.Common.h5 <= 0))) 
+                        if (!((0.1 <= Model.Common.h5) && (Model.Common.h5 <= 5))) 
                             error = errorh5;
                         break;
                     case "h6":
@@ -214,7 +193,7 @@ namespace IVMElectro.ViewModel {
                             error = errorZ2;
                         break;
                     case "Z1":
-                        if ((Model.Common.Z1 < 0) || !int.TryParse(Model.Common.Z1.ToString(), out _)) 
+                        if ((Model.Common.Z1 <= 0) || !int.TryParse(Model.Common.Z1.ToString(), out _)) 
                             error = errorZ1;
                         break;
                     case "K2":
@@ -252,8 +231,9 @@ namespace IVMElectro.ViewModel {
         public string Error { get; }
         public AsdnSingleViewModel(AsdnCompositeModel model) { 
             Model = model;
-            WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1,Name = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, Name = "ПСДК_Л" },
-            new WireПСДКТ_Л{Id = 3,Name = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, Name = "ПЭЭИД2" } };
+            WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1, NameWire = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, NameWire = "ПСДК_Л" },
+                new WireПСДКТ_Л{Id = 3, NameWire = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, NameWire = "ПЭЭИД2" } };
+            WireDirectory.ForEach(i => i.CreateTable());
             MarkSteelRotorDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "09Х17Н", Value = 10000 }, new SteelProperties { Id = 2, Name = "Ст.3", Value = 50000 },
             new SteelProperties{Id = 3, Name = "20Х13", Value = 16700 }};
             MarkSteelPartitionlDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "ХН78Т", Value = 1.16 }, new SteelProperties {Id = 2, Name = "ВТ-1", Value =  0.47 },
@@ -263,6 +243,7 @@ namespace IVMElectro.ViewModel {
         }
         #region properties
         public AsdnCompositeModel Model { get; set; }
+        public string Diagnostic { get; set; }
         #region machine parameters
         public string P12 { get => Model.Common.P12.ToString(); set { Model.Common.P12 = StringToDouble(value); OnPropertyChanged("P12"); } }
         public string U1 { get => Model.Common.U1.ToString(); set { Model.Common.U1 = StringToDouble(value); OnPropertyChanged("U1"); } }
@@ -295,15 +276,15 @@ namespace IVMElectro.ViewModel {
         public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
         public string bПН { get => Model.Common.bПН.ToString(); set { Model.Common.bПН = StringToDouble(value); OnPropertyChanged("bПН"); } }
         public string bПНBounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
-        public string h1 { get => Model.Common.h1.ToString(); } //label
+        public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
         public string liBounds { get => Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
         public string cз { get => Model.Common.cз.ToString(); set { Model.Common.cз = StringToDouble(value); OnPropertyChanged("cз"); } }
-        public string bП { get => Model.Common.bП.ToString(); } //label
+        public string bП { get => Math.Round(Model.Common.bП, 3).ToString(); } //label
         public string Kзап { get => Model.Common.Kзап.ToString(); set { Model.Common.Kзап = StringToDouble(value); OnPropertyChanged("Kзап"); } }
         public string y1 { get => Model.Common.y1.ToString(); set { Model.Common.y1 = StringToDouble(value); OnPropertyChanged("y1"); } }
-        public string y1Bounds { get => $"[1 : {0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p)}]"; } //label
-        public string β { get => Model.Common.β.ToString(); } //label
+        public string y1Bounds { get => $"[1 : {Math.Round(0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p), 3)}]"; } //label
+        public string β { get => Math.Round(Model.Common.β, 3).ToString(); } //label
         public string K2 { get => Model.Common.K2.ToString(); set { Model.Common.K2 = StringToDouble(value); OnPropertyChanged("K2"); } }
         public string d1 { get => Model.Common.d1.ToString(); set { Model.Common.d1 = StringToDouble(value); OnPropertyChanged("d1"); } }
         public string d1Bounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
@@ -311,10 +292,9 @@ namespace IVMElectro.ViewModel {
         public string ρ1x { get => Model.Common.ρ1x.ToString(); set { Model.Common.ρ1x = StringToDouble(value); OnPropertyChanged("ρ1x"); } }
         public string ρРУБ { get => Model.Common.ρРУБ.ToString(); set { Model.Common.ρРУБ = StringToDouble(value); OnPropertyChanged("ρРУБ"); } }
         public string ρ1Г { get => Model.Common.ρ1Г.ToString(); set { Model.Common.ρ1Г = StringToDouble(value); OnPropertyChanged("ρ1Г"); } }
-        public string ρ1ГBounds { get => $"[{Model.Common.ρ1x} : 0.1235]"; } //label
+        public string ρ1ГBounds { get => $"[{Math.Round(Model.Common.ρ1x, 4)} : 0.1235]"; } //label
         public string B { get => Model.Common.B.ToString(); set { Model.Common.B = StringToDouble(value); OnPropertyChanged("B"); } }
         public string PЗ { get => Model.AsdnSingle.P3.ToString(); set => Model.AsdnSingle.P3 = StringToInt(value); } //no need to sync with the interface
-        //public string MarkSteelStator { get => Model.Common.markSteelStator; set => Model.Common.markSteelStator = value; } //no need to sync with the interface
         public string p10_50 { get => Model.Common.p10_50.ToString(); set {  Model.Common.p10_50 = StringToDouble(value); OnPropertyChanged("p10_50"); } }
         #endregion
         #region rotor parameters
@@ -361,87 +341,55 @@ namespace IVMElectro.ViewModel {
         /// Таблица K2
         /// </summary>
         public DataTable Get_tableK2 => K2Table;
-        //public DataTable Get_table_ρРУБ => ρРУБTable();
         public List<string> Get_collectionPЗ => new List<string> { "0", "1" };
-        public List<string> Get_collectionZ2 => Z2Collection(Model.Common.p, Model.Common.Z1, Model.Common.bСК);
+        public ContentZ2 Get_collectionZ2 => Z2Object(Model.Common.p, Model.Common.Z1, Model.Common.bСК);
         public List<Wire> WireDirectory { get; set; } //dиз, qГ
         public List<SteelProperties> MarkSteelRotorDirectory { get; set; } //γ collection
         public List<SteelProperties> MarkSteelPartitionlDirectory { get; set; } //ρРУБ collection
         public List<SteelProperties> MarkSteelStatorDirectory { get; set; } //p10_50 collection
         #endregion
         #region commands
-        CalculationCommand CalculationCommand { get; set; }
+        AlgorithmASDN algorithm;
+        UserCommand CalculationCommand { get; set; }
         public ICommand CommandCalculation {
             get {
-                if (CalculationCommand == null) CalculationCommand = new CalculationCommand(Calculation, CanCalculation);
+                if (CalculationCommand == null) CalculationCommand = new UserCommand(Calculation, CanCalculation);
                 return CalculationCommand;
             }
         }
-        public void Calculation() { }
-        public bool CanCalculation() {
+        void Calculation() {
+            Model.Common.CreationDataset(); Model.AsdnSingle.CreationDataset();
+            Dictionary<string, double> _inputAlgorithm = Model.Common.GetDataset.Union(Model.AsdnSingle.GetDataset).ToDictionary(i => i.Key, i => i.Value);
+            _inputAlgorithm.Add("bП1", bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1));
+            _inputAlgorithm.Add("h1", Model.Common.h1); _inputAlgorithm.Add("h2", Model.Common.h2); _inputAlgorithm.Add("bП", Model.Common.bП);
+            _inputAlgorithm.Add("P3", Model.AsdnSingle.P3); _inputAlgorithm.Add("bСК", Model.Common.bСК == "скошенные" ? 1 : 0);
+            _inputAlgorithm.Add("β", Model.Common.β); _inputAlgorithm.Add("Sсл", Model.Common.Sсл);
+            algorithm = new AlgorithmASDN(_inputAlgorithm); algorithm.Run();
+            foreach (string item in algorithm.Logging) 
+                logger.Error(item);
+            
+            Diagnostic = algorithm.SolutionIsDone ? "Расчет завершен успешно" : @"Расчет прерван. Смотри содержимое файла logs\*.log";
+        }
+        bool CanCalculation() {
             Model.AsdnSingle.SetParametersForModelValidation(Model.Common.Dpст, Model.Common.ΔГ2, Model.Common.hp);
             var resultsCommon = new List<ValidationResult>(); var resulstAsdn = new List<ValidationResult>();
             var contextCommon = new ValidationContext(Model.Common); var contextAsdn = new ValidationContext(Model.AsdnSingle);
 
-            //return Model.AsdnSingle != null && Model.AsdnSingle.ValidHidden() && Model.Common.ValidHidden();
             return Validator.TryValidateObject(Model.Common, contextCommon, resultsCommon, true) &&
                 Validator.TryValidateObject(Model.AsdnSingle, contextAsdn, resulstAsdn, true);
         }
-        #endregion
-        //double PмехBoundUp() => Math.Round(0.5 * Model.Common.P12, 2);
-        //List<string> a1Collection() {
-        //    List<string> sequence = new List<string>() { "1" };
-        //    double add;
-        //    //K = [2 : p-1]
-        //    for (int i = 2; i < Model.Common.p; i++) {
-        //        add = Math.Round(Model.Common.Z1 / 3 / Convert.ToDouble(i) / Convert.ToDouble(Model.Common.p));
-        //        if (add >= 1 && add <= Model.Common.p) sequence.Add(add.ToString());
-        //    }
-        //    sequence.Add($"{Model.Common.p}");
-        //    sequence.Add($"{2 * Model.Common.p}");
-        //    return sequence;
-        //}
-        //double bП1Calc() => (Math.PI * (Model.Common.Di + 2 * (Model.Common.h8 + Model.Common.h7 + Model.Common.h6)) - Model.Common.bz1) / Model.Common.Z1;
-        //DataTable K2Table() {
-        //    DataTable table = new DataTable();
-        //    DataColumn p = new DataColumn("Число пар полюсов", typeof(string)), NoneInsulating = new DataColumn("β ≥ 0,8\r\nЛобовые части секции\r\nне изолированы", typeof(string)),
-        //        Insulating = new DataColumn("β ≥ 0,8\r\nЛобовые части секции\r\nизолированы", typeof(string)),
-        //        β = new DataColumn("0,5 ≤ β < 0,8", typeof(string));
-        //    table.Columns.AddRange(new DataColumn[] { p, NoneInsulating, Insulating, β });
-        //    DataRow row = table.NewRow();
-        //    row.ItemArray = new object[] { "2", "1,2", "1,45", "1,55" };
-        //    table.Rows.Add(row);
-        //    row = table.NewRow();
-        //    row.ItemArray = new object[] { "4", "1,3", "1,55", "1,75" };
-        //    table.Rows.Add(row);
-        //    row = table.NewRow();
-        //    row.ItemArray = new object[] { "6", "1,4", "1,75", "1,9" };
-        //    table.Rows.Add(row);
-        //    row = table.NewRow();
-        //    row.ItemArray = new object[] { "8", "1,5", "1,9", "2" };
-        //    table.Rows.Add(row);
 
-        //    return table;
-        //}
-        DataTable ρРУБTable() {
-            DataTable table = new DataTable();
-            DataColumn material = new DataColumn("Материал\r\nперегородки ", typeof(string)), Values = new DataColumn("Значение", typeof(string));
-            table.Columns.AddRange(new DataColumn[] { material, Values });
-            DataRow row = table.NewRow();
-            row.ItemArray = new object[] { "ХН78Т", "1,16" };
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row.ItemArray = new object[] { "ВТ-1", "0,47" };
-            table.Rows.Add(row);
-            row = table.NewRow();
-            row.ItemArray = new object[] { "ПТ-7М", "1,08" };
-            table.Rows.Add(row);
-
-            return table;
+        UserCommand ViewResultCommand { get; set; }
+        public ICommand CommandViewResult {
+            get {
+                if (ViewResultCommand == null) ViewResultCommand = new UserCommand(ViewResult, CanViewResult);
+                return ViewResultCommand;
+            }
         }
-        //(double left, double right) bounds_Da => (left: 1.4 * Model.Common.Di, right: 2 * Model.Common.Di);
-        //double Dp => Model.Common.Dpст + Model.Common.ΔГ2;
-        
+        void ViewResult() { }
+        bool CanViewResult() => (algorithm != null && algorithm.SolutionIsDone);
+        #endregion
+
         #endregion
     }
 }

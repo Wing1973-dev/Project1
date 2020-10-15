@@ -1,7 +1,7 @@
 ﻿namespace IVMElectro.Services.Directories {
-    class SteelProperties {
-        internal int Id { get; set; }
-        internal string Name { get; set; }
-        internal double Value { get; set; }
+    public class SteelProperties {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public double Value { get; set; }
     }
 }

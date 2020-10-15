@@ -1,0 +1,66 @@
+﻿<UserControl x:Class="IVMElectro.View.UserControlStatorImage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:IVMElectro.View"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Style x:Name="lblStyle" TargetType="{x:Type Label}">
+            <Setter Property="FontWeight" Value="Bold"/>
+            <Setter Property="FontSize" Value="17"/>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Canvas>
+            <Image Source="{Binding Path=ImageSource}"/>
+            <Label Content="{Binding Path=h1Content}" Canvas.Left="{Binding Path=h1Left}" Canvas.Top="{Binding Path=h1Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h2Content}" Canvas.Left="{Binding Path=h2Left}" Canvas.Top="{Binding Path=h2Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h3Content}" Canvas.Left="{Binding Path=h3Left}" Canvas.Top="{Binding Path=h3Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h4Content}" Canvas.Left="{Binding Path=h4Left}" Canvas.Top="{Binding Path=h4Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h5Content}" Canvas.Left="{Binding Path=h5Left}" Canvas.Top="{Binding Path=h5Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h6Content}" Canvas.Left="{Binding Path=h6Left}" Canvas.Top="{Binding Path=h6Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h7Content}" Canvas.Left="{Binding Path=h7Left}" Canvas.Top="{Binding Path=h7Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=h8Content}" Canvas.Left="{Binding Path=h8Left}" Canvas.Top="{Binding Path=h8Top}" >
+                <Label.RenderTransform>
+                    <RotateTransform Angle="-90"/>
+                </Label.RenderTransform>
+            </Label>
+            <Label Content="{Binding Path=bПContent}" Canvas.Left="{Binding Path=bПLeft}" Canvas.Top="{Binding Path=bПTop}" />
+            <Label Content="{Binding Path=ΔГ1Content}" Canvas.Left="{Binding Path=ΔГ1Left}" Canvas.Top="{Binding Path=ΔГ1Top}" />
+            <Label Content="{Binding Path=acContent}" Canvas.Left="{Binding Path=acLeft}" Canvas.Top="{Binding Path=acTop}" />
+            <Label Content="{Binding Path=bПНContent}" Canvas.Left="{Binding Path=bПНLeft}" Canvas.Top="{Binding Path=bПНTop}" />
+            <Label Content="{Binding Path=bП1Content}" Canvas.Left="{Binding Path=bП1Left}" Canvas.Top="{Binding Path=bП1Top}" />
+            <Label Content="{Binding Path=d1Content}" Canvas.Left="{Binding Path=d1Left}" Canvas.Top="{Binding Path=d1Top}" />
+        </Canvas>
+    </Grid>
+</UserControl>

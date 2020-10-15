@@ -1,0 +1,45 @@
+﻿<Window x:Class="IVMElectro.View.StatorsDirectory"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IVMElectro.View"
+        mc:Ignorable="d"
+        Height="740" Width="670" MinWidth="670" MinHeight="740" MaxWidth="650" MaxHeight="740"  WindowStartupLocation="CenterOwner"        
+        FontFamily="{DynamicResource MaterialDesignFont}">
+
+    <Grid >
+        <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
+            <TextBlock Text="Эскиз паза статора" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />
+        </Grid>
+        <Grid Name="ContentGrid" Margin="0 60 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Margin="0 2 0 0" >
+                <GroupBox.Header>
+                    <TextBlock Text="Трапецеидальный паз" FontSize="17" Foreground="White"/>
+                </GroupBox.Header>
+                <StackPanel Orientation="Vertical" Margin="10">
+                    <RadioButton Name="btnImage1" Content="с двойным клином" Margin="10" FontSize="15" IsChecked="True" Checked="btnImage_Checked" />
+                    <RadioButton Name="btnImage2" Margin="10" FontSize="15" Checked="btnImage_Checked">
+                        <TextBlock >
+                        <Run Text="с закругленным пазовым"/>
+                        <LineBreak/>
+                        <Run Text="и силовым клином"/>
+                        </TextBlock>
+                    </RadioButton>
+                    <RadioButton Name="btnImage3" Content="без силового клина" Margin="10" FontSize="15" Checked="btnImage_Checked" />
+                    <RadioButton Name="btnImage4" Margin="10" FontSize="15" Checked="btnImage_Checked">
+                        <TextBlock >
+                        <Run Text="с закругленным"/>
+                        <LineBreak/>
+                        <Run Text="пазовым клином"/>
+                        </TextBlock>
+                    </RadioButton>
+                </StackPanel>
+            </GroupBox>
+        </Grid>
+    </Grid>
+</Window>

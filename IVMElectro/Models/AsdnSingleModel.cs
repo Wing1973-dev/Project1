@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using static IVMElectro.Services.DataSharedContent;
+using static IVMElectro.Services.DataSharedASDNContent;
 
 namespace IVMElectro.Models {
-    class AsdnSingleModel : DatasetFromModels, IValidatableObject {
+    public class AsdnSingleModel : DatasetFromModels, IValidatableObject {
         #region свойства
         #region stator parameters
         public int P3 { get; set; } //input in the interface (not checked)  (for algorithm: true -> 1, false ->0 )
@@ -15,16 +15,10 @@ namespace IVMElectro.Models {
         //double hp { get; set; } //private
         #endregion
         #endregion
-        //public AsdnSingleModel(AsdnCommonModel commonModel) {
-        //    //commonModel.Notifyhp += Set_hp;
-        //    IsValidInputData = new Dictionary<string, bool> { { "dв", true }, { "aк", false } };
-        //    dв = aк = 0; P3 = 0;
-        //}
         public AsdnSingleModel() {
-            //IsValidInputData = new Dictionary<string, bool> { { "dв", true }, { "aк", false }, { "γ", false } };
             dв = aк = γ = 0; P3 = 0;
         }
-        protected override void CreationDataset() => Dataset = new Dictionary<string, double> { { "dв", dв }, { "aк", aк }, { "γ", γ } };
+        public override void CreationDataset() => Dataset = new Dictionary<string, double> { { "dв", dв }, { "aк", aк }, { "γ", γ } };
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
 
@@ -43,7 +37,6 @@ namespace IVMElectro.Models {
         public void SetParametersForModelValidation(double Dpст, double ΔГ2, double hp) { 
             parametersForModelValidation.Dpст = Dpст; parametersForModelValidation.ΔГ2 = ΔГ2; parametersForModelValidation.hp = hp;
         }
-        //void Set_hp(object sender, SingleValueEventArgs e) => hp = e.Value;
 
     }
 }

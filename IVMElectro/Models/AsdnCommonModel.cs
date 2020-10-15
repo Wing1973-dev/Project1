@@ -1,17 +1,12 @@
 ﻿using System.Collections.Generic;
 using System;
 using System.ComponentModel.DataAnnotations;
-using static IVMElectro.Services.DataSharedContent;
+using static IVMElectro.Services.DataSharedASDNContent;
 
 namespace IVMElectro.Models {
-    class AsdnCommonModel : DatasetFromModels, IValidatableObject  {
-        //public delegate void SingleValueHandler(object sender, SingleValueEventArgs e);
-        //public event SingleValueHandler NotifyDa, NotifyZ2, NotifyDpст;
-        //public event SingleValueHandler Notifyhp;
-        //public event SingleValueHandler NotifyDp;
+    public class AsdnCommonModel : DatasetFromModels, IValidatableObject  {
         #region fields
         double bгрс => bП1 + 2 * (h5 + h4) * Math.Sin(Math.PI / Convert.ToDouble(Z1));
-        double Sсл => 0.5 * (bгрс + bП1 + 2 * h5 * Math.Sin(Math.PI / Convert.ToDouble(Z1)));
         #region machine parameters 
         /// <summary>
         /// Pʹ2
@@ -28,15 +23,8 @@ namespace IVMElectro.Models {
         #region stator parameters
         public double Di { get; set; }
         public double ΔГ1 { get; set; }
-        public int Z1 { get; set; } 
-        double _Da;
-        public double Da {
-            get => _Da;
-            set {
-                _Da = value;
-                //NotifyDa?.Invoke(this, new SingleValueEventArgs(value));
-            }
-        }
+        public int Z1 { get; set; }
+        public double Da { get; set; }
         public int a1 { get; set; } 
         public int a2 { get; set; }
         public double Δкр { get; set; }
@@ -46,19 +34,21 @@ namespace IVMElectro.Models {
         public double h8 { get; set; }
         public double h7 { get; set; }
         public double h6 { get; set; }
-        public double bП1 { get { return Z1 == 0 ? double.NaN : (Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1; } } //interface output only 
+        public double bП1 => Z1 == 0 ? double.NaN : (Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1; //interface output only 
         public double h5 { get; set; }
         public double h3 { get; set; }
         public double h4 { get; set; }
         public double ac { get; set; }
         public double bПН { get; set; }
-        public double h1 { get { return h8 + h7 + h6 + h5 + h4 + 2 * h3 + Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл); } } //interface output only 
+        public double h1 => h8 + h7 + h6 + h5 + h4 + 2 * h3 + Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //interface output only 
+        public double h2 => Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //algorithm output only 
         public double li { get; set; }
         public double cз { get; set; }
-        public double bП { get { return bП1 + 2 * (h1 - h6 - h7 - h8) * Math.Sin(Math.PI / Z1); } } //interface output only 
+        //public double bП => bП1 + 2 * (h1 - h6 - h7 - h8) * Math.Sin(Math.PI / Z1);  //interface output only 
+        public double bП => 2 * (h2 + 2 * h3 + h4 + h5) * Math.Tan(Math.PI / Z1);  //interface output only 
         public double Kзап { get; set; }
         public double y1 { get; set; }
-        public double β { get { return Z1 == 0 ? double.NaN : 2 * p * y1 / Z1; } } //interface output only 
+        public double β => Z1 == 0 ? double.NaN : 2 * p * y1 / Z1; //interface output only 
         public double K2 { get; set; } 
         public double d1 { get; set; }
         public double Kfe1 { get; set; }
@@ -66,68 +56,30 @@ namespace IVMElectro.Models {
         public double ρРУБ { get; set; } 
         public double ρ1Г { get; set; }
         public double B { get; set; }
-        public double p10_50 { get; set; } 
-        //public string markSteelStator { get; set; } //input in the interface (not checked) 
-        //public double I1 { get; private set; }
+        public double p10_50 { get; set; }
+        public double Sсл => 0.5 * (bгрс + bП1 + 2 * h5 * Math.Sin(Math.PI / Convert.ToDouble(Z1))) * h4;
         #endregion
         #region rotor parameters
-        double _ΔГ2;
-        public double ΔГ2 { 
-            get => _ΔГ2;
-            set {
-                _ΔГ2 = value;
-                //NotifyDp?.Invoke(this, new SingleValueEventArgs(Get_Dp()));
-            }
-        }
-        double _Dpст;
-        public double Dpст { 
-            get => _Dpст;
-            set {
-                _Dpст = value;
-                //NotifyDp?.Invoke(this, new SingleValueEventArgs(Get_Dp()));
-                //NotifyDpст?.Invoke(this, new SingleValueEventArgs(value));
-            }
-        }
+        public double ΔГ2 { get; set; }
+        public double Dpст { get; set; }
         public string bСК { get; set; } //input in the interface (not checked) (прямые, скошенные)
         public double bП2 { get; set; } //bc
-        int _Z2;
-        public int Z2 {
-            get => _Z2;
-            set {
-                _Z2 = value;
-                //NotifyZ2?.Invoke(this, new SingleValueEventArgs(value));
-            }
-        } 
+        public int Z2 { get; set; }
         public double bк { get; set; }
         public double ρ2Г { get; set; }
         public double Kfe2 { get; set; }
-        double _hp;
-        public double hp {
-            get => _hp;
-            set {
-                _hp = value;
-                //Notifyhp?.Invoke(this, new SingleValueEventArgs(value));
-            }
-        }
+        public double hp { get; set; }
         #endregion
         #endregion
         public AsdnCommonModel() {
-            //IsValidInputData = new Dictionary<string, bool> {
-            //    { "P12", false }, { "U1", false }, { "f1", true }, { "Pмех", true }, { "Di", false }, { "ΔГ1", true }, { "Da", false }, { "a2", true }, { "a1", false },
-            //    { "Δкр", false }, { "bz1", false }, { "h8", true }, { "h7", true }, { "h6", true }, { "h5", true }, { "h3", true }, { "h4", false },
-            //    { "ac", false }, { "bПН", true }, { "li", false }, { "cз", true }, { "Kзап", true}, { "y1", false }, { "d1", true }, { "Kfe1", true },
-            //    { "ρ1x", true }, { "ρ1Г", true }, { "B", true }, { "ΔГ2", true },  { "Dpст", false}, { "bП2", false }, { "bк", false }, { "ρ2Г", true },
-            //    { "Kfe2", false }, { "hp", false }, { "Z2", false }, { "Z1", false }, { "ρРУБ", false }, { "K2", false }, { "qГ", false }, { "dиз", false },
-            //    { "p10_50", false } };
             ΔГ1 = ΔГ2 = Di = Da = Pмех = P12 = bк = U1 = h4 = h6 = li = ac = Kfe2 = Δкр = d1 = h8 = bП2 = bПН = y1 =  bz1 = Dpст = hp = ρРУБ = K2 = qГ = dиз = p10_50 = 0;
             a2 = a1 = Z2 = Z1 = 0;
             f1 = 50; h7 = 1; h5 = 1.9; h3 = 0.7; cз = 100; Kзап = 0.72; Kfe1 = 0.93; ρ1x = 0.0175; ρ1Г = 0.0247; B = 10; ρ2Г = 0.0224; p = 1;
             
             bСК = "прямые"; p = 1;
-            //markSteelStator = "1412";
         }
-        protected override void CreationDataset() => Dataset = new Dictionary<string, double> {
-            { "P12", P12 }, { "U1", U1 }, { "f1", f1 }, { "Pмех", Pмех }, { "Di", Di }, { "ΔГ1", ΔГ1 }, { "Da", Da }, { "a2", a2 }, { "a1", a1 },
+        public override void CreationDataset() => Dataset = new Dictionary<string, double> {
+            { "P12", P12 }, { "U1", U1 }, { "f1", f1 }, { "p", p }, { "Pмех", Pмех }, { "Di", Di }, { "ΔГ1", ΔГ1 }, { "Da", Da }, { "a2", a2 }, { "a1", a1 },
             { "Δкр", Δкр }, { "bz1", bz1 }, { "h8", h8 }, { "h7", h7 }, { "h6", h6 }, { "h5", h5 }, { "h3", h3 }, { "h4", h4 },
             { "ac", ac }, { "bПН", bПН }, { "li", li }, { "cз", cз }, { "Kзап", Kзап}, { "y1", y1 }, { "d1", d1 }, { "Kfe1", Kfe1 },
             { "ρ1x", ρ1x }, { "ρ1Г", ρ1Г }, { "B", B }, { "ΔГ2", ΔГ2 },  { "Dpст", Dpст}, { "bП2", bП2 }, { "bк", bк }, { "ρ2Г", ρ2Г },
@@ -143,7 +95,12 @@ namespace IVMElectro.Models {
                 double η1 = -0.5 * (B + Math.Sqrt(D)) / A, η2 = 0.5 * (Math.Sqrt(D) - B) / A;
                 η1 = η1 > accuracy || η1 == 0 ? η1 : double.NaN;
                 η2 = η2 > accuracy || η2 == 0 ? η2 : double.NaN;
-                return double.NaN; //invalid case - two roots of the equation
+
+
+                return (!double.IsNaN(η1) && double.IsNaN(η2)) ? η1 : η2;
+                //if (!double.IsNaN(η1) && double.IsNaN(η2)) return η1;
+                //if (!double.IsNaN(η2) && double.IsNaN(η1)) return η2;
+                //return double.NaN; //invalid case - two roots of the equation
             }
             if (Math.Abs(A) < accuracy && Math.Abs(B) > accuracy) //А  = 0, В != 0
                 return (-1) * C / B;
@@ -179,7 +136,7 @@ namespace IVMElectro.Models {
             if (!((0 <= h7) && (h7 <= 2))) errors.Add(new ValidationResult(errorh7));
             if (!((0 <= h6) && (h6 <= 20))) errors.Add(new ValidationResult(errorh6));
             if (bП1Calc(Di, h8, h7, h6, bz1, Z1) < 0 || double.IsNaN(bП1Calc(Di, h8, h7, h6, bz1, Z1))) errors.Add(new ValidationResult(errorbП1));
-            if (!((0.1 <= h5) && (h5 <= 0))) errors.Add(new ValidationResult(errorh5));
+            if (!((0.1 <= h5) && (h5 <= 5))) errors.Add(new ValidationResult(errorh5));
             if (!((0 <= h3) && (h3 <= 5))) errors.Add(new ValidationResult(errorh3));
             if (!((5 <= h4) && (h4 <= 50))) errors.Add(new ValidationResult(errorh4));
             if (!((dиз < ac) && (ac < 2 * dиз))) errors.Add(new ValidationResult($"Значение параметра расчета ac должно принадлежать ({dиз} : {2 * dиз})."));
@@ -222,5 +179,6 @@ namespace IVMElectro.Models {
             return errors;
         }
         internal double DpстBoundCalculation => Di - 2 * (ΔГ1 - ΔГ2);
+
     }
 }

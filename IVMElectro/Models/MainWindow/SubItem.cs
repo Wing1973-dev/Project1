@@ -1,4 +1,6 @@
-﻿namespace IVMElectro.Models.MainWindow {
+﻿using System.Windows;
+
+namespace IVMElectro.Models.MainWindow {
     /// <summary>
     /// <c>SubItem</c> represents the second level menu items
     /// <list type="bullet">
@@ -17,5 +19,7 @@
         /// <param name="name">This is name of the sub-calculation</param>
         public SubItem(string name) => Name = name;
         public string Name { get; private set; }
+        public Window WindowCalculation { get; set; }
+        public virtual void MakeWindowCalculation() => WindowCalculation = null; 
     }
 }

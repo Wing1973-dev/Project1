@@ -1,5 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace IVMElectro.Models.MainWindow {
     /// <summary>
@@ -16,15 +17,15 @@ namespace IVMElectro.Models.MainWindow {
         /// <summary>
         /// Constructor
         /// </summary>
-        /// <param name="header">Name of element menu</param>
+        /// <param name="header">NameWire of element menu</param>
         /// <param name="subItems">Collection of SubItem</param>
         /// <param name="iconKind">icon</param>
         public ItemMenu(string header, List<SubItem> subItems, PackIconKind iconKind) {
-            Header = header; SubItems = subItems; IconKind = iconKind;
+            Header = header; SubItems = subItems; IconKind = iconKind; 
         }
         public string Header { get; private set; }
         public PackIconKind IconKind { get; private set; }
         public List<SubItem> SubItems { get; private set; }
-
+       
     }
 }

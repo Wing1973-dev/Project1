@@ -3,28 +3,24 @@ using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
 
-namespace IVMElectro.Services {
+namespace LibraryAlgorithm.Services {
     /// <summary>
     /// Функции преобразования данных
     /// </summary>
-    class ServiceDT {
-        static string decimal_sep = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator; //разделитель целой и дробной части
-        static char[] blank_delim = new char[] { ' ', '\t' }, //разделители в строке
-               bracket_delim = new char[] { '(', ')' },
-            specific_delim = new char[] { '+' };
+    public class ServiceDT {
         /// <summary>
         /// Символ разделителя слов в строке
         /// </summary>
-        public static char[] Get_blankDelim => blank_delim;
+        public static char[] Get_blankDelim { get; } = new char[] { ' ', '\t' };
         /// <summary>
         /// Символ разделителя целой и дробной части для вещественного числа
         /// </summary>
-        public static string Get_decimalSeparator => decimal_sep;
+        public static string Get_decimalSeparator { get; } = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
         /// <summary>
         /// Разделитель в файле пользовательского ввода ( ( , ) )
         /// </summary>
-        public static char[] Get_bracketDelim => bracket_delim;
-        public static char[] Get_specificDelim => specific_delim;         
+        public static char[] Get_bracketDelim { get; } = new char[] { '(', ')' };
+        public static char[] Get_specificDelim { get; } = new char[] { '+' };
         /// <summary>
         /// Проверяет повторяемость элементов в массиве
         /// </summary>
@@ -64,12 +60,12 @@ namespace IVMElectro.Services {
         /// <returns>массив значений</returns>
         public static double[] StringToArrayDouble( string in_date ) {
             in_date.Trim();
-            string[] words = in_date.Split(blank_delim, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = in_date.Split(Get_blankDelim, StringSplitOptions.RemoveEmptyEntries);
             double[] out_date = new double[words.Length];
             for ( int i = 0; i < words.Length; i++ ) {
                 words[i].Trim(); //удаление символа табуляции
                 //замена разделителей дробной части
-                words[i] = words[i].Replace(",", decimal_sep); words[i] = words[i].Replace(".", decimal_sep);
+                words[i] = words[i].Replace(",", Get_decimalSeparator); words[i] = words[i].Replace(".", Get_decimalSeparator);
                 if ( double.TryParse(words[i], out double outv) ) out_date[i] = outv;
             }
             return out_date;
@@ -81,12 +77,12 @@ namespace IVMElectro.Services {
         /// <returns>List double</returns>
         public static List<double> StringToListDouble( string in_date ) {
             in_date.Trim();
-            string[] words = in_date.Split(blank_delim, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = in_date.Split(Get_blankDelim, StringSplitOptions.RemoveEmptyEntries);
             List<double> out_date = new List<double>(words.Length);
             for ( int i = 0; i < words.Length; i++ ) {
                 words[i].Trim(); //удаление символа табуляции
                 //замена разделителей дробной части
-                words[i] = words[i].Replace(",", decimal_sep); words[i] = words[i].Replace(".", decimal_sep);
+                words[i] = words[i].Replace(",", Get_decimalSeparator); words[i] = words[i].Replace(".", Get_decimalSeparator);
                 if ( double.TryParse(words[i], out double outv) ) out_date.Add(outv);
                 else { out_date = null; break; }
             }
@@ -99,7 +95,7 @@ namespace IVMElectro.Services {
         /// <returns>List int</returns>
         public static List<int> StringToListInt( string in_date ) {
             in_date.Trim();
-            string[] words = in_date.Split(blank_delim, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = in_date.Split(Get_blankDelim, StringSplitOptions.RemoveEmptyEntries);
             List<int> out_date = new List<int>(words.Length);
             for ( int i = 0; i < words.Length; i++ ) {
                 words[i].Trim(); //удаление символа табуляции
@@ -135,7 +131,7 @@ namespace IVMElectro.Services {
         /// <param name="in_date">строка</param>
         /// <returns>значение</returns>
         public static double StringToDouble( string in_date ) {
-            in_date = in_date.Replace(",", decimal_sep); in_date = in_date.Replace(".", decimal_sep);
+            in_date = in_date.Replace(",", Get_decimalSeparator); in_date = in_date.Replace(".", Get_decimalSeparator);
             in_date.Trim();
             if ( double.TryParse(in_date, out double outv) ) return outv;
             return double.NaN;
@@ -147,7 +143,7 @@ namespace IVMElectro.Services {
         /// <returns>массив значений</returns>
         public static int[] StringToArrayInt( ref string in_date ) {
             in_date.Trim();
-            string[] words = in_date.Split(blank_delim, StringSplitOptions.RemoveEmptyEntries);
+            string[] words = in_date.Split(Get_blankDelim, StringSplitOptions.RemoveEmptyEntries);
             int[] out_date = new int[words.Length];
             for ( int i = 0; i < out_date.Length; i++ ) {
                 words[i].Trim();
@@ -173,7 +169,7 @@ namespace IVMElectro.Services {
         /// <param name="in_date">строка</param>
         /// <returns>true - успешно, false - не успешно</returns>
         public static bool StringToDoubleGEZ( string in_date ) {
-            in_date = in_date.Replace(",", decimal_sep); in_date = in_date.Replace(".", decimal_sep);
+            in_date = in_date.Replace(",", Get_decimalSeparator); in_date = in_date.Replace(".", Get_decimalSeparator);
             in_date.Trim();
             if ( !double.TryParse(in_date, out double r) || double.Parse(in_date) < 0 ) return false;
             return true;
@@ -184,7 +180,7 @@ namespace IVMElectro.Services {
         /// <param name="in_date">строка</param>
         /// <returns>true - успешно, false - не успешно</returns>
         public static bool StringToDoubleLZ( string in_date ) {
-            in_date = in_date.Replace(",", decimal_sep); in_date = in_date.Replace(".", decimal_sep);
+            in_date = in_date.Replace(",", Get_decimalSeparator); in_date = in_date.Replace(".", Get_decimalSeparator);
             in_date.Trim();
             if ( !double.TryParse(in_date, out double r) || double.Parse(in_date) >= 0 )
                 return false;
@@ -196,7 +192,7 @@ namespace IVMElectro.Services {
         /// <param name="in_date">строка</param>
         /// <returns>true - успешно, false - не успешно</returns>
         public static bool StringToDoubleGZ( string in_date ) {
-            in_date = in_date.Replace(",", decimal_sep); in_date = in_date.Replace(".", decimal_sep);
+            in_date = in_date.Replace(",", Get_decimalSeparator); in_date = in_date.Replace(".", Get_decimalSeparator);
             in_date.Trim();
             if ( !double.TryParse(in_date, out double r) || double.Parse(in_date) <= 0 )
                 return false;
@@ -208,7 +204,7 @@ namespace IVMElectro.Services {
         /// <param name="in_date">строка</param>
         /// <returns>true - успешно, false - не успешно</returns>
         public static bool StringToDoubleNZ( string in_date ) {
-            in_date = in_date.Replace(",", decimal_sep); in_date = in_date.Replace(".", decimal_sep);
+            in_date = in_date.Replace(",", Get_decimalSeparator); in_date = in_date.Replace(".", Get_decimalSeparator);
             in_date.Trim();
             if ( !double.TryParse(in_date, out double r) || double.Parse(in_date) == 0 ) return false;
             return true;
@@ -219,7 +215,7 @@ namespace IVMElectro.Services {
         /// <param name="in_date">строка</param>
         /// <returns>true - успешно, false - не успешно</returns>
         public static bool StringToDouble_feasible( string in_date ) {
-            in_date = in_date.Replace(",", decimal_sep); in_date = in_date.Replace(".", decimal_sep);
+            in_date = in_date.Replace(",", Get_decimalSeparator); in_date = in_date.Replace(".", Get_decimalSeparator);
             in_date.Trim();
             if ( !double.TryParse(in_date, out double r) ) return false;
             return true;

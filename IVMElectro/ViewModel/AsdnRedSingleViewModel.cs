@@ -5,9 +5,9 @@ using System.ComponentModel;
 using IVMElectro.Models;
 using IVMElectro.Commands;
 using System.Windows.Input;
-using static IVMElectro.Services.ServiceDT;
+using static LibraryAlgorithm.Services.ServiceDT;
 using IVMElectro.Services.Directories.WireDirectory;
-using static IVMElectro.Services.DataSharedContent;
+using static IVMElectro.Services.DataSharedASDNContent;
 using System.Data;
 using IVMElectro.Services.Directories;
 using System.ComponentModel.DataAnnotations;
@@ -256,8 +256,8 @@ namespace IVMElectro.ViewModel {
         public string Error { get; }
         public AsdnRedSingleViewModel(AsdnCompositeModel model)  {
             Model = model;
-            WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1,Name = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, Name = "ПСДК_Л" },
-            new WireПСДКТ_Л{Id = 3, Name = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, Name = "ПЭЭИД2" } };
+            WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1,NameWire = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, NameWire = "ПСДК_Л" },
+            new WireПСДКТ_Л{Id = 3, NameWire = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, NameWire = "ПЭЭИД2" } };
             MarkSteelPartitionlDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "ХН78Т", Value = 1.16 }, new SteelProperties {Id = 2, Name = "ВТ-1", Value =  0.47 },
                 new SteelProperties {Id = 3, Name = "ПТ-7М", Value = 1.08 } };
             MarkSteelStatorDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "1412", Value = 1.94 }, new SteelProperties { Id = 2, Name = "2412", Value = 1.38 },
@@ -321,7 +321,7 @@ namespace IVMElectro.ViewModel {
         #region rotor parameters
         public string ΔГ2 { get => Model.Common.ΔГ2.ToString(); set { Model.Common.ΔГ2 = StringToDouble(value); OnPropertyChanged("ΔГ2"); } }
         public string Dpст { get => Model.Common.Dpст.ToString(); set { Model.Common.Dpст = StringToDouble(value); OnPropertyChanged("Dpст"); } }
-        public string DpстBounds => $"[{Math.Round(Model.Common.DpстBoundCalculation - 5, 2)} : {Math.Round(Model.Common.DpстBoundCalculation - 0.1, 2)})";  //label
+        public string DpстBounds => $"[{Math.Round(Model.Common.DpстBoundCalculation - 5, 3)} : {Math.Round(Model.Common.DpстBoundCalculation - 0.1, 3)})";  //label
         public string bСК { get => Model.Common.bСК; set => Model.Common.bСК = value; } //no need to sync with the interface
         public string bП2 { get => Model.Common.bП2.ToString(); set { Model.Common.bП2 = StringToDouble(value); OnPropertyChanged("bП2"); } }
         public string Z2 { get => Model.Common.Z2.ToString(); set { Model.Common.Z2 = StringToInt(value); OnPropertyChanged("Z2"); } }
@@ -360,6 +360,10 @@ namespace IVMElectro.ViewModel {
         public List<string> Get_collection_a1 => a1Collection(Model.Common.p, Model.Common.Z1);
         public List<Wire> WireDirectory { get; set; } //dиз, qГ
         /// <summary>
+        /// Тип обмотки
+        /// </summary>
+        public List<string> Get_collectionPЗ => new List<string> { "0", "1" };
+        /// <summary>
         /// Таблица K2
         /// </summary>
         public DataTable Get_tableK2 => K2Table;
@@ -374,10 +378,10 @@ namespace IVMElectro.ViewModel {
         #endregion
         #endregion
         #region command
-        CalculationCommand CalculationCommand { get; set; }
+        UserCommand CalculationCommand { get; set; }
         public ICommand CommandCalculation {
             get {
-                if (CalculationCommand == null) CalculationCommand = new CalculationCommand(Calculation, CanCalculation);
+                if (CalculationCommand == null) CalculationCommand = new UserCommand(Calculation, CanCalculation);
                 return CalculationCommand;
             }
         }

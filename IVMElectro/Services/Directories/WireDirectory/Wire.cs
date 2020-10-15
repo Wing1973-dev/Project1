@@ -1,14 +1,21 @@
 ﻿using System.Data;
 
 namespace IVMElectro.Services.Directories.WireDirectory {
-    abstract class Wire {
-        internal int Id { get; set; }
-        internal string Name { get; set; }
-        internal DataTable Table { get; private set; } 
+    public abstract class Wire {
+        public int Id { get; set; }
+        public string NameWire { get; set; }
+        public DataTable Table { get; private set; } 
         public Wire() {
             Table = new DataTable();
-            DataColumn dиз = new DataColumn("dиз, мм", typeof(string)), qГ = new DataColumn("qГ, мм²", typeof(string));
-            Table.Columns.AddRange(new DataColumn[] { dиз, qГ });
+            DataColumn dиз = new DataColumn("dиз, мм", typeof(string)), qГ = new DataColumn("qГ, мм²", typeof(string)),
+                ID = new DataColumn("№пп", typeof(int)) {
+                    Unique = true,
+                    AllowDBNull = false,
+                    AutoIncrement = true,
+                    AutoIncrementSeed = 1,
+                    AutoIncrementStep = 1
+                };
+            Table.Columns.AddRange(new DataColumn[] { ID, dиз, qГ }); Table.PrimaryKey = new DataColumn[] { Table.Columns["ID"] };
         }
         public abstract void CreateTable();
         protected void AddRow(object[] content) {
