@@ -84,7 +84,7 @@ namespace LibraryAlgorithm {
             W1 = Z1 * Wk / 3.0 / a1;
 
 
-            //W1 = 208; //debug
+            W1 = 208; //debug
 
             SolutionIsDone = false; Logging = new List<string>();
         }
