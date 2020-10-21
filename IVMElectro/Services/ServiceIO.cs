@@ -13,6 +13,23 @@ namespace IVMElectro.Services {
     /// </summary>
     sealed class ServiceIO {
         static string pathFolder = AppDomain.CurrentDomain.SetupInformation.ApplicationBase;
+
+        /// <summary>
+        /// Имя открываемого файла
+        /// </summary>
+        private static string _file_name;
+
+        public static string FileName
+        {
+            get => _file_name;
+            set
+            {
+                
+                 _file_name = value;
+                
+            }
+        }
+
         /// <summary>
         /// Сохранение в файл по умолчанию
         /// </summary>
@@ -134,6 +151,7 @@ namespace IVMElectro.Services {
         }
         public static XElement LoadFromFile(ref string fileName) {
             fileName = Get_OpenFileName();
+            _file_name = fileName;
             return !string.IsNullOrEmpty(fileName) ? LoadFromFile(fileName) : null;
         }
         /// <summary>

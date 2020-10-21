@@ -14,6 +14,7 @@ using static LibraryAlgorithms.Services.ServiceDT;
 using LibraryAlgorithms;
 using NLog;
 using System.IO;
+using static IVMElectro.Services.ServiceIO;
 
 
 namespace IVMElectro.ViewModel {
@@ -386,7 +387,8 @@ namespace IVMElectro.ViewModel {
         }
         void ViewResult()
         {
-            string file_name = Directory.GetCurrentDirectory() + "\\report.html";            
+
+            string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";            
 
             // Создаем поток для записи в файл
             StreamWriter sw = new StreamWriter(file_name);
