@@ -34,14 +34,22 @@ namespace IVMElectro.Models {
         public double h8 { get; set; }
         public double h7 { get; set; }
         public double h6 { get; set; }
-        public double bП1 => Z1 == 0 ? double.NaN : (Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1; //interface output only 
+        //public double bП1 => Z1 == 0 ? double.NaN : (Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1; //interface output only 
+        public double bП1 => Z1 == 0 ? double.NaN : Math.PI * (Di + 2 * (h8 + h7 + h6))/ Z1 - bz1; //interface output only 
+
         public double h5 { get; set; }
         public double h3 { get; set; }
         public double h4 { get; set; }
         public double ac { get; set; }
-        public double bПН { get; set; }
-        public double h1 => h8 + h7 + h6 + h5 + h4 + 2 * h3 + Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //interface output only 
-        public double h2 => Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //algorithm output only 
+        //public double bПН { get; set; }
+        double _bПН;
+        public double bПН {
+            get => ac * 2 * h8 * Math.Tan(Math.PI / 12);
+            set => _bПН = value; }
+        //public double h1 => h8 + h7 + h6 + h5 + h4 + 2 * h3 + Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //interface output only 
+        public double h1 => h8 + h7 + h6 + h5 + h4 + 2 *h3 + h2;  //interface output only 
+        //public double h2 => Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //algorithm output only 
+        public double h2 => Get_h2Mod(Math.Tan(Math.PI / Z1), bП1+2*(h5+h4+h3)* Math.Tan(Math.PI / Z1), (bП1 + h5 * Math.Tan(Math.PI / Z1) + (h5 + h4) * Math.Tan(Math.PI / Z1)) * h4);  //algorithm output only 
         public double li { get; set; }
         public double cз { get; set; }
         //public double bП => bП1 + 2 * (h1 - h6 - h7 - h8) * Math.Sin(Math.PI / Z1);  //interface output only 
@@ -109,6 +117,7 @@ namespace IVMElectro.Models {
             //if (Math.Abs(A) < accuracy && Math.Abs(B) < accuracy) //А  = 0, В = 0
             return double.NaN;
         }
+        double Get_h2Mod(double A, double B, double Ssl) => (-B + Math.Sqrt(B * B + 4 * A * Ssl)) / (2 * A);
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
 
