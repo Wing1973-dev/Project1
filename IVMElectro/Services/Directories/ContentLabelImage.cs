@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace IVMElectro.Services.Directories.WireDirectory {
+﻿namespace IVMElectro.Services.Directories {
     public struct ContentLabelImage {
         public string NameLabel;
         public string Left;

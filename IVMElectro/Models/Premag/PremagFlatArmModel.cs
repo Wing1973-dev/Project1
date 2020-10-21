@@ -4,30 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IVMElectro.Models.Premag {
     public class PremagFlatArmModel : DatasetFromModels, IValidatableObject {
-        const string errordпз1 = "Значение параметра dпз1 должно быть ≥ 0.";
-        //public string this[string columnName] {
-        //    get {
-        //        string error = string.Empty;
-        //        switch (columnName) {
-        //            case "hяр":
-        //                if (hяр <= 0) {
-        //                    error = $"Параметр расчета {columnName} должен быть > 0.";
-        //                }
-        //                break;
-        //            case "hяк":
-        //                if (hяк <= 0) {
-        //                    error = $"Параметр расчета {columnName} должен быть > 0.";
-        //                }
-        //                break;
-        //            case "R0ʹ":
-        //                if (R0ʹ < 0) {
-        //                    error = $"Параметр расчета {columnName} должен быть > или = 0.";
-        //                }
-        //                break;
-        //        }
-        //        return error;
-        //    }
-        //}
         #region fields
         public double hяр { get; set; }
         public double hяк { get; set; }

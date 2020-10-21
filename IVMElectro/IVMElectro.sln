@@ -3,12 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29728.190
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVMElectro", "IVMElectro.csproj", "{D703F43D-DFA6-402F-B507-C31D5E722DBB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVMElectro", "IVMElectro.csproj", "{D703F43D-DFA6-402F-B507-C31D5E722DBB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A} = {5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryAlgorithm", "..\LibraryAlgorithm\LibraryAlgorithm.csproj", "{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryAlgorithms", "..\LibraryAlgorithm\LibraryAlgorithms.csproj", "{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

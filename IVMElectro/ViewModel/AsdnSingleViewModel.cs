@@ -10,14 +10,13 @@ using IVMElectro.Commands;
 using IVMElectro.Services.Directories.WireDirectory;
 using IVMElectro.Services.Directories;
 using static IVMElectro.Services.DataSharedASDNContent;
-using static LibraryAlgorithm.Services.ServiceDT;
-using LibraryAlgorithm;
+using static LibraryAlgorithms.Services.ServiceDT;
+using LibraryAlgorithms;
 using NLog;
 
 
 namespace IVMElectro.ViewModel {
     public class AsdnSingleViewModel : INotifyPropertyChanged, IDataErrorInfo {
-        static Logger logger = LogManager.GetCurrentClassLogger();
         // string error
         private const string errora2 = "Значение параметра a2 должено принадлежать [0 : 30].";
         private const string errorB = "Значение параметра B должено принадлежать [0 : 20].";
@@ -28,7 +27,7 @@ namespace IVMElectro.ViewModel {
                 string error = string.Empty;
                 switch (columnName) {
                     case "ΔГ1":
-                        if ((!(0 <= Model.Common.ΔГ1) && (Model.Common.ΔГ1 <= 0)))
+                        if (Model.Common.ΔГ1 < 0 || double.IsNaN(Model.Common.ΔГ1))
                             error = errorΔГ1;
                         break;
                     case "ΔГ2":
@@ -229,8 +228,8 @@ namespace IVMElectro.ViewModel {
             }
         }
         public string Error { get; }
-        public AsdnSingleViewModel(AsdnCompositeModel model) { 
-            Model = model;
+        public AsdnSingleViewModel(AsdnCompositeModel model, Logger logger) { 
+            Model = model; Logger = logger;
             WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1, NameWire = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, NameWire = "ПСДК_Л" },
                 new WireПСДКТ_Л{Id = 3, NameWire = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, NameWire = "ПЭЭИД2" } };
             WireDirectory.ForEach(i => i.CreateTable());
@@ -243,6 +242,7 @@ namespace IVMElectro.ViewModel {
         }
         #region properties
         public AsdnCompositeModel Model { get; set; }
+        Logger Logger { get; set; }
         public string Diagnostic { get; set; }
         #region machine parameters
         public string P12 { get => Model.Common.P12.ToString(); set { Model.Common.P12 = StringToDouble(value); OnPropertyChanged("P12"); } }
@@ -318,10 +318,6 @@ namespace IVMElectro.ViewModel {
         #endregion
         #region collection
         /// <summary>
-        /// Марка метала статора
-        /// </summary>
-        //public List<string> Get_collectionMarksSteelStator => new List<string> { "1412", "2412", "2411", "1521" };
-        /// <summary>
         /// Тип паза ротора
         /// </summary>
         public List<string> Get_collection_bСК => bСК_Collection;
@@ -366,9 +362,10 @@ namespace IVMElectro.ViewModel {
             _inputAlgorithm.Add("β", Model.Common.β); _inputAlgorithm.Add("Sсл", Model.Common.Sсл);
             algorithm = new AlgorithmASDN(_inputAlgorithm); algorithm.Run();
             foreach (string item in algorithm.Logging) 
-                logger.Error(item);
+                Logger.Error(item);
             
             Diagnostic = algorithm.SolutionIsDone ? "Расчет завершен успешно" : @"Расчет прерван. Смотри содержимое файла logs\*.log";
+            OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
             Model.AsdnSingle.SetParametersForModelValidation(Model.Common.Dpст, Model.Common.ΔГ2, Model.Common.hp);
@@ -389,7 +386,6 @@ namespace IVMElectro.ViewModel {
         void ViewResult() { }
         bool CanViewResult() => (algorithm != null && algorithm.SolutionIsDone);
         #endregion
-
         #endregion
     }
 }

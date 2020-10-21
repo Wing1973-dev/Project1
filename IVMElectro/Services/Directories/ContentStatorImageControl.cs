@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using IVMElectro.Services.Directories.WireDirectory;
 
 namespace IVMElectro.Services.Directories {
     public class ContentStatorImageControl {

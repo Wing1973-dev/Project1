@@ -5,7 +5,7 @@ using System.ComponentModel;
 using IVMElectro.Models;
 using IVMElectro.Commands;
 using System.Windows.Input;
-using static LibraryAlgorithm.Services.ServiceDT;
+using static LibraryAlgorithms.Services.ServiceDT;
 using IVMElectro.Services.Directories.WireDirectory;
 using static IVMElectro.Services.DataSharedASDNContent;
 using System.Data;

@@ -16,15 +16,18 @@ using IVMElectro.Models;
 using IVMElectro.Models.MainWindow;
 using IVMElectro.View;
 using IVMElectro.ViewModel;
-using LibraryAlgorithm;
+using LibraryAlgorithms;
 using MaterialDesignThemes.Wpf;
+using NLog;
 
 namespace IVMElectro {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        static Logger logger = LogManager.GetCurrentClassLogger();
         public MainWindow() {
+            
             InitializeComponent();
             Director director = new Director();
 
@@ -32,7 +35,8 @@ namespace IVMElectro {
             //List<SubItem> subItemsEngine = new List<SubItem> { new SubItem("Асинхронный двигатель насосов"), 
             //    new SubItem("Асинхронный двигатель насосов\r\nс шихтованным ротором") };
 
-            List<SubItem> subItemsEngine = new List<SubItem> { new SubItemASDN("Асинхронный двигатель насосов", director.MakeModelEM(new AsdnSingleBuilder())),
+            List<SubItem> subItemsEngine = new List<SubItem> { 
+                new SubItemASDN("Асинхронный двигатель насосов", director.MakeModelEMotors(new AsdnSingleBuilder()), logger),
                 new SubItem("Асинхронный двигатель насосов\r\nс шихтованным ротором") };
 
             ItemMenu itemMenu1 = new ItemMenu("Расчет электродвигателей", subItemsEngine, PackIconKind.Engine);

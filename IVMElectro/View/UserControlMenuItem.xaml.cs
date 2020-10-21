@@ -21,7 +21,7 @@ namespace IVMElectro.View {
         /// </summary>
         //Window WindowCalculation { get; set; }
         //Director Director { get; set; }
-        //BuilderEM Builder { get; set; }
+        //BuilderEMotors Builder { get; set; }
         ItemMenu ItemsMenu { get; set; }
         public UserControlMenuItem(ItemMenu itemMenu, Window owner) {
             InitializeComponent();
@@ -57,7 +57,7 @@ namespace IVMElectro.View {
             //            WindowCalculation = new ASDNView {
             //                Title = ((TextBlock)sender).Text,
             //                Owner = WindowOwner,
-            //                DataContext = new AsdnSingleViewModel(Director.MakeModelEM(Builder))
+            //                DataContext = new AsdnSingleViewModel(Director.MakeModelEMotors(Builder))
             //            };
 
             //            WindowCalculation.Show();

@@ -86,7 +86,6 @@ namespace IVMElectro.Models {
             if (ρГ <= 0) errors.Add(new ValidationResult(errorρГ));
             if (R0 < 0) errors.Add(new ValidationResult(errorR0));
             if (R10 < 0) errors.Add(new ValidationResult(errorR10));
-            
             if (dвст < 0) errors.Add(new ValidationResult(errordвст));
             if (Δk1 <= 0) errors.Add(new ValidationResult(errorΔk1));
             if (dм < 0) errors.Add(new ValidationResult(errorρГ));

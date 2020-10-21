@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\LibraryAlgorithm\LibraryAlgorithm.csproj" />
+    <ProjectReference Include="..\LibraryAlgorithm\LibraryAlgorithms.csproj" />
   </ItemGroup>
 
   <ItemGroup>

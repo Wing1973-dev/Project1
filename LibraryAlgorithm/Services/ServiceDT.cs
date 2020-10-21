@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Globalization;
 
-namespace LibraryAlgorithm.Services {
+namespace LibraryAlgorithms.Services {
     /// <summary>
     /// Функции преобразования данных
     /// </summary>
