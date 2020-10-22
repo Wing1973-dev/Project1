@@ -34,25 +34,18 @@ namespace IVMElectro.Models {
         public double h8 { get; set; }
         public double h7 { get; set; }
         public double h6 { get; set; }
-        //public double bП1 => Z1 == 0 ? double.NaN : (Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1; //interface output only 
         public double bП1 => Z1 == 0 ? double.NaN : Math.PI * (Di + 2 * (h8 + h7 + h6))/ Z1 - bz1; //interface output only 
-
         public double h5 { get; set; }
         public double h3 { get; set; }
         public double h4 { get; set; }
         public double ac { get; set; }
         //public double bПН { get; set; }
-        double _bПН;
-        public double bПН {
-            get => ac * 2 * h8 * Math.Tan(Math.PI / 12);
-            set => _bПН = value; }
-        //public double h1 => h8 + h7 + h6 + h5 + h4 + 2 * h3 + Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //interface output only 
+        public double bПН => Math.Round(ac * 2 * h8 * Math.Tan(Math.PI / 12), 3);
         public double h1 => h8 + h7 + h6 + h5 + h4 + 2 *h3 + h2;  //interface output only 
-        //public double h2 => Get_h2(Math.Sin(Math.PI / Z1), bгрс + 1.5 * h3 * Math.Sin(Math.PI / Z1), -Sсл);  //algorithm output only 
-        public double h2 => Get_h2Mod(Math.Tan(Math.PI / Z1), bП1+2*(h5+h4+h3)* Math.Tan(Math.PI / Z1), (bП1 + h5 * Math.Tan(Math.PI / Z1) + (h5 + h4) * Math.Tan(Math.PI / Z1)) * h4);  //algorithm output only 
+        public double h2 => Get_h2(Math.Tan(Math.PI / Convert.ToDouble(Z1)), bП1 + 2 * (h5 + h4 + h3) * Math.Tan(Math.PI / Convert.ToDouble(Z1)),
+            (bП1 + h5 * Math.Tan(Math.PI / Convert.ToDouble(Z1)) + (h5 + h4) * Math.Tan(Math.PI / Convert.ToDouble(Z1))) * h4);  //algorithm output only 
         public double li { get; set; }
         public double cз { get; set; }
-        //public double bП => bП1 + 2 * (h1 - h6 - h7 - h8) * Math.Sin(Math.PI / Z1);  //interface output only 
         public double bП => 2 * (h2 + 2 * h3 + h4 + h5) * Math.Tan(Math.PI / Z1);  //interface output only 
         public double Kзап { get; set; }
         public double y1 { get; set; }
@@ -80,7 +73,7 @@ namespace IVMElectro.Models {
         #endregion
         #endregion
         public AsdnCommonModel() {
-            ΔГ1 = ΔГ2 = Di = Da = Pмех = P12 = bк = U1 = h4 = h6 = li = ac = Kfe2 = Δкр = d1 = h8 = bП2 = bПН = y1 =  bz1 = Dpст = hp = ρРУБ = K2 = qГ = dиз = p10_50 = 0;
+            ΔГ1 = ΔГ2 = Di = Da = Pмех = P12 = bк = U1 = h4 = h6 = li = ac = Kfe2 = Δкр = d1 = h8 = bП2 = y1 =  bz1 = Dpст = hp = ρРУБ = K2 = qГ = dиз = p10_50 = 0;
             a2 = a1 = Z2 = Z1 = 0;
             f1 = 50; h7 = 1; h5 = 1.9; h3 = 0.7; cз = 100; Kзап = 0.72; Kfe1 = 0.93; ρ1x = 0.0175; ρ1Г = 0.0247; B = 10; ρ2Г = 0.0224; p = 1;
             
@@ -92,32 +85,7 @@ namespace IVMElectro.Models {
             { "ac", ac }, { "bПН", bПН }, { "li", li }, { "cз", cз }, { "Kзап", Kзап}, { "y1", y1 }, { "d1", d1 }, { "Kfe1", Kfe1 },
             { "ρ1x", ρ1x }, { "ρ1Г", ρ1Г }, { "B", B }, { "ΔГ2", ΔГ2 },  { "Dpст", Dpст}, { "bП2", bП2 }, { "bк", bк }, { "ρ2Г", ρ2Г },
             { "Kfe2", Kfe2 }, { "hp", hp }, { "Z2", Z2 }, { "Z1", Z1 }, { "ρРУБ", ρРУБ }, { "K2", K2 }, { "qГ", qГ }, { "dиз", dиз }, { "p10_50", p10_50 } };
-        double Get_h2(double A, double B, double C) {
-            double accuracy = double.Epsilon;
-            if (Math.Abs(A) > accuracy && Math.Abs(B) > accuracy && Math.Abs(C) > accuracy) { //A, B, C != 0
-                double yA = 0.25 * (4 * A * C - B * B) / A, xA = -0.5 * B / A, D = B * B - 4 * A * C;
-                if ((A > 0 && yA > accuracy) || (A < 0 && yA < 0 && Math.Abs(yA) > accuracy)) //нет корней
-                    return double.NaN;
-                if (D <= accuracy) //D = 0
-                    return xA;
-                double η1 = -0.5 * (B + Math.Sqrt(D)) / A, η2 = 0.5 * (Math.Sqrt(D) - B) / A;
-                η1 = η1 > accuracy || η1 == 0 ? η1 : double.NaN;
-                η2 = η2 > accuracy || η2 == 0 ? η2 : double.NaN;
-
-
-                return (!double.IsNaN(η1) && double.IsNaN(η2)) ? η1 : η2;
-                //if (!double.IsNaN(η1) && double.IsNaN(η2)) return η1;
-                //if (!double.IsNaN(η2) && double.IsNaN(η1)) return η2;
-                //return double.NaN; //invalid case - two roots of the equation
-            }
-            if (Math.Abs(A) < accuracy && Math.Abs(B) > accuracy) //А  = 0, В != 0
-                return (-1) * C / B;
-            if (Math.Abs(A) > accuracy && Math.Abs(B) < accuracy) //А != 0, В = 0
-                return Math.Sqrt(C / A);
-            //if (Math.Abs(A) < accuracy && Math.Abs(B) < accuracy) //А  = 0, В = 0
-            return double.NaN;
-        }
-        double Get_h2Mod(double A, double B, double Ssl) => (-B + Math.Sqrt(B * B + 4 * A * Ssl)) / (2 * A);
+        double Get_h2(double A, double B, double Ssl) => (-B + Math.Sqrt(B * B + 4 * A * Ssl)) / (2 * A);
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
 

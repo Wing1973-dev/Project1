@@ -11,6 +11,7 @@ using static IVMElectro.Services.DataSharedASDNContent;
 using System.Data;
 using IVMElectro.Services.Directories;
 using System.ComponentModel.DataAnnotations;
+using NLog;
 
 namespace IVMElectro.ViewModel {
     class AsdnRedSingleViewModel : INotifyPropertyChanged, IDataErrorInfo {
@@ -110,10 +111,10 @@ namespace IVMElectro.ViewModel {
                         if (!((Model.Common.dиз < Model.Common.ac) && (Model.Common.ac < 2 * Model.Common.dиз))) 
                             error = $"Значение параметра расчета {columnName} должно принадлежать {acBounds}.";
                         break;
-                    case "bПН":
-                        if (!((0 <= Model.Common.bПН) && (Model.Common.bПН <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1))))
-                            error = $"Значение параметра {columnName} должно принадлежать {bПНBounds}.";
-                        break;
+                    //case "bПН":
+                    //    if (!((0 <= Model.Common.bПН) && (Model.Common.bПН <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1))))
+                    //        error = $"Значение параметра {columnName} должно принадлежать {bПНBounds}.";
+                    //    break;
                     case "h1":
                         if (Model.Common.h1 < 0 || double.IsNaN(Model.Common.h1))
                             error = errorh1;
@@ -254,10 +255,11 @@ namespace IVMElectro.ViewModel {
         double hp1 => hp1(Model.Common.hp, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hp2, dпн, Model.Common.Z2);
         double dпв => dпв(dпн, hp1, Model.Common.Z2);
         public string Error { get; }
-        public AsdnRedSingleViewModel(AsdnCompositeModel model)  {
-            Model = model;
+        public AsdnRedSingleViewModel(AsdnCompositeModel model, Logger logger)  {
+            Model = model; Logger = logger;
             WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1,NameWire = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, NameWire = "ПСДК_Л" },
             new WireПСДКТ_Л{Id = 3, NameWire = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, NameWire = "ПЭЭИД2" } };
+            WireDirectory.ForEach(i => i.CreateTable());
             MarkSteelPartitionlDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "ХН78Т", Value = 1.16 }, new SteelProperties {Id = 2, Name = "ВТ-1", Value =  0.47 },
                 new SteelProperties {Id = 3, Name = "ПТ-7М", Value = 1.08 } };
             MarkSteelStatorDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "1412", Value = 1.94 }, new SteelProperties { Id = 2, Name = "2412", Value = 1.38 },
@@ -265,6 +267,8 @@ namespace IVMElectro.ViewModel {
         }
         #region properties 
         public AsdnCompositeModel Model { get; set; }
+        Logger Logger { get; set; }
+        public string Diagnostic { get; set; }
         #region machine parameters
         public string P12 { get => Model.Common.P12.ToString(); set { Model.Common.P12 = StringToDouble(value); OnPropertyChanged("P12"); } }
         public string U1 { get => Model.Common.U1.ToString(); set { Model.Common.U1 = StringToDouble(value); OnPropertyChanged("U1"); } }
@@ -278,7 +282,6 @@ namespace IVMElectro.ViewModel {
         public string ΔГ1 { get => Model.Common.ΔГ1.ToString(); set { Model.Common.ΔГ1 = StringToDouble(value); OnPropertyChanged("ΔГ1"); } }
         public string Z1 { get => Model.Common.Z1.ToString(); set { Model.Common.Z1 = StringToInt(value); OnPropertyChanged("Z1"); } }
         public string Da { get => Model.Common.Da.ToString(); set { Model.Common.Da = StringToDouble(value); OnPropertyChanged("Da"); } }
-        //рекомендуемые границы
         public string DaBounds { get => $"[{Math.Round(1.4 * Model.Common.Di, 2)} : {Math.Round(2 * Model.Common.Di, 2)})"; } //label
         public string a1 { get => Model.Common.a1.ToString(); set { Model.Common.a1 = StringToInt(value); OnPropertyChanged("a1"); } }
         public string a2 { get => Model.Common.a2.ToString(); set { Model.Common.a2 = StringToInt(value); OnPropertyChanged("a2"); } }
@@ -295,8 +298,8 @@ namespace IVMElectro.ViewModel {
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
         public string ac { get => Model.Common.ac.ToString(); set { Model.Common.ac = StringToDouble(value); OnPropertyChanged("ac"); } }
         public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
-        public string bПН { get => Model.Common.bПН.ToString(); set { Model.Common.bПН = StringToDouble(value); OnPropertyChanged("bПН"); } }
-        public string bПНBounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
+        public string bПН { get => Model.Common.bПН.ToString(); } //label
+        //public string bПНBounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
         public string h1 { get => Model.Common.h1.ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
         public string liBounds { get => Get_liBounds(Model.Common.U1, I1(Model.Common.P12,Model.Common.U1), Model.Common.Di); } //label
@@ -315,7 +318,6 @@ namespace IVMElectro.ViewModel {
         public string ρ1Г { get => Model.Common.ρ1Г.ToString(); set { Model.Common.ρ1Г = StringToDouble(value); OnPropertyChanged("ρ1Г"); } }
         public string ρ1ГBounds { get => $"[{Model.Common.ρ1x} : 0.1235]"; } //label
         public string B { get => Model.Common.B.ToString(); set { Model.Common.B = StringToDouble(value); OnPropertyChanged("B"); } }
-        public string PЗ { get => Model.AsdnSingle.P3.ToString(); set => Model.AsdnSingle.P3 = StringToInt(value); } //no need to sync with the interface
         public string p10_50 { get => Model.Common.p10_50.ToString(); set { Model.Common.p10_50 = StringToDouble(value); OnPropertyChanged("p10_50"); } }
         #endregion
         #region rotor parameters
@@ -335,7 +337,7 @@ namespace IVMElectro.ViewModel {
         public string hш { get => Model.AsdnRedSingle.hш.ToString(); set { Model.AsdnRedSingle.hш = StringToDouble(value); OnPropertyChanged("hш"); } }
         public string bш { get => Model.AsdnRedSingle.bш.ToString(); set { Model.AsdnRedSingle.bш = StringToDouble(value); OnPropertyChanged("bш"); } }
         public string dкп { get => Model.AsdnRedSingle.dкп.ToString(); set { Model.AsdnRedSingle.dкп = StringToDouble(value); OnPropertyChanged("dкп"); } }
-        public string dкпBounds => dкпBoundsString(Get_dкпBounds(Model.Common.Dpст,Model.Common.Z2));
+        public string dкпBounds => dкпBoundsString(Get_dкпBounds(Model.Common.Dpст, Model.Common.Z2));
         public string bZH { get => Model.AsdnRedSingle.bZH.ToString(); set{ Model.AsdnRedSingle.bZH = StringToDouble(value); OnPropertyChanged("bZH"); } }
         public string bZHBounds => Get_bZHBounds(bounds_bZH(Model.Common.Dpст, Model.Common.hp, Model.Common.Z2));
         public string hр2 { get => Model.AsdnRedSingle.hp2.ToString(); set { Model.AsdnRedSingle.hp2 = StringToDouble(value); OnPropertyChanged("hр2"); } }
@@ -360,10 +362,6 @@ namespace IVMElectro.ViewModel {
         public List<string> Get_collection_a1 => a1Collection(Model.Common.p, Model.Common.Z1);
         public List<Wire> WireDirectory { get; set; } //dиз, qГ
         /// <summary>
-        /// Тип обмотки
-        /// </summary>
-        public List<string> Get_collectionPЗ => new List<string> { "0", "1" };
-        /// <summary>
         /// Таблица K2
         /// </summary>
         public DataTable Get_tableK2 => K2Table;
@@ -385,7 +383,9 @@ namespace IVMElectro.ViewModel {
                 return CalculationCommand;
             }
         }
-        public void Calculation() { }
+        public void Calculation() {
+            Model.Common.CreationDataset(); Model.AsdnRedSingle.CreationDataset();
+        }
         public bool CanCalculation() {
             Model.AsdnRedSingle.SetParametersForModelValidation(Model.Common.Dpст, Model.Common.Z2, Model.Common.hp, Model.Common.Da);
             var resultsCommon = new List<ValidationResult>(); var resulstAsdnRed = new List<ValidationResult>();

@@ -179,7 +179,7 @@ namespace IVMElectro.Services {
             if (dlg.ShowDialog() == true)
                 nameFile = dlg.FileName.Trim();
             if (nameFile != "") {
-                pathFolder = nameFile.Substring(0, nameFile.LastIndexOf("\\")); //запоминает место сохранения
+                pathFolder = nameFile.LastIndexOf("\\") != -1 ? nameFile.Substring(0, nameFile.LastIndexOf("\\")) : pathFolder; //запоминает место сохранения
                 XmlSerializer s = new XmlSerializer(data.GetType());
                 StreamWriter sw;
                 try {
