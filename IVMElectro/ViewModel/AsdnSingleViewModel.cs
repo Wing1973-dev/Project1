@@ -15,6 +15,9 @@ using LibraryAlgorithms;
 using NLog;
 using System.IO;
 using static IVMElectro.Services.ServiceIO;
+using System.Security.Permissions;
+using Microsoft.Win32;
+using System.Diagnostics;
 
 
 namespace IVMElectro.ViewModel {
@@ -385,6 +388,81 @@ namespace IVMElectro.ViewModel {
                 return ViewResultCommand;
             }
         }
+
+        void launchBrowser(string url)
+        {
+            string browserName = @"C:\Program Files\Internet Explorer\iexplore.exe";
+
+            using (RegistryKey userChoiceKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice"))
+            {
+                if (userChoiceKey != null)
+                {
+                    object progIdValue = userChoiceKey.GetValue("Progid");
+                    if (progIdValue != null)
+                    {
+                        if (progIdValue.ToString().ToLower().Contains("chrome"))
+                        {
+                            using (RegistryKey ChromeKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"))
+                            {
+                                if (ChromeKey != null)
+                                {
+                                    object ChromeKeyPath = ChromeKey.GetValue("");
+                                    if (ChromeKeyPath != null)
+                                    {
+                                        browserName = ChromeKeyPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else if (progIdValue.ToString().ToLower().Contains("IE"))
+                        {
+                            using (RegistryKey IEKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\IEXPLORE.EXE"))
+                            {
+                                if (IEKey != null)
+                                {
+                                    object IEKeyPath = IEKey.GetValue("");
+                                    if (IEKeyPath != null)
+                                    {
+                                        browserName = IEKeyPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else if (progIdValue.ToString().ToLower().Contains("firefox"))
+                        {
+                            using (RegistryKey FireFoxKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe"))
+                            {
+                                if (FireFoxKey != null)
+                                {
+                                    object FireFoxPath = FireFoxKey.GetValue("");
+                                    if (FireFoxPath != null)
+                                    {
+                                        browserName = FireFoxPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else if (progIdValue.ToString().ToLower().Contains("opera"))
+                        {
+                            using (RegistryKey OperaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\opera.exe"))
+                            {
+                                if (OperaKey != null)
+                                {
+                                    object OperaPath = OperaKey.GetValue("");
+                                    if (OperaPath != null)
+                                    {
+                                        browserName = OperaPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Process.Start(new ProcessStartInfo(browserName, url));
+        }
+
         void ViewResult()
         {
 
@@ -741,8 +819,7 @@ namespace IVMElectro.ViewModel {
             // Закрываем поток для записи в файл
             sw.Close();
 
-            // Запускаем программу Microsoft Internet Explorer, передавая ему наш сформированный файл отчета
-            System.Diagnostics.Process.Start(@"C:\Program Files\Internet Explorer\iexplore.exe", file_name);
+            launchBrowser(file_name);
         }
         bool CanViewResult() => (algorithm != null && algorithm.SolutionIsDone);
         #endregion
