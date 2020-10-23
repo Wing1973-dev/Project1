@@ -17,6 +17,7 @@ namespace IVMElectro.View {
     public partial class ASDNREDView : Window {
         public ASDNREDView() {
             InitializeComponent();
+            string temp;
         }
         private void TxtBx_GotFocus(object sender, RoutedEventArgs e) => UpdateBinding();
 
