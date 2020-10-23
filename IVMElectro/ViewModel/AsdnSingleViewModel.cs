@@ -84,10 +84,10 @@ namespace IVMElectro.ViewModel {
                         if (!((2 <= Model.Common.bП2) && (Model.Common.bП2 <= 6))) 
                             error = errorbП2;
                         break;
-                    case "bПН":
-                        if (!((0 <= Model.Common.bПН) && (Model.Common.bПН <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1)))) 
-                            error = $"Значение параметра {columnName} должно принадлежать {bПНBounds}.";
-                        break;
+                    //case "bПН":
+                    //    if (!((0 <= Model.Common.bПН) && (Model.Common.bПН <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1)))) 
+                    //        error = $"Значение параметра {columnName} должно принадлежать {bПНBounds}.";
+                    //    break;
                     case "bк":
                         if (!((Model.Common.bП2 <= Model.Common.bк) && (Model.Common.bк <= 5 * Model.Common.bП2))) 
                             error = $"Значение параметра {columnName} должно принадлежать {bкBounds}.";
@@ -279,8 +279,8 @@ namespace IVMElectro.ViewModel {
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
         public string ac { get => Model.Common.ac.ToString(); set { Model.Common.ac = StringToDouble(value); OnPropertyChanged("ac"); } }
         public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
-        public string bПН { get => Model.Common.bПН.ToString(); set { Model.Common.bПН = StringToDouble(value); OnPropertyChanged("bПН"); } }
-        public string bПНBounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
+        public string bПН { get => Model.Common.bПН.ToString(); } //label
+        //public string bПНBounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
         public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
         public string liBounds { get => Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label

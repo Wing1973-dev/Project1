@@ -1,23 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using System.Xml.Linq;
-using IVMElectro.Models;
-using static IVMElectro.Services.XML_Service;
 using static IVMElectro.Services.ServiceIO;
-using IVMElectro.View;
 using IVMElectro.ViewModel;
-using Microsoft.Win32;
 using IVMElectro.Services.Directories;
-using IVMElectro.Services.Directories.WireDirectory;
 
 namespace IVMElectro.View {
     /// <summary>
@@ -39,9 +29,10 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(lboxZ1, ItemsControl.ItemsSourceProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbox_a1, ItemsControl.ItemsSourceProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_bП1, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_bПН, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_acBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_ac, TextBox.TextProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(lb_bПНBounds, ContentProperty).UpdateTarget();
+            //BindingOperations.GetBindingExpression(lb_bПНBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_h1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_liBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_bП, TextBlock.TextProperty).UpdateTarget();
@@ -125,7 +116,6 @@ namespace IVMElectro.View {
                             new ContentLabelImage("bПН", ((AsdnSingleViewModel)DataContext).bПН, "145", "543"),
                             new ContentLabelImage("bП", ((AsdnSingleViewModel)DataContext).bП, "140", "8"),
                             new ContentLabelImage("bП1", ((AsdnSingleViewModel)DataContext).bП1, "145", "581")
-                            
                         };
                         ContentStatorImageControl contentStator = new ContentStatorImageControl(contentLabels) {
                             ImageSource = "pack://application:,,,/Resource/Stator1.JPG"
@@ -231,7 +221,7 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_h3") != null) ((AsdnSingleViewModel)DataContext).h3 = inputData.Element("tbx_h3").Value.Trim();
                 if (inputData.Element("tbx_h4") != null) ((AsdnSingleViewModel)DataContext).h4 = inputData.Element("tbx_h4").Value.Trim();
                 if (inputData.Element("tbx_ac") != null) ((AsdnSingleViewModel)DataContext).ac = inputData.Element("tbx_ac").Value.Trim();
-                if (inputData.Element("tbx_bПН") != null) ((AsdnSingleViewModel)DataContext).bПН = inputData.Element("tbx_bПН").Value.Trim();
+                //if (inputData.Element("tbx_bПН") != null) ((AsdnSingleViewModel)DataContext).bПН = inputData.Element("tbx_bПН").Value.Trim();
                 if (inputData.Element("tbx_li") != null) ((AsdnSingleViewModel)DataContext).li = inputData.Element("tbx_li").Value.Trim();
                 if (inputData.Element("tbx_cз") != null) ((AsdnSingleViewModel)DataContext).cз = inputData.Element("tbx_cз").Value.Trim();
                 if (inputData.Element("tbxKзап") != null) ((AsdnSingleViewModel)DataContext).Kзап = inputData.Element("tbxKзап").Value.Trim();
@@ -288,7 +278,7 @@ namespace IVMElectro.View {
                     new XElement("tbx_h3", ((AsdnSingleViewModel)DataContext).h3),
                     new XElement("tbx_h4", ((AsdnSingleViewModel)DataContext).h4),
                     new XElement("tbx_ac", ((AsdnSingleViewModel)DataContext).ac),
-                    new XElement("tbx_bПН", ((AsdnSingleViewModel)DataContext).bПН),
+                    //new XElement("tbx_bПН", ((AsdnSingleViewModel)DataContext).bПН),
                     new XElement("tbx_li", ((AsdnSingleViewModel)DataContext).li),
                     new XElement("tbx_cз", ((AsdnSingleViewModel)DataContext).cз),
                     new XElement("tbxKзап", ((AsdnSingleViewModel)DataContext).Kзап),
@@ -318,6 +308,5 @@ namespace IVMElectro.View {
             ((AsdnSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
             UpdateBinding();
         }
-
     }
 }
