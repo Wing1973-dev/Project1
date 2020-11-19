@@ -11,14 +11,16 @@ namespace IVMElectro.Models {
         #region rotor parameters
         public double dв { get; set; } //внутренний диаметр сверления
         public double aк { get; set; } //высота кольца к.з. обмотки
-        public double γ { get; set; } 
-        //double hp { get; set; } //private
+        public double γ { get; set; }
+        public double bП2 { get; set; } //bc
+        public double bк { get; set; }
         #endregion
         #endregion
         public AsdnSingleModel() {
-            dв = aк = γ = 0; P3 = 0;
+            dв = aк = γ = bП2 = bк = 0; P3 = 0;
         }
-        public override void CreationDataset() => Dataset = new Dictionary<string, double> { { "dв", dв }, { "aк", aк }, { "γ", γ } };
+        public override void CreationDataset() => 
+            Dataset = new Dictionary<string, double> { { "dв", dв }, { "aк", aк }, { "bП2", bП2 }, { "γ", γ }, { "bк", bк } };
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
 
@@ -29,6 +31,9 @@ namespace IVMElectro.Models {
             if (!((1.05 * parametersForModelValidation.hp <= aк) && (aк <= 1.5 * parametersForModelValidation.hp)))
                 errors.Add(new ValidationResult($"Значение параметра aк должно принадлежать {Get_aкBounds(parametersForModelValidation.hp)}."));
             if ((γ < 0) || double.IsNaN(γ)) errors.Add(new ValidationResult(errorγ));
+            if (!((2 <= bП2) && (bП2 <= 6))) errors.Add(new ValidationResult(errorbП2ASDN));
+            if (!((bП2 <= bк) && (bк <= 5 * bП2)))
+                errors.Add(new ValidationResult($"Значение параметра bк должно принадлежать {Get_bкBounds(bП2)}."));
 
             return errors;
         }

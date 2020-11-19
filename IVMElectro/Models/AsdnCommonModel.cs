@@ -39,7 +39,6 @@ namespace IVMElectro.Models {
         public double h3 { get; set; }
         public double h4 { get; set; }
         public double ac { get; set; }
-        //public double bПН { get; set; }
         public double bПН => Math.Round(ac * 2 * h8 * Math.Tan(Math.PI / 12), 3);
         public double h1 => h8 + h7 + h6 + h5 + h4 + 2 *h3 + h2;  //interface output only 
         public double h2 => Get_h2(Math.Tan(Math.PI / Convert.ToDouble(Z1)), bП1 + 2 * (h5 + h4 + h3) * Math.Tan(Math.PI / Convert.ToDouble(Z1)),
@@ -64,27 +63,26 @@ namespace IVMElectro.Models {
         public double ΔГ2 { get; set; }
         public double Dpст { get; set; }
         public string bСК { get; set; } //input in the interface (not checked) (прямые, скошенные)
-        public double bП2 { get; set; } //bc
         public int Z2 { get; set; }
-        public double bк { get; set; }
         public double ρ2Г { get; set; }
         public double Kfe2 { get; set; }
         public double hp { get; set; }
         #endregion
         #endregion
         public AsdnCommonModel() {
-            ΔГ1 = ΔГ2 = Di = Da = Pмех = P12 = bк = U1 = h4 = h6 = li = ac = Kfe2 = Δкр = d1 = h8 = bП2 = y1 =  bz1 = Dpст = hp = ρРУБ = K2 = qГ = dиз = p10_50 = 0;
+            ΔГ1 = ΔГ2 = Di = Da = Pмех = P12 = U1 = h4 = h6 = li = ac = Kfe2 = Δкр = d1 = h8 = y1 =  bz1 = Dpст = hp = ρРУБ = K2 = qГ = dиз = p10_50 = 0;
             a2 = a1 = Z2 = Z1 = 0;
             f1 = 50; h7 = 1; h5 = 1.9; h3 = 0.7; cз = 100; Kзап = 0.72; Kfe1 = 0.93; ρ1x = 0.0175; ρ1Г = 0.0247; B = 10; ρ2Г = 0.0224; p = 1;
             
             bСК = "прямые"; p = 1;
         }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
-            { "P12", P12 }, { "U1", U1 }, { "f1", f1 }, { "p", p }, { "Pмех", Pмех }, { "Di", Di }, { "ΔГ1", ΔГ1 }, { "Da", Da }, { "a2", a2 }, { "a1", a1 },
-            { "Δкр", Δкр }, { "bz1", bz1 }, { "h8", h8 }, { "h7", h7 }, { "h6", h6 }, { "h5", h5 }, { "h3", h3 }, { "h4", h4 },
-            { "ac", ac }, { "bПН", bПН }, { "li", li }, { "cз", cз }, { "Kзап", Kзап}, { "y1", y1 }, { "d1", d1 }, { "Kfe1", Kfe1 },
-            { "ρ1x", ρ1x }, { "ρ1Г", ρ1Г }, { "B", B }, { "ΔГ2", ΔГ2 },  { "Dpст", Dpст}, { "bП2", bП2 }, { "bк", bк }, { "ρ2Г", ρ2Г },
-            { "Kfe2", Kfe2 }, { "hp", hp }, { "Z2", Z2 }, { "Z1", Z1 }, { "ρРУБ", ρРУБ }, { "K2", K2 }, { "qГ", qГ }, { "dиз", dиз }, { "p10_50", p10_50 } };
+            { "P12", P12 }, { "U1", U1 }, { "f1", f1 }, { "p", p }, { "Pмех", Pмех }, 
+            { "Di", Di }, { "ΔГ1", ΔГ1 }, { "Da", Da }, { "a2", a2 }, { "a1", a1 }, { "Δкр", Δкр }, { "bz1", bz1 }, { "h8", h8 }, { "h7", h7 }, { "h6", h6 }, 
+            { "h5", h5 }, { "h3", h3 }, { "h4", h4 }, { "ac", ac }, { "bПН", bПН }, { "li", li }, { "cз", cз }, { "Kзап", Kзап}, { "y1", y1 }, { "d1", d1 }, 
+            { "Kfe1", Kfe1 }, { "ρ1x", ρ1x }, { "ρ1Г", ρ1Г }, { "B", B }, 
+            { "ΔГ2", ΔГ2 },  { "Dpст", Dpст},  { "ρ2Г", ρ2Г }, { "Kfe2", Kfe2 }, { "hp", hp }, { "Z2", Z2 }, { "Z1", Z1 }, 
+            { "ρРУБ", ρРУБ }, { "K2", K2 }, { "qГ", qГ }, { "dиз", dиз }, { "p10_50", p10_50 } };
         double Get_h2(double A, double B, double Ssl) => (-B + Math.Sqrt(B * B + 4 * A * Ssl)) / (2 * A);
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
@@ -143,10 +141,8 @@ namespace IVMElectro.Models {
             if (!((DpстBoundCalculation - 5 <= Dpст) && (Dpст < DpстBoundCalculation - 0.1))) 
                 errors.Add(new ValidationResult($"Значение параметра Dp.ст должно принадлежать [{ Math.Round(DpстBoundCalculation - 5, 2) } : { Math.Round(DpстBoundCalculation - 0.1, 2)})."));
             if (string.IsNullOrEmpty(bСК)) errors.Add(new ValidationResult("Error bСК.")); //such a state is unattainable. This is used for  Validator.TryValidateObject(..., true)
-            if (!((2 <= bП2) && (bП2 <= 6))) errors.Add(new ValidationResult(errorbП2));
             if ((Z2 < 0) || !int.TryParse(Z2.ToString(), out _)) errors.Add(new ValidationResult(errorZ2));
-            if (!((bП2 <= bк) && (bк <= 5 * bП2)))
-                errors.Add(new ValidationResult($"Значение параметра bк должно принадлежать {Get_bкBounds(bП2)}."));
+            
             if (!((0.01 <= ρ2Г) && (ρ2Г <= 0.2))) errors.Add(new ValidationResult(errorρ2Г));
             if (!((0.9 <= Kfe2) && (Kfe2 <= 1))) errors.Add(new ValidationResult(errorKfe2));
             if (!((0.125 * Get_Dp(Dpст, ΔГ2) <= hp) && (hp <= 0.375 * Get_Dp(Dpст, ΔГ2))))
@@ -156,6 +152,5 @@ namespace IVMElectro.Models {
             return errors;
         }
         internal double DpстBoundCalculation => Di - 2 * (ΔГ1 - ΔГ2);
-
     }
 }

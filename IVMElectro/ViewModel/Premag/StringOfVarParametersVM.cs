@@ -75,7 +75,8 @@ namespace IVMElectro.ViewModel.Premag {
 
         public StringOfVarParametersVM(StringOfVarParameters model) => Model = model;
         #region properties
-        StringOfVarParameters Model { get; set; }
+        public StringOfVarParameters Model { get; private set; }
+        public string ID { get => Model.ID.ToString(); set { Model.ID = StringToInt(value); } }
         public string U { get => Model.U.ToString(); set { Model.U = StringToDouble(value); OnPropertyChanged("U"); } }
         public string δ { get => Model.δ.ToString(); set { Model.δ = StringToDouble(value); OnPropertyChanged("δ"); } }
         public string q { get => Model.q.ToString(); set { Model.q = StringToDouble(value); OnPropertyChanged("q"); } }
@@ -84,8 +85,8 @@ namespace IVMElectro.ViewModel.Premag {
         public string R2 { get => Model.R2.ToString(); set { Model.R2 = StringToDouble(value); OnPropertyChanged("R2"); } }
         public string R3 { get => Model.R3.ToString(); set { Model.R3 = StringToDouble(value); OnPropertyChanged("R3"); } }
         public string qm { get => Model.qm.ToString(); set { Model.qm = StringToDouble(value); OnPropertyChanged("qm"); } }
-        public string Ws { get => Model.qm.ToString(); set { Model.Ws = StringToDouble(value); OnPropertyChanged("Ws"); } }
-        public bool IsOK { get; set; }
+        public string Ws { get => Model.Ws.ToString(); set { Model.Ws = StringToDouble(value); OnPropertyChanged("Ws"); } }
+        public bool IsOK { get; set; } = false;
         #endregion
         //command
         UserCommand OKCommand { get; set; }
@@ -96,8 +97,9 @@ namespace IVMElectro.ViewModel.Premag {
             }
         }
         void OK() => IsOK = true;
-        bool CanOK() {
-            var resultsCommon = new List<ValidationResult>(); var contextCommon = new ValidationContext(Model); 
+        //the parameters required for validation must be provided by the cod that uses the given class
+        public bool CanOK() {
+            var resultsCommon = new List<ValidationResult>(); var contextCommon = new ValidationContext(Model);
             return Validator.TryValidateObject(Model, contextCommon, resultsCommon, true);
         }
     }

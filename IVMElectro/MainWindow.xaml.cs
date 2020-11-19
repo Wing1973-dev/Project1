@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using IVMElectro.Models;
 using IVMElectro.Models.MainWindow;
+using IVMElectro.Models.Premag;
 using IVMElectro.View;
 using IVMElectro.ViewModel;
 using LibraryAlgorithms;
@@ -32,15 +33,14 @@ namespace IVMElectro {
             Director director = new Director();
 
 
-            //List<SubItem> subItemsEngine = new List<SubItem> { new SubItem("Асинхронный двигатель насосов"), 
-            //    new SubItem("Асинхронный двигатель насосов\r\nс шихтованным ротором") };
 
             List<SubItem> subItemsEngine = new List<SubItem> { 
-                new SubItemASDN("Асинхронный двигатель насосов", director.MakeModelEMotors(new AsdnSingleBuilder()), logger),
-                new SubItem("Асинхронный двигатель насосов\r\nс шихтованным ротором") };
+                new SubItemASDN("Асинхронный двигатель насосов", logger, director.MakeModelEMotors(new AsdnSingleBuilder())),
+                new SubItemASDNRED("Асинхронный двигатель насосов\r\nс шихтованным ротором", logger, director.MakeModelEMotors(new AsdnRedSingleBuilder())) };
+            List<SubItem> subItemsMagnet = new List<SubItem> {
+                new SubItemPremagFlat("Электромагниты постоянного тока", logger, director.MakeModelEMagnet(new PremagFlatArmBuilder())) };
 
             ItemMenu itemMenu1 = new ItemMenu("Расчет электродвигателей", subItemsEngine, PackIconKind.Engine);
-            List<SubItem> subItemsMagnet = new List<SubItem> { new SubItem("Электромагниты постоянного тока") };
             ItemMenu itemMenu2 = new ItemMenu("Расчет электромагнитов", subItemsMagnet, PackIconKind.Magnet);
             ItemMenu itemMenu0 = new ItemMenu("Перечень расчетов", null, PackIconKind.ClipboardTextOutline);
 

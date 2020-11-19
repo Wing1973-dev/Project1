@@ -7,14 +7,10 @@ namespace LibraryAlgorithms {
     //abstract: все переменные глобальной видимости типа передаются в функции неявно (экономия параметров функций)
     //требуется следить за использованием таких параметров при вызове локальных функций
     public class AlgorithmASDN {
-        //таблица 1. Определение К2
-        //Dictionary<double, double> K2 = new Dictionary<double, double>() { { 1, 1.45 }, { 2, 1.55 }, { 3, 1.75 }, { 4, 1.9 } },
-        //    K2_less = new Dictionary<double, double>() { { 1, 1.55 }, { 2, 1.75 }, { 3, 1.9 }, { 4, 1.9 } };
         private const double Ki = 0.8;
         #region input data
         private double Z1, Z2, p, W1, a1, a2, y1, Di, Dp, f1, h1, h2, h3, h4, h5, h6, h7, h8, bП, bП1, bП2, ΔГ1, ΔГ2, hp, ac, li, Da,
             B, Δкр, ρ1x, ρ1Г, ρ2Г, ρРУБ, qГ, bк, aк,
-            //bc, 
             dиз, d1, bПН, cз, Kfe1, Kfe2, I1, U1, S = 0.1, //S хх
             αδ = 0.65, γ, dв, p10_50, Pмех,
             Pʹ2, bСК, K2;
@@ -57,7 +53,6 @@ namespace LibraryAlgorithms {
         private double Iʹʹ2П, I1П, I1П_round, MП, KП, KI, E1П;
         #endregion
         private double rʹʹ2Э, xʹʹ2Э;
-        //double testHZ2;
         public AlgorithmASDN(Dictionary<string, double> input) {
             Pʹ2 = input["P12"]; U1 = input["U1"]; f1 = input["f1"]; p = input["p"]; Pмех = input["Pмех"];
 
@@ -104,7 +99,6 @@ namespace LibraryAlgorithms {
             nэл = W1 * a1 * a2 / p / q1;
             np = W1 * a1 / p / q1;
             Wc = 0.5 * np;
-            //β = y1 / m1 / q1; //input data
             t1 = Math.PI * Di / Z1;
             t2 = Math.PI * Dp / Z2;
             nc = 60 * f1 / p;
@@ -129,7 +123,6 @@ namespace LibraryAlgorithms {
             hj1 = 0.5 * (Da - (Di + 2 * h1));
             lc = 0.5 * Math.PI * (Da - hj1) / p;
             τy = 0.5 * Math.PI * (Di + 2 * (h8 + h7 + h6 + h5) + h4 + h3 + h2) * β / p;
-            //ls = β >= 0.75 ? K2[p] * τy + 2 * B : K2_less[p] * τy + 2 * B;
             ls = K2 * τy + 2 * B; //могут быть отличия из-за K2
             lB = 0.5 * Math.Sqrt(ls * ls - τy * τy) * 1.03;
             L = 2 * (li + 2 * Δкр + ls) * 1.05;
@@ -220,18 +213,17 @@ namespace LibraryAlgorithms {
             ξn = 0.2 * Math.PI * hp * Math.Sqrt(0.9 * f2 / ρ2Г * 1e-5);
             hx = 1.5 * hp * (Math.Sinh(2 * ξn) - Math.Sin(2 * ξn)) / (Math.Cosh(2 * ξn) - Math.Cos(2 * ξn)) / ξn;
             hr = hp * (Math.Cosh(2 * ξn) - Math.Cos(2 * ξn)) / ξn / (Math.Sinh(2 * ξn) + Math.Sin(2 * ξn));
-            //qr = hr * bc;
             qr = hr * bП2; //bП2 - ширина стержня к.з. клетки ротора
             r2cп = hr < hp ? ρ2Г * lp * 1e-3 / qr : ρ2Г * lp * 1e-3 / qс;
             r2ξ = (r2cп + rк) * ν;
             E1П = 0.25 * U1; //предварительное ЭДС пускового режима
             Iʹʹ2П = 1.5* Iʹʹ2M; //предварительный ток ротора
-            //E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out _, out _, out double PFe2П, ref I2c);
-            E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out double rʹk, out double ZʹkП, out double PFe2П, ref I2c); //old
+            E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out _, out _, out double PFe2П, ref I2c);
+            //E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out double rʹk, out double ZʹkП, out double PFe2П, ref I2c); //old
             while ( Math.Abs(E1П_new - E1П) >= E1П * 5e-3 ) {
                 E1П = 0.5 * (E1П + E1П_new);
-                //E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out _, out _, out PFe2П, ref I2c);
-                E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out rʹk, out ZʹkП, out PFe2П, ref I2c); //old
+                E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out _, out _, out PFe2П, ref I2c);
+                //E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out rʹk, out ZʹkП, out PFe2П, ref I2c); //old
             };
             MП = 0.975 * (m1 * Iʹʹ2П * Iʹʹ2П * rʹʹ2Э + PFe2П) / nc;
             KП = MП / MН;
@@ -254,16 +246,16 @@ namespace LibraryAlgorithms {
                     out μe, out ρ1, out PFe, out PFe_round, out Σλ2, out Sp, out λСК);
                 if ( double.IsNaN(E1_new) ) { I2Н = ZM = RM = xʹk = Zʹoo = double.NaN; return double.NaN; }
             }
-            //RatingCore(μe, f2, τi, ρ1, S, out double sinφН, out _, out _, out _, out _, out _);
-            RatingCore(μe, f2, τi, ρ1, S, out double sinφН, out double RH, out ZM, out RM, out xʹk, out Zʹoo); //old
+            RatingCore(μe, f2, τi, ρ1, S, out double sinφН, out _, out _, out _, out _, out _);
+            //RatingCore(μe, f2, τi, ρ1, S, out double sinφН, out double RH, out ZM, out RM, out xʹk, out Zʹoo); //old
             E1нр = Math.Sqrt((U1 * cosφН - I1Н * r1Г) * (U1 * cosφН - I1Н * r1Г) + (U1 * sinφН - I1Н * x1) * (U1 * sinφН - I1Н * x1));
             ФМН = E1нр * Ф10 / U1;
             //новый поток, требуется пересчитать BδM, Bz2, Hz2
             BδMН = get_BδM(ФМН, αδ, τi, li);
             Bz2Н = get_Bz2(BδMН, t2, li, bz2ср, lp, Kfe2);
             μzН = Bz2Н / functionMagnetization09X17H(Bz2Н);
-            //RatingCore(μzН, f2, τi, ρ1, S, out _, out double RH, out ZM, out RM, out xʹk, out Zʹoo);// пересчет при μe = μz
-            RatingCore(μzН, f2, τi, ρ1, S, out sinφН, out RH, out ZM, out RM, out xʹk, out Zʹoo);// old
+            RatingCore(μzН, f2, τi, ρ1, S, out _, out double RH, out ZM, out RM, out xʹk, out Zʹoo);// пересчет при μe = μz
+            //RatingCore(μzН, f2, τi, ρ1, S, out sinφН, out RH, out ZM, out RM, out xʹk, out Zʹoo);// old
             I2Н = Iʹʹ2Н * c1 * 2 * m1 * W1 * k1 / Z2;
             return 1.4 / (1 + RH / rʹʹ2Э);
         }
@@ -360,13 +352,13 @@ namespace LibraryAlgorithms {
             //новый поток (HZ2) считается при параметрах номинального режима: пересчитанные BδM, Bz2 -> BδM = get_BδM(ФМН, αδ, τi, li);
             μz = Bz2 / functionMagnetization09X17H(Bz2);
             //расчет при S = SM 
-            //relation_μ(μz, f2, τi, S, xʹ2M, rʹ2, out xʹk, out _, out RM, out ZM, out double Zʹoo, out _, out _);
-            relation_μ(μz, f2, τi, S, xʹ2M, rʹ2, out xʹk, out double rʹk, out RM, out ZM, out double Zʹoo, out double r2ст, out double x2ст); //old
+            relation_μ(μz, f2, τi, S, xʹ2M, rʹ2, out xʹk, out _, out RM, out ZM, out double Zʹoo, out _, out _);
+            //relation_μ(μz, f2, τi, S, xʹ2M, rʹ2, out xʹk, out double rʹk, out RM, out ZM, out double Zʹoo, out double r2ст, out double x2ст); //old
             ФММ = E1M * Ф10 / U1;
             BδM = get_BδM(ФММ, αδ, τi, li);
             Bz2M = get_Bz2(BδM, t2, li, bz2ср, lp, Kfe2);
-            Hz2M = functionMagnetization09X17H(Bz2M); //old
-            //_ = functionMagnetization09X17H(Bz2M);
+            //Hz2M = functionMagnetization09X17H(Bz2M); //old
+            _ = functionMagnetization09X17H(Bz2M);
             return rʹʹ2Э / Zʹoo;
         }
         //расчет тока ротора пускового режима
@@ -377,8 +369,8 @@ namespace LibraryAlgorithms {
             λп2П = hx / 3 / bП2 + ΔГ2 / bП2 + 950 * ΔГ2 / I2c;
             Σλ2П = λп2П + λq2 + λлоб2 + λСК;
             xʹ2П = xʹ2 * Σλ2П / Σλ2;
-            //relation_μ(μ, f2, τi, 1, xʹ2П, rʹ2, out xʹk, out rʹk, out _, out _, out _, out _, out _);
-            relation_μ(μ, f2, τi, 1, xʹ2П, rʹ2, out xʹk, out rʹk, out double RM, out double ZM, out double Zʹoo, out double r2ст, out double x2ст); //old
+            relation_μ(μ, f2, τi, 1, xʹ2П, rʹ2, out xʹk, out rʹk, out _, out _, out _, out _, out _);
+            //relation_μ(μ, f2, τi, 1, xʹ2П, rʹ2, out xʹk, out rʹk, out double RM, out double ZM, out double Zʹoo, out double r2ст, out double x2ст); //old
             Zʹk = Math.Sqrt(rʹk * rʹk + xʹk * xʹk);
             I2c = Iʹʹ2П * c1 * 2 * m1 * W1 * k1 / Z2;
             return U1 / Zʹk;

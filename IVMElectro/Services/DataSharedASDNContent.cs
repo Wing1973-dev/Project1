@@ -22,6 +22,7 @@ namespace IVMElectro.Services {
         public const string errorh7 = "Значение параметра h7 должно принадлежать [0 : 2].";
         public const string errorh6 = "Значение параметра h6 должно принадлежать [0 : 20].";
         public const string errorbП1 = "Ошибочное значение параметра bП1.";
+        public const string errorbП2RED = "Ошибочное значение параметра bП2.";
         public const string errorh5 = "Значение параметра h5 должено принадлежать [0,1 : 5].";
         public const string errorh3 = "Значение параметра h3 должено принадлежать [0 : 5].";
         public const string errorh4 = "Значение параметра h4 должено принадлежать [5 : 50].";
@@ -38,15 +39,18 @@ namespace IVMElectro.Services {
         public const string errorB = "Значение параметра B должно принадлежать [0 : 20].";
         public const string errorp10_50 = "Ошибочное значение параметра p10_50.";
         public const string errorΔГ2 = "Значение параметра ΔГ2 должно принадлежать [0 : 5].";
-        public const string errorbП2 = "Значение параметра bП2 должно принадлежать [2 : 6].";
+        public const string errorbП2ASDN = "Значение параметра bП2 должно принадлежать [2 : 6].";
         public const string errorZ2 = "Ошибочное значение параметра Z2.";
         public const string errorρ2Г = "Значение параметра ρ2Г должено принадлежать [0,01 : 0,2].";
         public const string errorKfe2 = "Значение параметра Kfe2 должено принадлежать [0,9 : 1].";
         public const string errorγ = "Ошибочное значение параметра γ.";
         public const string errorhш = "Значение параметра hш должно принадлежать [0,5 : 1].";
         public const string errorbш = "Значение параметра bш должно принадлежать [1 : 2,5].";
-        public const string errorhp2 = "Значение параметра hp2 должно принадлежать [3 : 10].";
+        public const string errorhp2RED = "Значение параметра hp2 должно принадлежать [3 : 10]."; //для двойной клетки
+        public const string errorhp2 = "Ошибочное значение параметра hp2.";
         public const string errorbкн = "Значение параметра bкн должно принадлежать [5 : 35].";
+        public const string erroraкRED = "Ошибочное значение параметра aк.";
+        public const string errorbкRED = "Ошибочное значение параметра bк.";
 
         #endregion
         public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) => Math.Round((Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1, 3);
@@ -368,10 +372,16 @@ namespace IVMElectro.Services {
         public static (double left, double right) bounds_bZH(double Dpст, double hp, double Z2) => (left: 0.25 * Math.PI * (Dpст - 2 * hp) / Z2,
             right: 0.8 * Math.PI * (Dpст - 2 * hp) / Z2);
         public static string Get_bZHBounds((double left, double right) bounds) => $"[{Math.Round(bounds.left, 2)} : {Math.Round(bounds.right, 2)}]";
-        public static double dпн(double Dpст, double hp, double Z2, double bZH) => Math.PI * (Dpст - hp) / (Z2 - Math.PI) - bZH;
-        public static double hp1(double hp, double hш, double dкп, double hp2, double dпн, double Z2) => (hp - hш - dкп - hp2 - dпн) / (1 + Math.Sin(2 * Math.PI / Z2));
-        public static double dпв(double dпн, double hp1, double Z2) => dпн + 2 * hp1 * Math.Sin(2 * Math.PI / Z2);
-        public static (double left, double right) bounds_aкн(double dпн, double dпв, double hp1) => (left: 0.5 * (dпн + dпв) + hp1, right: 1.2 * (0.5 * (dпн + dпв) + hp1));
+        public static double dпн(double Dpст, double hp, double Z2, double bZH) => (Math.PI * (Dpст - 2 * hp) / Z2 - bZH) / (1 - Math.PI / Z2);
+        //public static double dпн(double Dpст, double hp, double Z2, double bZH) => Math.PI * (Dpст - 2 * hp) / (Z2 - Math.PI) - bZH;
+        //public static double hp1(double hp, double hш, double dкп, double hp2, double dпн, double Z2) => (hp - hш - dкп - hp2 - dпн) / (1 + Math.Sin(2 * Math.PI / Z2));
+        //public static double hp1(double hp, double hш, double dпн, double Z2) => 0.25 * (hp - hш - 2 * dпн) / Math.Tan(Math.PI / Z2);
+        public static double hp1(double dпв, double dпн, double Z2) => 0.5 * (dпв - dпн) / Math.Tan(Math.PI / Z2);
+        //public static double dпв(double dпн, double hp1, double Z2) => dпн + 2 * hp1 * Math.Sin(2 * Math.PI / Z2);
+        //public static double dпв(double dпн, double hp1, double Z2) => dпн + 2 * hp1 * Math.Tan(Math.PI / Z2);
+        public static double dпв(double Z2, double Dpст, double hш, double bZH) => (Math.PI * (Dpст - 2 * hш) / Z2 - bZH) / (1 + Math.PI / Z2);
+        public static (double left, double right) bounds_aкн(double dпн, double dпв, double hp1) =>
+            (left: Math.Round(0.5 * (dпн + dпв) + hp1, 2), right: Math.Round(1.2 * (0.5 * (dпн + dпв) + hp1), 2));
         public static string Get_aкнBounds((double left, double right) bounds) => $"[{Math.Round(bounds.left, 2)} : {Math.Round(bounds.right, 2)}]";
         public static (double left, double right) bounds_aк(double dкп, double hш, double hp2) => (left: dкп, right: dкп + hш + hp2);
         public static string Get_aкBounds((double left, double right) bounds) => $"[{Math.Round(bounds.left, 2)} : {Math.Round(bounds.right, 2)}]";

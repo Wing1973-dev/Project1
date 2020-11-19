@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using NLog;
 
 namespace IVMElectro.Models.MainWindow {
     /// <summary>
@@ -17,8 +18,11 @@ namespace IVMElectro.Models.MainWindow {
         /// Constructor
         /// </summary>
         /// <param name="name">This is name of the sub-calculation</param>
-        public SubItem(string name) => Name = name;
+        public SubItem(string name, Logger logger) {
+            Name = name; Logger = logger;
+        } 
         public string Name { get; private set; }
+        public Logger Logger { get; private set; }
         public Window WindowCalculation { get; set; }
         public virtual void MakeWindowCalculation() => WindowCalculation = null; 
     }

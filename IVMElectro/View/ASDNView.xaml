@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Height="900" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" >
+        Height="900" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenFile"/>
         <CommandBinding Command="Save" Executed="SaveFile"/>
@@ -241,7 +241,7 @@
                                     <Run Text="i" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", мм:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbxDi" Margin="35 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbxDi" Margin="35 0 0 0" MaxLength="7" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="Di" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -1021,7 +1021,7 @@
                                     <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", шт.:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbxZ2" Margin="48 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbxZ2" Margin="48 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus">
                                         <TextBox.Text>
                                             <Binding Path="Z2" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -1191,7 +1191,6 @@
                     </TabItem>
                 </TabControl>
             </Grid>
-            
         </DockPanel>
     </ScrollViewer>
 </Window>

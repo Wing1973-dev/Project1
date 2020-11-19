@@ -41,6 +41,6 @@ namespace IVMElectro.Services {
         public const string errorWs = "Значение параметра Ws должно быть > 0.";
         #endregion
         #endregion
-        public static List<string> MarkOfSteel => new List<string> { "09Х17Н", "ст. 3, ст. 10", "ст. 10880 (Э10)" };
+        public static List<string> MarksOfSteel => new List<string> { "09Х17Н", "ст. 3, ст. 10", "ст. 10880 (Э10)" };
     }
 }

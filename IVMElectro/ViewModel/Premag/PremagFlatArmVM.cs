@@ -2,9 +2,12 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Text;
 using System.Windows.Input;
 using IVMElectro.Commands;
 using IVMElectro.Models.Premag;
+using LibraryAlgorithms;
 using NLog;
 using static IVMElectro.Services.DataSharedPremagContent;
 using static LibraryAlgorithms.Services.ServiceDT;
@@ -55,14 +58,6 @@ namespace IVMElectro.ViewModel.Premag {
                         if (Model.Common.Δk1 <= 0 || double.IsNaN(Model.Common.Δk1))
                             error = errorΔk1;
                         break;
-                    case "dм":
-                        if (Model.Common.dм < 0 || double.IsNaN(Model.Common.dм))
-                            error = errordм;
-                        break;
-                    case "dиз":
-                        if (Model.Common.dиз < 0 || double.IsNaN(Model.Common.dиз))
-                            error = errordиз;
-                        break;
                 }
                 return error;
             }
@@ -91,15 +86,15 @@ namespace IVMElectro.ViewModel.Premag {
         public string dпз1 { get => Model.FlatArm.dпз1.ToString(); set { Model.FlatArm.dпз1 = StringToDouble(value); OnPropertyChanged("dпз1"); } }
         public string dвст { get => Model.Common.dвст.ToString(); set { Model.Common.dвст = StringToDouble(value); OnPropertyChanged("dвст"); } }
         public string Δk1 { get => Model.Common.Δk1.ToString(); set { Model.Common.Δk1 = StringToDouble(value); OnPropertyChanged("Δk1"); } }
-        public string dм { get => Model.Common.dм.ToString(); set { Model.Common.dм = StringToDouble(value); OnPropertyChanged("dм"); } }
-        public string dиз { get => Model.Common.dиз.ToString(); set { Model.Common.dиз = StringToDouble(value); OnPropertyChanged("dиз"); } }
+        public string MarkSteel { get => Model.Common.MarkSteel; set { Model.Common.MarkSteel = value; OnPropertyChanged("MarkSteel"); } } 
         #endregion
         //variation data
         public ObservableCollection<StringOfVarParameters> VariationData { get; set; }
         //collection
-        public List<string> Get_MarkOfSteel => MarkOfSteel;
+        public List<string> Get_MarksOfSteel => MarksOfSteel;
         #region commands
-        //AlgorithmASDN algorithm;
+        AlgorithmFlatEM algorithm = null;
+        Dictionary<string, Dictionary<string, double>> resultCalculation = null;
         UserCommand CalculationCommand { get; set; }
         public ICommand CommandCalculation {
             get {
@@ -108,18 +103,32 @@ namespace IVMElectro.ViewModel.Premag {
             }
         }
         void Calculation() {
-            Model.Common.CreationDataset(); 
-            //Model.AsdnSingle.CreationDataset();
-            //Dictionary<string, double> _inputAlgorithm = Model.Common.GetDataset.Union(Model.AsdnSingle.GetDataset).ToDictionary(i => i.Key, i => i.Value);
-            //_inputAlgorithm.Add("bП1", bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1));
-            //_inputAlgorithm.Add("h1", Model.Common.h1); _inputAlgorithm.Add("h2", Model.Common.h2); _inputAlgorithm.Add("bП", Model.Common.bП);
-            //_inputAlgorithm.Add("P3", Model.AsdnSingle.P3); _inputAlgorithm.Add("bСК", Model.Common.bСК == "скошенные" ? 1 : 0);
-            //_inputAlgorithm.Add("β", Model.Common.β); _inputAlgorithm.Add("Sсл", Model.Common.Sсл);
-            //algorithm = new AlgorithmASDN(_inputAlgorithm); algorithm.Run();
+            Dictionary<string, Dictionary<string, double>> outputData = new Dictionary<string, Dictionary<string, double>>();
+            Model.Common.CreationDataset(); Model.FlatArm.CreationDataset();
+            Dictionary<string, double> inputData = Model.Common.Dataset.Union(Model.FlatArm.Dataset).ToDictionary(i => i.Key, i => i.Value);
+            double _markSteel = 0;
+            switch (MarkSteel) {
+                case "09Х17Н": _markSteel = 0; break;
+                case "ст. 3, ст. 10": _markSteel = 1; break;
+                case "ст. 10880 (Э10)": _markSteel = 2; break;
+            }
+            inputData.Add("markSteel", _markSteel);
+            StringBuilder report = new StringBuilder();
+            foreach (StringOfVarParameters setVarData in VariationData) {
+                setVarData.CreationDataset();
+                algorithm = new AlgorithmFlatEM(inputData.Union(setVarData.Dataset).ToDictionary(i => i.Key, i => i.Value));
+                algorithm.Run();
+                if (algorithm.SolutionIsDone) {
+                    report.AppendLine($"Расчет №{setVarData.ID} - завершен успешно");
+                    resultCalculation.Add($"Расчет №{ setVarData.ID}", algorithm.GetResult);
+                }
+                else
+                    report.AppendLine($@"Расчет №{setVarData.ID} - прерван. Смотри содержимое файла logs\*.log");
+            }
             //foreach (string item in algorithm.Logging)
             //    Logger.Error(item);
 
-            //Diagnostic = algorithm.SolutionIsDone ? "Расчет завершен успешно" : @"Расчет прерван. Смотри содержимое файла logs\*.log";
+            Diagnostic = report.ToString();
             OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
@@ -146,9 +155,10 @@ namespace IVMElectro.ViewModel.Premag {
                 return ViewResultCommand;
             }
         }
-        void ViewResult() { }
-        bool CanViewResult() => false;
-        //=> (algorithm != null && algorithm.SolutionIsDone);
+        void ViewResult() {
+            if (resultCalculation != null) { }
+        }
+        bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
 
         #endregion

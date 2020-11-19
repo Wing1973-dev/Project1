@@ -2,30 +2,30 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Text;
+using static LibraryAlgorithms.Services.ServicePREMAG;
 
 namespace LibraryAlgorithms {
     public class AlgorithmFlatEM {
         // input data
         double U, δ, Bδ, q, ρx, ρГ, h, R1, R2, R3, hяр, hяк, R0, R10, dпз1, dвст, Δk1, qm, Ws;
         //output data
-        double Sзаз, Sзаз1, Sзаз2, Sяр, Sяк, lяр, lяк, lпол, ν, lср, ls, r20, rГ, I, Fм, Qм, Kм;
-        //материал статора
-        private enum MarkSteel {
-            st09Х17Н,
-            st3st10,
-            st10880_Э10
-        }
-        private MarkSteel mrkStl;
-        public AlgorithmFlatEM(Dictionary<string, double> inputData, int markSteel) {
-            if (markSteel == 0) mrkStl = MarkSteel.st09Х17Н;
-            else if (markSteel == 1) mrkStl = MarkSteel.st3st10;
-            else if (markSteel == 2) mrkStl = MarkSteel.st10880_Э10;
+        double Sзаз, Sзаз1, Sзаз2, Sяр, Sяк, lяр, lяк, lпол, ν, lср, ls, r20, rГ, I, Fм, Qм, Kм, Фδ,
+            Fδ, Фяр, Bяр, Fяр, Фяк, Bяк, Fяк, Фp, Bp1, Bp2, Fp1, Fp2, F, Wp, Fтм, P, Δt, Kt;
+        
+        public AlgorithmFlatEM(Dictionary<string, double> inputData) {
             U = inputData["U"]; δ = inputData["δ"]; Bδ = inputData["Bδ"]; q = inputData["q"]; ρx = inputData["ρx"]; ρГ = inputData["ρГ"];
             h = inputData["h"]; R1 = inputData["R1"]; R2 = inputData["R2"]; R3 = inputData["R3"]; hяр = inputData["hяр"]; hяк = inputData["hяк"];
             R0 = inputData["R0"]; R10 = inputData["R10"]; dпз1 = inputData["dпз1"]; dвст = inputData["dвст"]; Δk1 = inputData["Δk1"]; qm = inputData["qm"]; 
             Ws = inputData["Ws"];
+            if (inputData["markSteel"] == 0) mrkStl = MarkSteel.st09Х17Н;
+            else if (inputData["markSteel"] == 1) mrkStl = MarkSteel.st3st10;
+            else if (inputData["markSteel"] == 2) mrkStl = MarkSteel.st10880_Э10;
+
+            SolutionIsDone = false;
         }
         public void Run() {
+            SolutionIsDone = false;
+            double Bdelta = Bδ;
             Sзаз = R0 >= R10 ? Math.PI * (R1 - R0) * (R1 + R0) : Math.PI * (R1 - R10) * (R1 + R10);
             Sзаз1 = Math.PI * (R1 - R0) * (R1 + R0);
             Sзаз2 = Math.PI * (R3 - R2) * (R3 + R2);
@@ -56,6 +56,46 @@ namespace LibraryAlgorithms {
             Qм = qm * Ws;
             double Swindow = h * (R2 - R1 - dпз1 - dвст);
             Kм = Qм / Swindow;
+            do {
+                Фδ = Bdelta * Sзаз * 0.01;
+                Fδ = 0.16 * Bdelta * δ;
+                Фяр = ν * Фδ;
+                Bяр = 100 * Фяр / Sяр;
+                Fяр = 0.1 * lяр * Get_AWH(mrkStl, Bяр);
+                Фяк = Pa * Фδ / Pu;
+                Bяк = 100 * Фяк / Sяк;
+                Fяк = 0.1 * Get_AWH(mrkStl, Bяк) * lяк;
+                Фp = Фяк + 2 * Pl * Фδ / (3 * Pu);
+                Bp1 = 100 * Фp / Sзаз1;
+                Fp1 = 0.1 * lпол * Get_AWH(mrkStl, Bp1);
+                Bp2 = 100 * Фp / Sзаз2;
+                Fp2 = 0.1 * lпол * Get_AWH(mrkStl, Bp2);
+                F = Fδ + Fяр + Fяк + Fp1 + Fp2;
+
+                if (Math.Abs(F - Fм) / Fм > 0.01)
+                    Bdelta = F < Fм ? Bdelta * 1.002 : Bdelta * 0.999;
+            }
+            while (Math.Abs(F - Fм) / Fм > 0.01);
+            //сохранить значение Bδ на вывод
+            Bδ = Bdelta;
+            Wp = 5.1E-8 * Фδ * Fδ;
+            Fтм = 10 * Wp / δ;
+            P = U * I;
+            double Scool = 2 * Math.PI * h * (R2 + R1 + dпз1 + dвст);
+            Scool += 2 * Math.PI * (R2 * R2 - (R1 + dпз1 + dвст) * (R1 + dпз1 + dвст));
+            double kt1 = P * q * 100 / Scool;
+            Kt = Get_TEPLO(kt1);
+            Δt = kt1 / Kt;
+            SolutionIsDone = true;
         }
+        //result of the calculation
+        public Dictionary<string, double> GetResult => new Dictionary<string, double> { { "Sзаз", Sзаз }, { "Sзаз1", Sзаз1 }, { "Sзаз2", Sзаз2 }, { "Sяр", Sяр },
+            { "Sяк", Sяк }, { "lяр", lяр }, { "lяк", lяк }, { "lпол", lпол }, { "ν", ν }, { "lср", lср }, { "ls", ls }, { "r20", r20 }, { "rГ", rГ }, { "I", I },
+            { "Fм", Fм }, { "Qм", Qм }, { "Kм", Kм }, { "Фδ", Фδ }, { "Bδ", Bδ }, { "Fδ", Fδ }, { "Фяр", Фяр }, { "Bяр", Bяр }, { "Fяр", Fяр }, { "Фяк", Фяк }, 
+            { "Bяк", Bяк }, { "Fяк", Fяк }, { "Фp", Фp }, { "Bp1", Bp1 }, { "Bp2", Bp2 }, { "Fp1", Fp1 }, { "Fp2", Fp2 }, { "F", F }, { "Wp", Wp }, { "Fтм", Fтм }, 
+            { "P", P }, { "Δt", Δt }, { "Kt", Kt } };
+        //readiness of data for output to the interface
+        public bool SolutionIsDone { get; private set; }
+
     }
 }

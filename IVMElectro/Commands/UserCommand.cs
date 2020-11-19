@@ -14,7 +14,7 @@ namespace IVMElectro.Commands {
             add { CommandManager.RequerySuggested += value; } //реализация пользовательского метода для подписки клиентского кода на событие
             remove { CommandManager.RequerySuggested -= value; } //реализация пользовательского метода для отмены подписки клиентского кода на событие
         }
-        public bool CanExecute(object parameter) => canExecute == null ? true : canExecute();
+        public bool CanExecute(object parameter) => canExecute == null || canExecute();
         public void Execute(object parameter) => execute();
     }
 }

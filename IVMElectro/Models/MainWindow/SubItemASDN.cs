@@ -4,14 +4,10 @@ using NLog;
 
 namespace IVMElectro.Models.MainWindow {
     public class SubItemASDN : SubItem {
-        AsdnCompositeModel modelAsdn { get; set; }
-        Logger Logger { get; set; }
-        public SubItemASDN(string name, AsdnCompositeModel model, Logger logger) : base(name) { 
-            modelAsdn = model; Logger = logger;
-        }
-        
+        AsdnCompositeModel Model { get; set; }
+        public SubItemASDN(string name, Logger logger, AsdnCompositeModel model) : base(name, logger) => Model = model;
         public override void MakeWindowCalculation() => WindowCalculation = new ASDNView {
-            DataContext = new AsdnSingleViewModel(modelAsdn, Logger)
+            DataContext = new AsdnSingleViewModel(Model, Logger)
         };
     }
 }

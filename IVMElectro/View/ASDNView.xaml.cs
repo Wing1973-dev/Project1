@@ -32,7 +32,6 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbl_bПН, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_acBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_ac, TextBox.TextProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(lb_bПНBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_h1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_liBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_bП, TextBlock.TextProperty).UpdateTarget();
@@ -49,9 +48,9 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbx_bк, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_aкBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_aк, TextBox.TextProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(cbx_p, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(cbxPЗ, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(cbx_bСК, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
+            //BindingOperations.GetBindingExpression(cbx_p, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
+            //BindingOperations.GetBindingExpression(cbxPЗ, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
+            //BindingOperations.GetBindingExpression(cbx_bСК, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
 
             BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
@@ -308,5 +307,7 @@ namespace IVMElectro.View {
             ((AsdnSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
             UpdateBinding();
         }
+
+       
     }
 }

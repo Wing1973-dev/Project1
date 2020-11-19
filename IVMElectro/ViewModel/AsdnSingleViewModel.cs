@@ -14,8 +14,6 @@ using static LibraryAlgorithms.Services.ServiceDT;
 using LibraryAlgorithms;
 using NLog;
 using System.IO;
-using static IVMElectro.Services.ServiceIO;
-using System.Security.Permissions;
 using Microsoft.Win32;
 using System.Diagnostics;
 
@@ -81,15 +79,11 @@ namespace IVMElectro.ViewModel {
                             error = errorβ;
                         break;
                     case "bП2":
-                        if (!((2 <= Model.Common.bП2) && (Model.Common.bП2 <= 6))) 
-                            error = errorbП2;
+                        if (!((2 <= Model.AsdnSingle.bП2) && (Model.AsdnSingle.bП2 <= 6))) 
+                            error = errorbП2ASDN;
                         break;
-                    //case "bПН":
-                    //    if (!((0 <= Model.Common.bПН) && (Model.Common.bПН <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1)))) 
-                    //        error = $"Значение параметра {columnName} должно принадлежать {bПНBounds}.";
-                    //    break;
                     case "bк":
-                        if (!((Model.Common.bП2 <= Model.Common.bк) && (Model.Common.bк <= 5 * Model.Common.bП2))) 
+                        if (!((Model.AsdnSingle.bП2 <= Model.AsdnSingle.bк) && (Model.AsdnSingle.bк <= 5 * Model.AsdnSingle.bП2))) 
                             error = $"Значение параметра {columnName} должно принадлежать {bкBounds}.";
                         break;
                     case "U1":
@@ -193,11 +187,11 @@ namespace IVMElectro.ViewModel {
                             error = errorρРУБ;
                         break;
                     case "Z2":
-                        if ((Model.Common.Z2 < 0) || !int.TryParse(Model.Common.Z2.ToString(), out _)) 
+                        if ((Model.Common.Z2 < 0) || !int.TryParse(Z2, out _)) 
                             error = errorZ2;
                         break;
                     case "Z1":
-                        if ((Model.Common.Z1 <= 0) || !int.TryParse(Model.Common.Z1.ToString(), out _)) 
+                        if ((Model.Common.Z1 <= 0) || !int.TryParse(Z1, out _)) 
                             error = errorZ1;
                         break;
                     case "K2":
@@ -253,7 +247,7 @@ namespace IVMElectro.ViewModel {
         public string P12 { get => Model.Common.P12.ToString(); set { Model.Common.P12 = StringToDouble(value); OnPropertyChanged("P12"); } }
         public string U1 { get => Model.Common.U1.ToString(); set { Model.Common.U1 = StringToDouble(value); OnPropertyChanged("U1"); } }
         public string f1 { get => Model.Common.f1.ToString(); set { Model.Common.f1 = StringToDouble(value); OnPropertyChanged("f1"); } }
-        public string p { get => Model.Common.p.ToString(); set { Model.Common.p = StringToInt(value); } } //no need to sync with the interface
+        public string p { get => Model.Common.p.ToString(); set { Model.Common.p = StringToInt(value); OnPropertyChanged("p"); } } 
         public string Pмех { get => Model.Common.Pмех.ToString(); set { Model.Common.Pмех = StringToDouble(value); OnPropertyChanged("Pмех"); } }
         public string PмехBounds { get => $"[0 : {PмехBoundRight(Model.Common.P12)}]"; } //label
         #endregion
@@ -280,7 +274,6 @@ namespace IVMElectro.ViewModel {
         public string ac { get => Model.Common.ac.ToString(); set { Model.Common.ac = StringToDouble(value); OnPropertyChanged("ac"); } }
         public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
         public string bПН { get => Model.Common.bПН.ToString(); } //label
-        //public string bПНBounds { get => $"[0 : {Math.Round(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1), 2)}]"; } //label
         public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
         public string liBounds { get => Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
@@ -299,22 +292,22 @@ namespace IVMElectro.ViewModel {
         public string ρ1Г { get => Model.Common.ρ1Г.ToString(); set { Model.Common.ρ1Г = StringToDouble(value); OnPropertyChanged("ρ1Г"); } }
         public string ρ1ГBounds { get => $"[{Math.Round(Model.Common.ρ1x, 4)} : 0.1235]"; } //label
         public string B { get => Model.Common.B.ToString(); set { Model.Common.B = StringToDouble(value); OnPropertyChanged("B"); } }
-        public string PЗ { get => Model.AsdnSingle.P3.ToString(); set => Model.AsdnSingle.P3 = StringToInt(value); } //no need to sync with the interface
+        public string PЗ { get => Model.AsdnSingle.P3.ToString(); set { Model.AsdnSingle.P3 = StringToInt(value); OnPropertyChanged("PЗ"); } } 
         public string p10_50 { get => Model.Common.p10_50.ToString(); set {  Model.Common.p10_50 = StringToDouble(value); OnPropertyChanged("p10_50"); } }
         #endregion
         #region rotor parameters
         public string ΔГ2 { get => Model.Common.ΔГ2.ToString(); set { Model.Common.ΔГ2 = StringToDouble(value); OnPropertyChanged("ΔГ2"); } }
         public string Dpст { get => Model.Common.Dpст.ToString(); set { Model.Common.Dpст = StringToDouble(value); OnPropertyChanged("Dpст"); } }
         public string DpстBounds { get => $"[{Math.Round(Model.Common.DpстBoundCalculation - 5, 2)} : {Math.Round(Model.Common.DpстBoundCalculation - 0.1, 2)})"; } //label
-        public string bСК { get => Model.Common.bСК; set => Model.Common.bСК = value; } //no need to sync with the interface
-        public string bП2 { get => Model.Common.bП2.ToString(); set { Model.Common.bП2 = StringToDouble(value); OnPropertyChanged("bП2"); } }
+        public string bСК { get => Model.Common.bСК; set { Model.Common.bСК = value; OnPropertyChanged("bСК"); } } 
+        public string bП2 { get => Model.AsdnSingle.bП2.ToString(); set { Model.AsdnSingle.bП2 = StringToDouble(value); OnPropertyChanged("bП2"); } }
         public string hp { get => Model.Common.hp.ToString(); set { Model.Common.hp = StringToDouble(value); OnPropertyChanged("hp"); } }
         public string hpBounds { get => Get_hpBounds(Model.Common.Dpст, Model.Common.ΔГ2); } //label
         public string dв { get => Model.AsdnSingle.dв.ToString(); set { Model.AsdnSingle.dв = StringToDouble(value); OnPropertyChanged("dв"); } }
         public string dвBounds { get => Get_dвBounds(Model.Common.Dpст, Model.Common.ΔГ2, Model.Common.hp); } //label
         public string Z2 { get => Model.Common.Z2.ToString(); set { Model.Common.Z2 = StringToInt(value); OnPropertyChanged("Z2"); } }
-        public string bк { get => Model.Common.bк.ToString(); set { Model.Common.bк = StringToDouble(value); OnPropertyChanged("bк"); } }
-        public string bкBounds { get => Get_bкBounds(Model.Common.bП2); } //label
+        public string bк { get => Model.AsdnSingle.bк.ToString(); set { Model.AsdnSingle.bк = StringToDouble(value); OnPropertyChanged("bк"); } }
+        public string bкBounds { get => Get_bкBounds(Model.AsdnSingle.bП2); } //label
         public string aк { get => Model.AsdnSingle.aк.ToString(); set { Model.AsdnSingle.aк = StringToDouble(value); OnPropertyChanged("aк"); } }
         public string aкBounds { get => Get_aкBounds(Model.Common.hp); } //label
         public string γ { get => Model.AsdnSingle.γ.ToString(); set { Model.AsdnSingle.γ = StringToDouble(value); OnPropertyChanged("γ"); } }
@@ -355,6 +348,7 @@ namespace IVMElectro.ViewModel {
         public ICommand CommandCalculation {
             get {
                 if (CalculationCommand == null) CalculationCommand = new UserCommand(Calculation, CanCalculation);
+
                 return CalculationCommand;
             }
         }
@@ -824,7 +818,7 @@ namespace IVMElectro.ViewModel {
             launchBrowser(file_name);
         }
 
-        bool CanViewResult() => (algorithm != null && algorithm.SolutionIsDone);
+        bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
         #endregion
     }
