@@ -19,19 +19,13 @@ namespace IVMElectro.View {
         /// <summary>
         /// Window of calculation
         /// </summary>
-        //Window WindowCalculation { get; set; }
-        //Director Director { get; set; }
-        //BuilderEMotors Builder { get; set; }
         ItemMenu ItemsMenu { get; set; }
         public UserControlMenuItem(ItemMenu itemMenu, Window owner) {
             InitializeComponent();
-
             ItemsMenu = itemMenu;
-
             ExpanderMenu.Visibility = ItemsMenu.SubItems == null ? Visibility.Collapsed : Visibility.Visible;
             ListViewItemMenu.Visibility = ItemsMenu.SubItems == null ? Visibility.Visible : Visibility.Collapsed;
             DataContext = ItemsMenu; WindowOwner = owner;
-            //Director = new Director(); 
         }
         /// <summary>
         /// Generator of models and their views
@@ -50,19 +44,6 @@ namespace IVMElectro.View {
                     break;
                 }
             }
-            //switch (((TextBlock)sender).Text) {
-            //    case "Асинхронный двигатель насосов": {
-            //            Builder = new AsdnSingleBuilder();
-
-            //            WindowCalculation = new ASDNView {
-            //                Title = ((TextBlock)sender).Text,
-            //                Owner = WindowOwner,
-            //                DataContext = new AsdnSingleViewModel(Director.MakeModelEMotors(Builder))
-            //            };
-
-            //            WindowCalculation.Show();
-            //        } break;
-            //}
         }
     }
 }
