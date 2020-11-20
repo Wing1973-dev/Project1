@@ -156,7 +156,25 @@ namespace IVMElectro.ViewModel.Premag {
             }
         }
         void ViewResult() {
-            if (resultCalculation != null) { }
+            if (resultCalculation != null) {
+
+                List<(double δ, double Fтм)> plot = null;
+                bool isPlot = true;
+                StringOfVarParameters test = VariationData[0];
+                for (int i = 1; i < VariationData.Count; i++) {
+                    isPlot = test.PartialEquality(VariationData[i]);
+                    if (!isPlot) break;
+                }
+                if (isPlot) {
+                    plot = new List<(double δ, double Fтм)>();
+                    for (int i = 0; i < resultCalculation.Count; i++) {
+                        plot.Add((VariationData[i].δ, resultCalculation.ElementAt(i).Value["Fтм"]));
+                    }
+                }
+
+
+
+            }
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion

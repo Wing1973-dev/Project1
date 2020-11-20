@@ -77,6 +77,10 @@ namespace IVMElectro.Models.Premag {
             new XElement("qm", qm),
             new XElement("Ws", Ws)
             );
-
+        public bool PartialEquality(StringOfVarParameters test) {
+            if (U == test.U && q == test.q && h == test.h && R1 == test.R1 && R2 == test.R2 && R3 == test.R3 && qm == test.qm && Ws == test.Ws)
+                return true;
+            return false;
+        }
     }
 }
