@@ -4,16 +4,15 @@ using IVMElectro.ViewModel.Premag;
 
 namespace IVMElectro.View.PREMAG {
     /// <summary>
-    /// Interaction logic for StringOfVarParametersView.xaml
+    /// Interaction logic for AxisMDView.xaml
     /// </summary>
-    public partial class StringOfVarParametersView : Window {
-        public StringOfVarParametersView() => InitializeComponent();
-
+    public partial class AxisMDView : Window {
+        public AxisMDView() => InitializeComponent();
         private void Exit_Click(object sender, RoutedEventArgs e) {
             switch (((Button)sender).Name) {
                 case "OK":
-                    if (((StringOfVarParamsVM)DataContext).CanOK())
-                        ((StringOfVarParamsVM)DataContext).IsOK = true;
+                    if (((PremagAxisMDVM)DataContext).CanOK())
+                        ((PremagAxisMDVM)DataContext).IsOK = true;
                     break;
             }
             Close();

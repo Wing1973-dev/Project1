@@ -15,7 +15,7 @@ namespace IVMElectro.Services.Directories.WireDirectory {
                     AutoIncrementSeed = 1,
                     AutoIncrementStep = 1
                 };
-            Table.Columns.AddRange(new DataColumn[] { ID, dиз, qГ }); Table.PrimaryKey = new DataColumn[] { Table.Columns["ID"] };
+            Table.Columns.AddRange(new DataColumn[] { ID, dиз, qГ }); Table.PrimaryKey = new DataColumn[] { Table.Columns["ID_culc"] };
         }
         public abstract void CreateTable();
         protected void AddRow(object[] content) {

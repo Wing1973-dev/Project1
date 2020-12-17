@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IVMElectro.Models.Premag {
     public class PremagPlungerModel : DatasetFromModels, IValidatableObject {
-        const string errordпз1 = "Значение параметра dпз1 должно быть > 0.";
-        
         #region fields
         public double hфл { get; set; }
         public double R110 { get; set; } //R''0
@@ -25,7 +23,7 @@ namespace IVMElectro.Models.Premag {
             if (hфл <= 0) errors.Add(new ValidationResult(errorhфл));
             if (R110 < 0) errors.Add(new ValidationResult(errorR110));
             if (R1110 < 0) errors.Add(new ValidationResult(errorR1110));
-            if (dпз1 <= 0) errors.Add(new ValidationResult(errordпз1));
+            if (dпз1 <= 0) errors.Add(new ValidationResult(errordпз1_plngr));
             if (dпз2 <= 0) errors.Add(new ValidationResult(errordпз2));
             if (l1 < 0) errors.Add(new ValidationResult(errorl1));
             if (l2 < 0) errors.Add(new ValidationResult(errorl2));

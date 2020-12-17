@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Text;
 using IVMElectro.Models.Premag;
 using static LibraryAlgorithms.Services.ServiceDT;
 using static IVMElectro.Services.DataSharedPremagContent;
@@ -10,7 +9,7 @@ using System.Windows.Input;
 using System.ComponentModel.DataAnnotations;
 
 namespace IVMElectro.ViewModel.Premag {
-    public class StringOfVarParametersVM : INotifyPropertyChanged, IDataErrorInfo {
+    public class StringOfVarParamsPlngrVM : INotifyPropertyChanged, IDataErrorInfo {
         public string this[string columnName] {
             get {
                 string error = string.Empty;
@@ -38,6 +37,10 @@ namespace IVMElectro.ViewModel.Premag {
                             error = errorR1R0;
                         if (Model.R1 <= Model.R10)
                             error = errorR1R10;
+                        if (Model.R1 <= Model.R110)
+                            error = errorR1R110;
+                        if (Model.R1 <= Model.R1110) 
+                            error = errorR1R110;
                         break;
                     case "R2":
                         if (Model.R2 <= 0 || double.IsNaN(Model.R2))
@@ -63,20 +66,26 @@ namespace IVMElectro.ViewModel.Premag {
                         if (Model.Ws <= 0 || double.IsNaN(Model.Ws))
                             error = errorWs;
                         break;
+                    case "α":
+                        if (Model.α < 0 || double.IsNaN(Model.α))
+                            error = errorα;
+                        if (!(Model.h + 0.5 * Model.hфл * Math.PI >= 
+                            Model.δ * Math.Cos(Math.PI * Model.α / 180) * Math.Cos(Math.PI * Model.α / 180) + Model.l1 + Model.l2))
+                            error = errorhhфлδαl1l2;
+                        break;
                 }
                 return error;
             }
-
         }
         public string Error { get; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged(string property) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
 
-        public StringOfVarParametersVM(StringOfVarParameters model) => Model = model;
+        public StringOfVarParamsPlngrVM(StringOfVarParametersPlunger model) => Model = model;
         #region properties
-        public StringOfVarParameters Model { get; private set; }
-        public string ID { get => Model.ID.ToString(); set { Model.ID = StringToInt(value); } }
+        public StringOfVarParametersPlunger Model { get; private set; }
+        public string ID { get => Model.ID_culc.ToString(); set { Model.ID_culc = StringToInt(value); } }
         public string U { get => Model.U.ToString(); set { Model.U = StringToDouble(value); OnPropertyChanged("U"); } }
         public string δ { get => Model.δ.ToString(); set { Model.δ = StringToDouble(value); OnPropertyChanged("δ"); } }
         public string q { get => Model.q.ToString(); set { Model.q = StringToDouble(value); OnPropertyChanged("q"); } }
@@ -86,6 +95,7 @@ namespace IVMElectro.ViewModel.Premag {
         public string R3 { get => Model.R3.ToString(); set { Model.R3 = StringToDouble(value); OnPropertyChanged("R3"); } }
         public string qm { get => Model.qm.ToString(); set { Model.qm = StringToDouble(value); OnPropertyChanged("qm"); } }
         public string Ws { get => Model.Ws.ToString(); set { Model.Ws = StringToDouble(value); OnPropertyChanged("Ws"); } }
+        public string α { get => Model.α.ToString(); set { Model.α = StringToDouble(value); OnPropertyChanged("α"); } }
         public bool IsOK { get; set; } = false;
         #endregion
         //command

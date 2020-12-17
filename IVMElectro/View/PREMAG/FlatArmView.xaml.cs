@@ -13,9 +13,7 @@ namespace IVMElectro.View.PREMAG {
     /// Interaction logic for FlatArmView.xaml
     /// </summary>
     public partial class FlatArmView : Window {
-        public FlatArmView() {
-            InitializeComponent();
-        }
+        public FlatArmView() => InitializeComponent();
 
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
             string namefile = string.Empty;
@@ -67,17 +65,17 @@ namespace IVMElectro.View.PREMAG {
 
         private void btnTable_Click(object sender, RoutedEventArgs e) {
             StringOfVarParameters stringOfVar = null;
-            StringOfVarParametersVM varParamsVM = null;
+            StringOfVarParamsVM varParamsVM = null;
             StringOfVarParametersView view = null;
             switch (((Button)sender).Name) {
                 case "btnAdd":
-                    int maxid = ((PremagFlatArmVM)DataContext).VariationData.Count != 0 ? ((PremagFlatArmVM)DataContext).VariationData.Select(i => i.ID).Max() :
+                    int maxid = ((PremagFlatArmVM)DataContext).VariationData.Count != 0 ? ((PremagFlatArmVM)DataContext).VariationData.Select(i => i.ID_culc).Max() :
                         0;
-                    stringOfVar = new StringOfVarParameters { ID = ++maxid }; //new item
+                    stringOfVar = new StringOfVarParameters { ID_culc = ++maxid }; //new item
                     //for validation
                     stringOfVar.SetParametersForModelValidation(Convert.ToDouble(((PremagFlatArmVM)DataContext).R0), Convert.ToDouble(((PremagFlatArmVM)DataContext).R10),
                         Convert.ToDouble(((PremagFlatArmVM)DataContext).dпз1), Convert.ToDouble(((PremagFlatArmVM)DataContext).dвст));
-                    varParamsVM = new StringOfVarParametersVM(stringOfVar);
+                    varParamsVM = new StringOfVarParamsVM(stringOfVar);
                     view = new StringOfVarParametersView {
                         DataContext = varParamsVM,
                         Owner = this
@@ -89,12 +87,12 @@ namespace IVMElectro.View.PREMAG {
                 case "btnEdit":
                     if (dtgrdVarParams.SelectedItem != null) {
                         StringOfVarParameters selectedStringOfVar = ((PremagFlatArmVM)DataContext).VariationData.Where(
-                            i => i.ID == ((StringOfVarParameters)dtgrdVarParams.SelectedItem).ID).FirstOrDefault();
+                            i => i.ID_culc == ((StringOfVarParameters)dtgrdVarParams.SelectedItem).ID_culc).FirstOrDefault();
                         stringOfVar = (StringOfVarParameters)selectedStringOfVar.Clone();
                         //for validation
                         stringOfVar.SetParametersForModelValidation(Convert.ToDouble(((PremagFlatArmVM)DataContext).R0), Convert.ToDouble(((PremagFlatArmVM)DataContext).R10),
                         Convert.ToDouble(((PremagFlatArmVM)DataContext).dпз1), Convert.ToDouble(((PremagFlatArmVM)DataContext).dвст));
-                        varParamsVM = new StringOfVarParametersVM(stringOfVar);
+                        varParamsVM = new StringOfVarParamsVM(stringOfVar);
                         view = new StringOfVarParametersView {
                             DataContext = varParamsVM,
                             Owner = this
@@ -102,7 +100,7 @@ namespace IVMElectro.View.PREMAG {
                         view.ShowDialog();
                         if (!varParamsVM.IsOK) return;
                         //modify the db
-                        StringOfVarParameters removeItem = ((PremagFlatArmVM)DataContext).VariationData.Where(i => i.ID == varParamsVM.Model.ID).FirstOrDefault();
+                        StringOfVarParameters removeItem = ((PremagFlatArmVM)DataContext).VariationData.Where(i => i.ID_culc == varParamsVM.Model.ID_culc).FirstOrDefault();
                         ((PremagFlatArmVM)DataContext).VariationData.Remove(removeItem);
                         ((PremagFlatArmVM)DataContext).VariationData.Add(varParamsVM.Model);
                     }

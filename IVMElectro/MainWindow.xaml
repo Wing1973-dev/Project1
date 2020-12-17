@@ -25,7 +25,7 @@
         <Grid HorizontalAlignment="Stretch" Grid.Row="1" Background="{StaticResource PrimaryHueMidBrush}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="70"/>
-                <RowDefinition Height="326"/>
+                <RowDefinition Height="500"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Background="GhostWhite">
                 <Image Source="Resource/OKBM_logo.png" Margin="5" />

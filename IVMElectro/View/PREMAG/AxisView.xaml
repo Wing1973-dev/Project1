@@ -1,0 +1,462 @@
+﻿<Window x:Class="IVMElectro.View.PREMAG.AxisView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Height="1100" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310">
+    <Window.CommandBindings>
+        <CommandBinding Command="Open" Executed="OpenFile"/>
+        <CommandBinding Command="Save" Executed="SaveFile"/>
+    </Window.CommandBindings>
+    <ScrollViewer  HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto" Height="Auto">
+        <DockPanel>
+            <ToolBar DockPanel.Dock="Top" VerticalAlignment="Top" >
+                <Button Command="Open" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileDownloadOutline" Width="25" Height="25" />
+                        <TextBlock Margin="5">Загрузить</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Command="Save" Margin="5">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileUploadOutline" Width="25" Height="25"/>
+                        <TextBlock Margin="5">Сохранить</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="5" Command="{Binding Path=CommandCalculation}" >
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="CogOutline" Width="25" Height="25" />
+                        <TextBlock Margin="5">Расчет</TextBlock>
+                    </StackPanel>
+                </Button>
+                <Button Margin="5" Command="{Binding Path=CommandViewResult}">
+                    <StackPanel Orientation="Horizontal">
+                        <materialDesign:PackIcon Kind="FileDocumentOutline" Width="25" Height="25" />
+                        <TextBlock Margin="5">Результат расчета</TextBlock>
+                    </StackPanel>
+                </Button>
+            </ToolBar>
+            <StatusBar DockPanel.Dock="Bottom" HorizontalAlignment="Stretch"  Background="{DynamicResource PrimaryHueLightBrush}">
+                <StatusBarItem>
+                    <TextBlock Name="tblDiagnostic" Text="{Binding Path=Diagnostic}" Margin="10"/>
+                </StatusBarItem>
+            </StatusBar>
+            <TabControl Grid.Row="1" Style="{DynamicResource mainTabControl}" >
+                <TabItem Header="Верхние электромагниты" Style="{DynamicResource mainTabItem}" >
+                    <StackPanel Margin="10 0 10 0" >
+                        <GroupBox Margin="0 10 0 0"  Background="White">
+                            <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="15" FontWeight="Normal" Padding="5"  Background="{DynamicResource PrimaryHueLightBrush}">
+                                    Основные расчетные данные
+                                </TextBlock>
+                            </StackPanel>
+                        </GroupBox.Header>
+                                <Grid Style="{DynamicResource mainTabGrid}">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" MinHeight="83.24"/>
+                                        <RowDefinition Height="Auto" MinHeight="83.24"/>
+                                        <RowDefinition Height="Auto" MinHeight="83.24"/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignTextBlock}" Margin="70 20 30 0">
+                                <Run Text="B"/>
+                                <Run Text="δ" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" - магнитная индукция в воздушном зазоре; "/>
+                                <Run Text="ρ"/>
+                                <Run Text="x" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" - удельное электросопротивление меди при 20°С; "/>
+                                <Run Text="ρ"/>
+                                <Run Text="Г" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" - удельное электросопротивление меди при рабочей температуре;"/>
+                                <LineBreak/>
+                                <Run Text="h"/>
+                                <Run Text="яр" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" -  высота ярма;     "/>
+                                <Run Text=" h"/>
+                                <Run Text="як" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" -  высота якоря;     "/>
+                                <Run Text=" R"/>
+                                <Run Text="0" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" -  радиус сверления во внутреннем полюсе;          "/>
+                                <Run Text=" R'"/>
+                                <Run Text="0" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" -  радиус сверления в якоре;                  "/>
+                                <Run Text=" d"/>
+                                <Run Text="пз1" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" -  паразитный зазор;"/>
+                                <LineBreak/>
+                                <Run Text="d"/>
+                                <Run Text="вст" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" - толщина немагнитной вставки;                 "/>
+                                <Run Text="Δk"/>
+                                <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                <Run Text=" - толщина цилиндрической части каркаса катушки"/>
+                            </TextBlock>
+                                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
+                                        <StackPanel Orientation="Vertical" Margin="10">
+                                    <Button Name="btnAddMD" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Добавить строку" Click="btnTableMD_Click">
+                                        <materialDesign:PackIcon Kind="Plus"  />
+                                    </Button>
+                                    <Button Name="btnDelMD" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Удалить строку" Click="btnTableMD_Click">
+                                        <materialDesign:PackIcon Kind="Minus" />
+                                    </Button>
+                                    <Button Name="btnEditMD" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Редактировать строку" Click="btnTableMD_Click">
+                                        <materialDesign:PackIcon Kind="Edit" />
+                                    </Button>
+                                </StackPanel>
+                                        <DataGrid Name="dtgrdMainParams" Margin="10" FontWeight="Normal" 
+                                          CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
+                                          CanUserReorderColumns="False" CanUserSortColumns="False"
+                                          AutoGenerateColumns="False" IsReadOnly="True"
+                                          SelectionMode="Single" SelectionUnit="FullRow"
+                                          Height="Auto" 
+                                          HorizontalAlignment="Center" VerticalAlignment="Top"
+                                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                          ItemsSource="{Binding Path=VariationDataMainData}" 
+                                          ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="№ паза" Binding="{Binding Path=ID_slot}" Width="auto" />
+                                        <DataGridTextColumn Binding="{Binding Path=Bδ}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="B"/>
+                                                    <Run Text="δ" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", Гс"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=ρx}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="ρ"/>
+                                                    <Run Text="x" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", Ом·мм²/м"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=ρГ}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="ρ"/>
+                                                    <Run Text="Г" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", Ом·мм²/м"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=hяр}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="h"/>
+                                                    <Run Text="яр" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=hяк}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="h"/>
+                                                    <Run Text="як" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=R0}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="R"/>
+                                                    <Run Text="0" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=R10}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="R'"/>
+                                                    <Run Text="0" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=dпз1}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="d"/>
+                                                    <Run Text="пз1" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=dвст}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="d"/>
+                                                    <Run Text="вст" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=Δk1}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock  >
+                                                    <Run Text="Δk"/>
+                                                    <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                                    </StackPanel>
+                                    <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="30" VerticalAlignment="Center">
+                                    <TextBlock Text="Марка стали:" Style="{DynamicResource MaterialDesignTextBlock}"/>
+                                    <ComboBox Name="cbx_MarkSteel" ItemsSource="{Binding Path=Get_MarksOfSteel}" SelectedValue="{Binding MarkSteel, Mode=TwoWay}" Margin="20 0 0 0" 
+                                            Padding="3" FontWeight="Normal" FontSize="13"/>
+                                    </StackPanel>
+                                </Grid>
+                        </GroupBox>
+                        <GroupBox Background="White">
+                            <GroupBox.Header>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="15" FontWeight="Normal" Padding="5"  Background="{DynamicResource PrimaryHueLightBrush}">
+                                    Вариационные расчетные данные
+                                    </TextBlock>
+                                </StackPanel>
+                            </GroupBox.Header>
+                            <Grid Style="{DynamicResource mainTabGrid}">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" MinHeight="83.24"/>
+                                    <RowDefinition Height="Auto" MinHeight="83.24"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignTextBlock}" Margin="130 20 70 0">
+                                <Run Text="U  -  напряжение питающей сети;  "/>
+                                <Run Text=" δ  -  воздушный зазор;  " />
+                                <Run Text=" q  -  продолжительность включения; "/>
+                                <Run Text="h   -   высота окна под катушку;"/>
+                                <LineBreak/>
+                                <Run Text="R1 - наружный радиус внутреннего полюса;" />
+                                <Run Text=" R2 - внутренний радиус внешнего полюса;"/>
+                                <Run Text=" R3 - наружний радиус внешнего полюса;"/>
+                                <LineBreak/>
+                                <Run Text="qм  -  сечение проволоки (токопроводящей жилы);  "/>
+                                <Run Text=" Ws  -  число витков обмотки катушки"/>
+                                </TextBlock>
+                                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
+                                    <StackPanel Orientation="Vertical" Margin="10">
+                                        <Button Name="btnAddUp" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Добавить строку" Click="btnTableUp_Click">
+                                            <materialDesign:PackIcon Kind="Plus"  />
+                                        </Button>
+                                        <Button Name="btnDelUp" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Удалить строку" Click="btnTableUp_Click">
+                                            <materialDesign:PackIcon Kind="Minus" />
+                                        </Button>
+                                        <Button Name="btnEditUp" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Редактировать строку" Click="btnTableUp_Click">
+                                            <materialDesign:PackIcon Kind="Edit" />
+                                        </Button>
+                                    </StackPanel>
+                                    <DataGrid Name="dtgrdVarParamsUp" Margin="10" FontWeight="Normal" 
+                                      CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
+                                          CanUserReorderColumns="False" CanUserSortColumns="False"
+                                          AutoGenerateColumns="False" IsReadOnly="True"
+                                      SelectionMode="Single" SelectionUnit="FullRow"
+                                      Height="Auto" 
+                                      HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                      ItemsSource="{Binding Path=VariationDataUpMagnets}" 
+                                          ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
+                                        <DataGrid.Columns>
+                                            <DataGridTextColumn Header="№ расчета" Binding="{Binding Path=ID_culc}" Width="auto" />
+                                            <DataGridTextColumn Header="№ паза" Binding="{Binding Path=ID_slot}" Width="auto" />
+                                            <DataGridTextColumn Header="U, В" Binding="{Binding Path=U}" Width="auto"/>
+                                            <DataGridTextColumn Header="δ, мм" Binding="{Binding Path=δ}" Width="auto"/>
+                                            <DataGridTextColumn Header="q, %" Binding="{Binding Path=q}" Width="auto"/>
+                                            <DataGridTextColumn Header="h, мм" Binding="{Binding Path=h}" Width="auto"/>
+                                            <DataGridTextColumn Binding="{Binding Path=R1}" Width="auto">
+                                                <DataGridTextColumn.Header >
+                                                    <TextBlock >
+                                                    <Run Text="R"/>
+                                                    <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                    </TextBlock>
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Binding="{Binding Path=R2}" Width="auto">
+                                                <DataGridTextColumn.Header >
+                                                    <TextBlock >
+                                                    <Run Text="R"/>
+                                                    <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                    </TextBlock>
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Binding="{Binding Path=R3}" Width="auto">
+                                                <DataGridTextColumn.Header >
+                                                    <TextBlock  >
+                                                    <Run Text="R"/>
+                                                    <Run Text="3" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                    </TextBlock>
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Binding="{Binding Path=qm}" Width="auto">
+                                                <DataGridTextColumn.Header >
+                                                    <TextBlock  >
+                                                    <Run Text="q"/>
+                                                    <Run Text="m" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                    <Run Text="2" FontSize="9" BaselineAlignment="Superscript" />
+                                                    </TextBlock>
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                            <DataGridTextColumn Binding="{Binding Path=Ws}" Width="auto">
+                                                <DataGridTextColumn.Header >
+                                                    <TextBlock  >
+                                                    <Run Text="W"/>
+                                                    <Run Text="s" FontSize="9" BaselineAlignment="Subscript" />
+                                                    </TextBlock>
+                                                </DataGridTextColumn.Header>
+                                            </DataGridTextColumn>
+                                        </DataGrid.Columns>
+                                    </DataGrid>
+                                </StackPanel>
+                            </Grid>
+                        </GroupBox>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Name="stator" Header="Нижние электромагниты" Style="{DynamicResource mainTabItem}" >
+                    <GroupBox Margin="10" Background="White">
+                        <GroupBox.Header>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock FontSize="15" FontWeight="Normal" Padding="5"  Background="{DynamicResource PrimaryHueLightBrush}">
+                                    Вариационные расчетные данные
+                                </TextBlock>
+                            </StackPanel>
+                        </GroupBox.Header>
+                        <Grid Style="{DynamicResource mainTabGrid}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" MinHeight="83.24"/>
+                                <RowDefinition Height="Auto" MinHeight="83.24"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignTextBlock}" Margin="130 20 70 0">
+                                <Run Text="U  -  напряжение питающей сети;  "/>
+                                <Run Text=" δ  -  воздушный зазор;  " />
+                                <Run Text=" q  -  продолжительность включения; "/>
+                                <Run Text="h   -   высота окна под катушку;"/>
+                                <LineBreak/>
+                                <Run Text="R1 - наружный радиус внутреннего полюса;" />
+                                <Run Text=" R2 - внутренний радиус внешнего полюса;"/>
+                                <Run Text=" R3 - наружний радиус внешнего полюса;"/>
+                                <LineBreak/>
+                                <Run Text="qм  -  сечение проволоки (токопроводящей жилы);  "/>
+                                <Run Text=" Ws  -  число витков обмотки катушки"/>
+                            </TextBlock>
+                            <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
+                                <StackPanel Orientation="Vertical" Margin="10">
+                                    <Button Name="btnAddDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Добавить строку" Click="btnTableDwn_Click">
+                                        <materialDesign:PackIcon Kind="Plus"  />
+                                    </Button>
+                                    <Button Name="btnDelDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Удалить строку" Click="btnTableDwn_Click">
+                                        <materialDesign:PackIcon Kind="Minus" />
+                                    </Button>
+                                    <Button Name="btnEditDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Редактировать строку" Click="btnTableDwn_Click">
+                                        <materialDesign:PackIcon Kind="Edit" />
+                                    </Button>
+                                </StackPanel>
+                                <DataGrid Name="dtgrdVarParamsDwn" Margin="10" FontWeight="Normal" 
+                                      CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
+                                          CanUserReorderColumns="False" CanUserSortColumns="False"
+                                          AutoGenerateColumns="False" IsReadOnly="True"
+                                      SelectionMode="Single" SelectionUnit="FullRow"
+                                      Height="Auto" 
+                                      HorizontalAlignment="Center" VerticalAlignment="Top"
+                                      HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
+                                      ItemsSource="{Binding Path=VariationDataDownMagnets}" 
+                                          ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
+                                    <DataGrid.Columns>
+                                        <DataGridTextColumn Header="№ расчета" Binding="{Binding Path=ID_culc}" Width="auto" />
+                                        <DataGridTextColumn Header="№ паза" Binding="{Binding Path=ID_slot}" Width="auto" />
+                                        <DataGridTextColumn Header="U, В" Binding="{Binding Path=U}" Width="auto"/>
+                                        <DataGridTextColumn Header="δ, мм" Binding="{Binding Path=δ}" Width="auto"/>
+                                        <DataGridTextColumn Header="q, %" Binding="{Binding Path=q}" Width="auto"/>
+                                        <DataGridTextColumn Header="h, мм" Binding="{Binding Path=h}" Width="auto"/>
+                                        <DataGridTextColumn Binding="{Binding Path=R1}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="R"/>
+                                                    <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=R2}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock >
+                                                    <Run Text="R"/>
+                                                    <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=R3}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock  >
+                                                    <Run Text="R"/>
+                                                    <Run Text="3" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=qm}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock  >
+                                                    <Run Text="q"/>
+                                                    <Run Text="m" FontSize="9" BaselineAlignment="Subscript" />
+                                                    <Run Text=", мм"/>
+                                                    <Run Text="2" FontSize="9" BaselineAlignment="Superscript" />
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                        <DataGridTextColumn Binding="{Binding Path=Ws}" Width="auto">
+                                            <DataGridTextColumn.Header >
+                                                <TextBlock  >
+                                                    <Run Text="W"/>
+                                                    <Run Text="s" FontSize="9" BaselineAlignment="Subscript" />
+                                                </TextBlock>
+                                            </DataGridTextColumn.Header>
+                                        </DataGridTextColumn>
+                                    </DataGrid.Columns>
+                                </DataGrid>
+                            </StackPanel>
+                        </Grid>
+                    </GroupBox>
+                </TabItem>
+            </TabControl>
+        </DockPanel>
+    </ScrollViewer>
+</Window>

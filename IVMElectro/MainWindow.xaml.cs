@@ -1,23 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using IVMElectro.Models;
 using IVMElectro.Models.MainWindow;
 using IVMElectro.Models.Premag;
 using IVMElectro.View;
-using IVMElectro.ViewModel;
-using LibraryAlgorithms;
 using MaterialDesignThemes.Wpf;
 using NLog;
 
@@ -30,15 +16,17 @@ namespace IVMElectro {
         public MainWindow() {
             
             InitializeComponent();
+
             Director director = new Director();
-
-
 
             List<SubItem> subItemsEngine = new List<SubItem> { 
                 new SubItemASDN("Асинхронный двигатель насосов", logger, director.MakeModelEMotors(new AsdnSingleBuilder())),
                 new SubItemASDNRED("Асинхронный двигатель насосов\r\nс шихтованным ротором", logger, director.MakeModelEMotors(new AsdnRedSingleBuilder())) };
             List<SubItem> subItemsMagnet = new List<SubItem> {
-                new SubItemPremagFlat("Электромагниты постоянного тока", logger, director.MakeModelEMagnet(new PremagFlatArmBuilder())) };
+                new SubItemPremagFlat("Электромагнит постоянного тока\r\nс плоским якорем", logger, director.MakeModelEMagnet(new PremagFlatArmBuilder())),
+                new SubItemPremagPlunger("Электромагнит постоянного тока\r\nс плунжером", logger, director.MakeModelEMagnet(new PremagPlungerBuilder())),
+                new SubItemPremagAxis("Электромагнит осевого\r\n электромагнитного подшипника", logger)
+            };
 
             ItemMenu itemMenu1 = new ItemMenu("Расчет электродвигателей", subItemsEngine, PackIconKind.Engine);
             ItemMenu itemMenu2 = new ItemMenu("Расчет электромагнитов", subItemsMagnet, PackIconKind.Magnet);

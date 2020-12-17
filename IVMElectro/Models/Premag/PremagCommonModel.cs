@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace IVMElectro.Models {
     public class PremagCommonModel : DatasetFromModels, IValidatableObject {
-        
         #region fields
         public double Bδ { get; set; }
         public double ρx { get; set; }

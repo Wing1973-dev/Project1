@@ -7,13 +7,13 @@ using static IVMElectro.Services.DataSharedPremagContent;
 namespace IVMElectro.Models.Premag {
     public class StringOfVarParameters: DatasetFromModels, IValidatableObject, ICloneable {
         #region properties fo validation
-        public double R0 { get; private set; }
-        public double R10 { get; private set; }
+        public double R0 { get; protected set; }
+        public double R10 { get; protected set; }
         public double dпз1 { get; private set; }
         public double dвст { get; private set; }
         #endregion
         #region properties
-        public int ID { get; set; }
+        public int ID_culc { get; set; }
         public double U { get; set; }
         public double δ { get; set; }
         public double q { get; set; }
@@ -26,7 +26,7 @@ namespace IVMElectro.Models.Premag {
         #endregion
         public StringOfVarParameters() { }
         public StringOfVarParameters(XElement input) {
-            if (input.Element("ID") != null) ID = Convert.ToInt32(input.Element("ID").Value.Trim());
+            if (input.Element("ID_culc") != null) ID_culc = Convert.ToInt32(input.Element("ID_culc").Value.Trim());
             if (input.Element("U") != null) U = Convert.ToDouble(input.Element("U").Value.Trim());
             if (input.Element("δ") != null) δ = Convert.ToDouble(input.Element("δ").Value.Trim());
             if (input.Element("q") != null) q = Convert.ToDouble(input.Element("q").Value.Trim());
@@ -59,14 +59,14 @@ namespace IVMElectro.Models.Premag {
             if (Ws <= 0) errors.Add(new ValidationResult(errorWs));
             return errors;
         }
-
-        public void SetParametersForModelValidation(double R0, double R10, double dпз1, double dвст) {
-            this.R0 = R0; this.R10 = R10; this.dпз1 = dпз1; this.dвст = dвст;
+        
+        public virtual void SetParametersForModelValidation(params double[] outside) {
+            R0 = outside[0]; R10 = outside[1]; dпз1 = outside[2]; dвст = outside[3];
         }
 
-        public object Clone() => new StringOfVarParameters { ID = ID, U = U, δ = δ, q = q, h = h, R1 = R1, R2 = R2, R3 = R3, qm = qm, Ws = Ws };
-        public XElement Serialise() => new XElement($"StringOfVarParameters{ID}",
-            new XElement("ID", ID),
+        public object Clone() => new StringOfVarParameters { ID_culc = ID_culc, U = U, δ = δ, q = q, h = h, R1 = R1, R2 = R2, R3 = R3, qm = qm, Ws = Ws };
+        public virtual XElement Serialise() => new XElement($"StringOfVarParameters{ID_culc}",
+            new XElement("ID_culc", ID_culc),
             new XElement("U", U),
             new XElement("δ", δ),
             new XElement("q", q),
@@ -77,10 +77,7 @@ namespace IVMElectro.Models.Premag {
             new XElement("qm", qm),
             new XElement("Ws", Ws)
             );
-        public bool PartialEquality(StringOfVarParameters test) {
-            if (U == test.U && q == test.q && h == test.h && R1 == test.R1 && R2 == test.R2 && R3 == test.R3 && qm == test.qm && Ws == test.Ws)
-                return true;
-            return false;
-        }
+        public virtual bool PartialEquality(StringOfVarParameters test) =>
+            U == test.U && q == test.q && h == test.h && R1 == test.R1 && R2 == test.R2 && R3 == test.R3 && qm == test.qm && Ws == test.Ws;
     }
 }

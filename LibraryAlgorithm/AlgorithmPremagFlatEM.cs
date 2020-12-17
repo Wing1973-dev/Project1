@@ -1,18 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
 using static LibraryAlgorithms.Services.ServicePREMAG;
 
 namespace LibraryAlgorithms {
-    public class AlgorithmFlatEM {
+    public class AlgorithmPremagFlatEM {
         // input data
         double U, δ, Bδ, q, ρx, ρГ, h, R1, R2, R3, hяр, hяк, R0, R10, dпз1, dвст, Δk1, qm, Ws;
         //output data
         double Sзаз, Sзаз1, Sзаз2, Sяр, Sяк, lяр, lяк, lпол, ν, lср, ls, r20, rГ, I, Fм, Qм, Kм, Фδ,
             Fδ, Фяр, Bяр, Fяр, Фяк, Bяк, Fяк, Фp, Bp1, Bp2, Fp1, Fp2, F, Wp, Fтм, P, Δt, Kt;
         
-        public AlgorithmFlatEM(Dictionary<string, double> inputData) {
+        public AlgorithmPremagFlatEM(Dictionary<string, double> inputData) {
             U = inputData["U"]; δ = inputData["δ"]; Bδ = inputData["Bδ"]; q = inputData["q"]; ρx = inputData["ρx"]; ρГ = inputData["ρГ"];
             h = inputData["h"]; R1 = inputData["R1"]; R2 = inputData["R2"]; R3 = inputData["R3"]; hяр = inputData["hяр"]; hяк = inputData["hяк"];
             R0 = inputData["R0"]; R10 = inputData["R10"]; dпз1 = inputData["dпз1"]; dвст = inputData["dвст"]; Δk1 = inputData["Δk1"]; qm = inputData["qm"]; 
@@ -96,6 +94,5 @@ namespace LibraryAlgorithms {
             { "P", P }, { "Δt", Δt }, { "Kt", Kt } };
         //readiness of data for output to the interface
         public bool SolutionIsDone { get; private set; }
-
     }
 }
