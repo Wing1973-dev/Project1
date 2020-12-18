@@ -173,6 +173,7 @@ namespace IVMElectro.ViewModel.Premag {
                         plot.Add((VariationData[i].δ, resultCalculation.ElementAt(i).Value["Fтм"]));
                     }
                 }
+
             }
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;

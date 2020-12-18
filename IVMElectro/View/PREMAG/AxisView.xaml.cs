@@ -22,7 +22,7 @@ namespace IVMElectro.View.PREMAG {
         public AxisView() => InitializeComponent();
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) { }
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) { }
-        //TODO write here
+        //TODO provide an insert at a specific location
         private void btnTableUp_Click(object sender, RoutedEventArgs e) {
             StringOfVarParametersAxis stringOfVar = null;
             StringOfVarParamsAxisVM varParamsVM = null;
@@ -31,8 +31,41 @@ namespace IVMElectro.View.PREMAG {
                 case "btnAddUp":
                     if (((PremagAxisVM)DataContext).VariationDataMainData.Count == 0) return;
 
+                    int max_idCulc = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
+                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_culc).Max() :
+                        0;
+                    int max_idSlot = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
+                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_slot).Max() :
+                        0;
+                    //for all slots
+                    for (int i = 0; i < max_idSlot; i++) {
+                        stringOfVar = new StringOfVarParametersAxis { ID_culc = ++max_idCulc, ID_slot = i + 1 };
+                        varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
+                        view = new StringOfVarParamsAxisView { DataContext = varParamsVM, Owner = this };
+                        view.ShowDialog();
+                        if (!varParamsVM.IsOK) return;
+                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model); //add to db
+                    }
                     break;
                 case "btnEditUp":
+                    if (dtgrdVarParamsUp.SelectedItem != null) {
+                        StringOfVarParametersAxis selectedStringOfVar = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Where(
+                            i => i.ID_culc == ((StringOfVarParametersAxis)dtgrdVarParamsUp.SelectedItem).ID_culc).FirstOrDefault();
+                        stringOfVar = (StringOfVarParametersAxis)selectedStringOfVar.Clone();
+                        varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
+                        view = new StringOfVarParamsAxisView {
+                            DataContext = varParamsVM,
+                            Owner = this
+                        };
+                        view.ShowDialog();
+                        if (!varParamsVM.IsOK) return;
+                        //modify the db
+                        StringOfVarParametersAxis removeItem =
+                            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Where(i => i.ID_culc == varParamsVM.Model.ID_culc).FirstOrDefault();
+                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Remove(removeItem);
+                        //provide an insert at a specific location
+                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model);
+                    }
                     break;
                 case "btnDelUp":
                     break;
@@ -106,7 +139,6 @@ namespace IVMElectro.View.PREMAG {
                             if (((PremagAxisVM)DataContext).VariationDataUpMagnets[i].ID_slot == idSlot)
                                 ((PremagAxisVM)DataContext).VariationDataUpMagnets.Remove(((PremagAxisVM)DataContext).VariationDataUpMagnets[i]);
                         }
-                        
                     }
                     break;
             }

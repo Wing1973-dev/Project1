@@ -69,14 +69,15 @@ namespace IVMElectro.ViewModel.Premag {
                 slot.CreationDataset(); //get data for calculation
                 Dictionary<string, double> inputData = slot.Dataset; inputData.Add("markSteel", _markSteel);
                 //Up EM
-                foreach (StringOfVarParametersAxis setVarData in VariationDataUpMagnets) {
+                var setVarDataUP = VariationDataUpMagnets.Where(i => i.ID_slot == slot.ID_slot);
+                foreach (StringOfVarParametersAxis setVarData in setVarDataUP) {
                     setVarData.CreationDataset(); //get data for calculation
                     algorithm = new AlgorithmPremagFlatEM(inputData.Union(setVarData.Dataset).ToDictionary(i => i.Key, i => i.Value));
                     algorithm.Run();
                     if (algorithm.SolutionIsDone) {
                         report.AppendLine($"Расчет №{setVarData.ID_culc} для верхнего ЭМ №{slot.ID_slot} - завершен успешно");
                         resultUpVarData.Add($"Расчет №{ setVarData.ID_culc}  для верхнего ЭМ №{slot.ID_slot}", algorithm.GetResult);
-                        if (FтмSumUp.ContainsKey(setVarData.ID_culc)) 
+                        if (FтмSumUp.ContainsKey(setVarData.ID_culc))
                             FтмSumUp[setVarData.ID_culc] += algorithm.GetResult["Fтм"];
                         else
                             FтмSumUp.Add(setVarData.ID_culc, algorithm.GetResult["Fтм"]);
@@ -85,7 +86,8 @@ namespace IVMElectro.ViewModel.Premag {
                         report.AppendLine($@"Расчет №{setVarData.ID_culc} для верхнего ЭМ №{slot.ID_slot} - прерван. Смотри содержимое файла logs\*.log");
                 }
                 //Down EM
-                foreach (StringOfVarParametersAxis setVarData in VariationDataDownMagnets) {
+                var setVarDataDWN = VariationDataDownMagnets.Where(i => i.ID_slot == slot.ID_slot);
+                foreach (StringOfVarParametersAxis setVarData in setVarDataDWN) {
                     setVarData.CreationDataset(); //get data for calculation
                     algorithm = new AlgorithmPremagFlatEM(inputData.Union(setVarData.Dataset).ToDictionary(i => i.Key, i => i.Value));
                     algorithm.Run();
