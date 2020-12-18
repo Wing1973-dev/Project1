@@ -1,24 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Windows.Input;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
+﻿using IVMElectro.Commands;
 using IVMElectro.Models;
-using IVMElectro.Commands;
-using IVMElectro.Services.Directories.WireDirectory;
 using IVMElectro.Services.Directories;
-using static IVMElectro.Services.DataSharedASDNContent;
-using static LibraryAlgorithms.Services.ServiceDT;
+using IVMElectro.Services.Directories.WireDirectory;
 using LibraryAlgorithms;
 using NLog;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Data;
 using System.IO;
-using Microsoft.Win32;
-using System.Diagnostics;
+using System.Linq;
+using System.Windows.Input;
+using static IVMElectro.Services.DataSharedASDNContent;
+using static LibraryAlgorithms.Services.ServiceDT;
 
 
-namespace IVMElectro.ViewModel {
+namespace IVMElectro.ViewModel
+{
     public class AsdnSingleViewModel : INotifyPropertyChanged, IDataErrorInfo {
         // string error
         private const string errora2 = "Значение параметра a2 должено принадлежать [0 : 30].";
@@ -383,80 +382,6 @@ namespace IVMElectro.ViewModel {
             }
         }
 
-        void launchBrowser(string url)
-        {
-            string browserName = @"C:\Program Files\Internet Explorer\iexplore.exe";
-
-            using (RegistryKey userChoiceKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice"))
-            {
-                if (userChoiceKey != null)
-                {
-                    object progIdValue = userChoiceKey.GetValue("Progid");
-                    if (progIdValue != null)
-                    {
-                        if (progIdValue.ToString().ToLower().Contains("chrome"))
-                        {
-                            using (RegistryKey ChromeKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"))
-                            {
-                                if (ChromeKey != null)
-                                {
-                                    object ChromeKeyPath = ChromeKey.GetValue("");
-                                    if (ChromeKeyPath != null)
-                                    {
-                                        browserName = ChromeKeyPath.ToString();
-                                    }
-                                }
-                            }
-                        }
-                        else if (progIdValue.ToString().ToLower().Contains("IE"))
-                        {
-                            using (RegistryKey IEKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\IEXPLORE.EXE"))
-                            {
-                                if (IEKey != null)
-                                {
-                                    object IEKeyPath = IEKey.GetValue("");
-                                    if (IEKeyPath != null)
-                                    {
-                                        browserName = IEKeyPath.ToString();
-                                    }
-                                }
-                            }
-                        }
-                        else if (progIdValue.ToString().ToLower().Contains("firefox"))
-                        {
-                            using (RegistryKey FireFoxKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe"))
-                            {
-                                if (FireFoxKey != null)
-                                {
-                                    object FireFoxPath = FireFoxKey.GetValue("");
-                                    if (FireFoxPath != null)
-                                    {
-                                        browserName = FireFoxPath.ToString();
-                                    }
-                                }
-                            }
-                        }
-                        else if (progIdValue.ToString().ToLower().Contains("opera"))
-                        {
-                            using (RegistryKey OperaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\opera.exe"))
-                            {
-                                if (OperaKey != null)
-                                {
-                                    object OperaPath = OperaKey.GetValue("");
-                                    if (OperaPath != null)
-                                    {
-                                        browserName = OperaPath.ToString();
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            Process.Start(new ProcessStartInfo(browserName, url));
-        }
-
         void ViewResult()
         {
 
@@ -815,7 +740,7 @@ namespace IVMElectro.ViewModel {
             // Закрываем поток для записи в файл
             sw.Close();
 
-            launchBrowser(file_name);
+            Services.ServiceIO.LaunchBrowser(file_name);           
         }
 
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;

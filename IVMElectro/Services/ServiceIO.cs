@@ -6,6 +6,7 @@ using Microsoft.Win32;
 using System.Windows;
 using System.Xml.Linq;
 using System.Xml.Serialization;
+using System.Diagnostics;
 
 namespace IVMElectro.Services {
     /// <summary>
@@ -29,6 +30,81 @@ namespace IVMElectro.Services {
                 
             }
         }
+
+        public static void LaunchBrowser(string url)
+        {
+            string browserName = @"C:\Program Files\Internet Explorer\iexplore.exe";
+
+            using (RegistryKey userChoiceKey = Registry.CurrentUser.OpenSubKey(@"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice"))
+            {
+                if (userChoiceKey != null)
+                {
+                    object progIdValue = userChoiceKey.GetValue("Progid");
+                    if (progIdValue != null)
+                    {
+                        if (progIdValue.ToString().ToLower().Contains("chrome"))
+                        {
+                            using (RegistryKey ChromeKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\chrome.exe"))
+                            {
+                                if (ChromeKey != null)
+                                {
+                                    object ChromeKeyPath = ChromeKey.GetValue("");
+                                    if (ChromeKeyPath != null)
+                                    {
+                                        browserName = ChromeKeyPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else if (progIdValue.ToString().ToLower().Contains("IE"))
+                        {
+                            using (RegistryKey IEKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\IEXPLORE.EXE"))
+                            {
+                                if (IEKey != null)
+                                {
+                                    object IEKeyPath = IEKey.GetValue("");
+                                    if (IEKeyPath != null)
+                                    {
+                                        browserName = IEKeyPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else if (progIdValue.ToString().ToLower().Contains("firefox"))
+                        {
+                            using (RegistryKey FireFoxKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\firefox.exe"))
+                            {
+                                if (FireFoxKey != null)
+                                {
+                                    object FireFoxPath = FireFoxKey.GetValue("");
+                                    if (FireFoxPath != null)
+                                    {
+                                        browserName = FireFoxPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                        else if (progIdValue.ToString().ToLower().Contains("opera"))
+                        {
+                            using (RegistryKey OperaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\opera.exe"))
+                            {
+                                if (OperaKey != null)
+                                {
+                                    object OperaPath = OperaKey.GetValue("");
+                                    if (OperaPath != null)
+                                    {
+                                        browserName = OperaPath.ToString();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            Process.Start(new ProcessStartInfo(browserName, url));
+        }
+
 
         /// <summary>
         /// Сохранение в файл по умолчанию
