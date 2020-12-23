@@ -11,6 +11,8 @@ using LibraryAlgorithms;
 using NLog;
 using static IVMElectro.Services.DataSharedPremagContent;
 using static LibraryAlgorithms.Services.ServiceDT;
+using System.IO;
+using System;
 
 namespace IVMElectro.ViewModel.Premag {
     public class PremagPlungerVM : INotifyPropertyChanged, IDataErrorInfo {
@@ -89,6 +91,7 @@ namespace IVMElectro.ViewModel.Premag {
                 new StringOfVarParametersPlunger { ID_culc = 1, U = 0, δ = 0, q = 0, h = 0, R1 = 0, R2 = 0, R3 = 0, qm = 0, Ws = 0, α = 0 } };
         }
         #region properties
+        StreamWriter sw; // Поток для записи в файл с результатом расчета
         PremagCompositeModel Model { get; set; }
         Logger Logger { get; set; }
         public string Diagnostic { get; set; }
@@ -177,6 +180,19 @@ namespace IVMElectro.ViewModel.Premag {
                 return ViewResultCommand;
             }
         }
+
+
+        // Записать параметр в файл с результатом расчета
+        private void WriteParamToResultFile(string param, string caption)
+        {
+            sw.WriteLine("<tr><td>" + caption + ":</td>");
+            for (int i = 0; i < resultCalculation.Count; i++)
+            {
+                sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value[param].ToString("F5")  + "</td>");
+            }
+            sw.WriteLine("</tr>");
+        }
+
         void ViewResult() {
             if (resultCalculation != null) {
                 List<(double δ, double Fтм)> plot = null;
@@ -192,6 +208,91 @@ namespace IVMElectro.ViewModel.Premag {
                         plot.Add((VariationData[i].δ, resultCalculation.ElementAt(i).Value["Fтм"]));
                     }
                 }
+
+                string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";
+
+                // Создаем поток для записи в файл
+                sw = new StreamWriter(file_name);
+
+                sw.WriteLine("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>");
+                sw.WriteLine("<html>");
+                sw.WriteLine("<head>");
+                sw.WriteLine("<meta http-equiv='content-type' content='text/html; charset=UTF-8' />");
+
+                sw.WriteLine("<link href = 'css/bootstrap.min.css' rel='stylesheet'>");
+
+                sw.WriteLine("<title>Результаты расчета</title>");
+                sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+                sw.WriteLine("</head>");
+                sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");
+
+                sw.WriteLine("<h1>Результаты расчета</h1>");
+
+                sw.WriteLine("<h2>Электромагнит постоянного тока с плунжером</h2>");
+
+                sw.WriteLine("<table class='table table-striped table-fit'>");
+
+                sw.WriteLine("<tr><td><b>Параметр</b></td>");
+
+                for (int i = 0; i < VariationData.Count; i++)
+                {
+                    sw.WriteLine("<td><b>Расчет&nbsp;" + (i + 1).ToString() + "</b></td>");
+                }
+                sw.WriteLine("</tr>");
+
+                WriteParamToResultFile("δэ", "δ<sub>э</sub>,&nbsp;мм");
+                WriteParamToResultFile("S1", "S<sub>1</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("S11", "S<sub>11</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("S12", "S<sub>12</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sстоп", "S<sub>стоп</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sкор", "S<sub>кор</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sпз", "S<sub>пз</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("lпл.ст", "l<sub>пл.ст</sub>,&nbsp;мм");
+                WriteParamToResultFile("lк", "l<sub>к</sub>,&nbsp;мм");
+                WriteParamToResultFile("lфл", "l<sub>фл</sub>,&nbsp;мм");
+                WriteParamToResultFile("ν1", "ν<sub>1</sub>,&nbsp;");
+                WriteParamToResultFile("ν2", "ν<sub>2</sub>,&nbsp;");
+                WriteParamToResultFile("lср", "l<sub>ср</sub>,&nbsp;мм");
+                WriteParamToResultFile("ls", "l<sub>s</sub>,&nbsp;мм");
+                WriteParamToResultFile("r20", "r<sub>20</sub>,&nbsp;Ом");
+                WriteParamToResultFile("rГ", "r<sub>Г</sub>,&nbsp;Ом");
+                WriteParamToResultFile("I", "I,&nbsp;А");
+                WriteParamToResultFile("Fм", "F<sub>м</sub>,&nbsp;А");
+                WriteParamToResultFile("Qм", "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Kм", "K<sub>м</sub>");
+                WriteParamToResultFile("Фδ", "Ф<sub>δ</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bδ", "B<sub>δ</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fδ", "F<sub>δ</sub>,&nbsp;А");
+                WriteParamToResultFile("Фp", "Ф<sub>p</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bp1", "B<sub>p1</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Bp11", "B<sub>p11</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Bp12", "B<sub>p12</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fp", "F<sub>p</sub>,&nbsp;А");
+                WriteParamToResultFile("Фк", "Ф<sub>к</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bк", "B<sub>к</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fк", "F<sub>к</sub>,&nbsp;А");
+                WriteParamToResultFile("Fфл", "F<sub>фл</sub>,&nbsp;А");
+                WriteParamToResultFile("Фпз", "Ф<sub>пз</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bпз", "B<sub>пз</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fпз", "F<sub>пз</sub>,&nbsp;А");
+                WriteParamToResultFile("F", "F,&nbsp;А");
+                WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс∙см");
+                WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;кг");
+                WriteParamToResultFile("P", "P,&nbsp;Вт");
+                WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С");
+                WriteParamToResultFile("Δt", "Δ<sub>t</sub>,&nbsp;°С");
+
+                sw.WriteLine("</table>");
+
+                sw.WriteLine("</div></body>");
+                sw.WriteLine("</html>");
+
+
+                // Закрываем поток для записи в файл
+                sw.Close();
+
+                Services.ServiceIO.LaunchBrowser(file_name);
             }
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;

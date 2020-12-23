@@ -74,6 +74,7 @@ namespace IVMElectro.ViewModel.Premag {
                 new StringOfVarParameters { ID_culc = 1, U = 0, δ = 0, q = 0, h = 0, R1 = 0, R2 = 0, R3 = 0, qm = 0, Ws = 0 } };
         }
         #region properties
+        StreamWriter sw; // Поток для записи в файл с результатом расчета
         PremagCompositeModel Model { get; set; }
         Logger Logger { get; set; }
         public string Diagnostic { get; set; }
@@ -158,6 +159,18 @@ namespace IVMElectro.ViewModel.Premag {
                 return ViewResultCommand;
             }
         }
+
+        // Записать параметр в файл с результатом расчета
+        private void WriteParamToResultFile(string param, string caption)
+        {
+            sw.WriteLine("<tr><td>" + caption + ":</td>");
+            for (int i = 0; i < resultCalculation.Count; i++)
+            {
+                sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value[param].ToString("F5") + "</td>");
+            }
+            sw.WriteLine("</tr>");
+        }
+
         void ViewResult() {
             if (resultCalculation != null || resultCalculation.Count > 0) {
 
@@ -178,7 +191,7 @@ namespace IVMElectro.ViewModel.Premag {
                 string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";
 
                 // Создаем поток для записи в файл
-                StreamWriter sw = new StreamWriter(file_name);
+                sw = new StreamWriter(file_name);
 
                 sw.WriteLine("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>");
                 sw.WriteLine("<html>");
@@ -193,8 +206,9 @@ namespace IVMElectro.ViewModel.Premag {
                 sw.WriteLine("</head>");
                 sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");
 
-                sw.WriteLine("<h1>Результаты расчета</h1>");                
-                
+                sw.WriteLine("<h1>Результаты расчета</h1>");
+
+                sw.WriteLine("<h2>Электромагнит постоянного тока с плоским якорем</h2>");
 
                 sw.WriteLine("<table class='table table-striped table-fit'>");
 
@@ -208,257 +222,42 @@ namespace IVMElectro.ViewModel.Premag {
                 sw.WriteLine("</tr>");
 
 
-                sw.WriteLine("<tr><td>S<sub>заз</sub>,&nbsp;мм<sup>2</sup>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Sзаз"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Sзаз1"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Sзаз2"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>S<sub>яр</sub>,&nbsp;мм<sup>2</sup>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Sяр"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>S<sub>як</sub>,&nbsp;мм<sup>2</sup>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Sяк"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>l<sub>яр</sub>,&nbsp;мм:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["lяр"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>l<sub>як</sub>,&nbsp;мм:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["lяк"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>l<sub>пол</sub>,&nbsp;мм:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["lпол"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>ν:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["ν"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>l<sub>ср</sub>,&nbsp;мм:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["lср"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>ls,&nbsp;мм:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["ls"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>r<sub>20</sub>,&nbsp;Ом:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["r20"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>rГ,&nbsp;Ом:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["rГ"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>I,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["I"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>м</sub>,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fм"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>Q<sub>м</sub>,&nbsp;мм<sup>2</sup>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Qм"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>K<sub>м</sub>:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Kм"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>Ф<sub>δ</sub>,&nbsp;Мкс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Фδ"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>B<sub>δ</sub>,&nbsp;Гс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Bδ"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>δ</sub>,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fδ"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>Ф<sub>яр</sub>,&nbsp;Мкс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Фяр"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>B<sub>яр</sub>,&nbsp;Гс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Bяр"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>яр</sub>,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fяр"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>Ф<sub>яр</sub>,&nbsp;Мкс</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Фяк"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>B<sub>як</sub>,&nbsp;Гс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Bяк"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>як</sub>,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fяк"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>Ф<sub>p</sub>,&nbsp;Мкс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Фp"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>B<sub>p1</sub>,&nbsp;Гс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Bp1"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>B<sub>p2</sub>,&nbsp;Гс:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Bp2"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>p1</sub>,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fp1"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>p2</sub>,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fp2"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F,&nbsp;А:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["F"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>W<sub>p</sub>,&nbsp;кгс·см:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Wp"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>F<sub>тм</sub>,&nbsp;кг:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Fтм"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td>Δt,&nbsp;°С:</td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Δt"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
-
-                sw.WriteLine("<tr><td><nobr>K<sub>t</sub>,&nbsp;Вт/см<sup>2</sup>°С:</nobr></td>");
-                for (int i = 0; i < resultCalculation.Count; i++)
-                {
-                    sw.WriteLine("<td>" + resultCalculation.ElementAt(i).Value["Kt"].ToString() + "</td>");
-                }
-                sw.WriteLine("</tr>");
+                WriteParamToResultFile("Sзаз", "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sзаз1", "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sзаз2", "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sяр", "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Sяк", "S<sub>як</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("lяр", "l<sub>яр</sub>,&nbsp;мм");
+                WriteParamToResultFile("lяк", "l<sub>як</sub>,&nbsp;мм");
+                WriteParamToResultFile("lпол", "l<sub>пол</sub>,&nbsp;мм");
+                WriteParamToResultFile("ν", "ν");
+                WriteParamToResultFile("lср", "l<sub>ср</sub>,&nbsp;мм");
+                WriteParamToResultFile("ls", "ls,&nbsp;мм");
+                WriteParamToResultFile("r20", "r<sub>20</sub>,&nbsp;Ом");
+                WriteParamToResultFile("rГ", "rГ,&nbsp;Ом");
+                WriteParamToResultFile("I", "I,&nbsp;А");
+                WriteParamToResultFile("Fм", "F<sub>м</sub>,&nbsp;А");
+                WriteParamToResultFile("Qм", "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>");
+                WriteParamToResultFile("Kм", "K<sub>м</sub>");
+                WriteParamToResultFile("Фδ", "Ф<sub>δ</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bδ", "B<sub>δ</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fδ", "F<sub>δ</sub>,&nbsp;А");
+                WriteParamToResultFile("Фяр", "Ф<sub>яр</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bяр", "B<sub>яр</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fяр", "F<sub>яр</sub>,&nbsp;А");
+                WriteParamToResultFile("Фяк", "Ф<sub>яр</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bяк", "B<sub>як</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fяк", "F<sub>як</sub>,&nbsp;А");
+                WriteParamToResultFile("Фp", "Ф<sub>p</sub>,&nbsp;Мкс");
+                WriteParamToResultFile("Bp1", "B<sub>p1</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Bp2", "B<sub>p2</sub>,&nbsp;Гс");
+                WriteParamToResultFile("Fp1", "F<sub>p1</sub>,&nbsp;А");
+                WriteParamToResultFile("Fp2", "F<sub>p2</sub>,&nbsp;А");
+                WriteParamToResultFile("F", "F,&nbsp;А");
+                WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс·см");
+                WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;кг");
+                WriteParamToResultFile("Δt", "Δt,&nbsp;°С");
+                WriteParamToResultFile("Kt", "<nobr>K<sub>t</sub>,&nbsp;Вт/см<sup>2</sup>°С</nobr>");
 
                 sw.WriteLine("</table>");
 
