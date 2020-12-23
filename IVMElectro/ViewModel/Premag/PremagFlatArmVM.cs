@@ -175,8 +175,6 @@ namespace IVMElectro.ViewModel.Premag {
                     }
                 }
 
-<<<<<<< HEAD
-=======
                 string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";
 
                 // Создаем поток для записи в файл
@@ -472,7 +470,6 @@ namespace IVMElectro.ViewModel.Premag {
                 sw.Close();
 
                 Services.ServiceIO.LaunchBrowser(file_name);
->>>>>>> 9e02d8ab988774b029fdbebec65e49a8029aa96e
             }
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
