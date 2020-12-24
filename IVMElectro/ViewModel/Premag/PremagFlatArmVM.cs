@@ -305,8 +305,7 @@ namespace IVMElectro.ViewModel.Premag {
                     sw.WriteLine("this.callParent();");
                     sw.WriteLine("}");
                     sw.WriteLine("});");
-
-            sw.WriteLine("</script>");
+                    sw.WriteLine("</script>");
                 }
 
                 sw.WriteLine("<title>Результаты расчета</title>");

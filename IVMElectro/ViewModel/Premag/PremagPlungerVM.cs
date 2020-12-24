@@ -219,7 +219,114 @@ namespace IVMElectro.ViewModel.Premag {
                 sw.WriteLine("<head>");
                 sw.WriteLine("<meta http-equiv='content-type' content='text/html; charset=UTF-8' />");
 
-                sw.WriteLine("<link href = 'css/bootstrap.min.css' rel='stylesheet'>");
+                if (isPlot)
+                {
+                    sw.WriteLine("<link href='extjs/ext-theme-gray/ext-theme-gray-all.css' rel='stylesheet'>");
+                    sw.WriteLine("<script src='extjs/ext-all.js'></script>");
+                }
+
+                sw.WriteLine("<style>");
+                sw.WriteLine(".table td, .table th {");
+                sw.WriteLine("padding: .75rem;");
+                sw.WriteLine("vertical-align: top;");
+                sw.WriteLine("border-top: 1px solid #dee2e6;}");
+                sw.WriteLine("table {");
+                sw.WriteLine("border-collapse: collapse;}");
+                sw.WriteLine(".table-striped tbody tr:nth-of-type(odd){ background-color:rgba(0, 0, 0, .05)}");
+                sw.WriteLine(".h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{");
+                sw.WriteLine("font-family: sans-serif;}");
+                sw.WriteLine(".ml -auto, .mx-auto { margin-left: auto!important; }");
+                sw.WriteLine(".mr -auto, .mx-auto { margin-right: auto!important; }");
+                sw.WriteLine("</style>");
+
+                sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+                if (isPlot)
+                {
+                    sw.WriteLine("<script>");
+                    sw.WriteLine("Ext.define('Report.view.chart', {");
+                    sw.WriteLine("extend: 'Ext.Panel',");
+                    sw.WriteLine("xtype: 'marked-line',");
+                    sw.WriteLine("layout: 'fit',");
+                    sw.WriteLine("initComponent: function() {");
+                    sw.WriteLine("var me = this;");
+                    sw.WriteLine("this.myDataStore = Ext.create('Ext.data.Store', {");
+                    sw.WriteLine("fields: ['δ', 'Fтм'],");
+                    sw.WriteLine("autoLoad: 'true',");
+                    sw.WriteLine("data: [");
+
+                    for (int i = 0; i < plot.Count; i++)
+                    {
+                        sw.WriteLine("{'δ': " + System.Math.Round(plot.ElementAt(i).δ, 5).ToString() + ", 'Fтм': " + System.Math.Round(plot.ElementAt(i).Fтм, 5).ToString() + "},");
+                    }
+
+                    sw.WriteLine("]});");
+
+                    sw.WriteLine("me.items = [{");
+                    sw.WriteLine("xtype: 'chart',");
+                    sw.WriteLine("width: '100%',");
+                    sw.WriteLine("height: 1024,");
+                    sw.WriteLine("animate: true,");
+                    sw.WriteLine("shadow: false,");
+                    sw.WriteLine("style: 'background: #fff;',");
+                    sw.WriteLine("legend:");
+                    sw.WriteLine("{");
+                    sw.WriteLine("position: 'right',");
+                    sw.WriteLine("boxStrokeWidth: 0,");
+                    sw.WriteLine("labelFont: '12px Helvetica'");
+                    sw.WriteLine("},");
+                    sw.WriteLine("store: this.myDataStore,");
+                    sw.WriteLine("axes: [{");
+                    sw.WriteLine("type: 'Numeric',");
+                    sw.WriteLine("fields: ['δ', 'Fтм'],");
+                    sw.WriteLine("position: 'left',");
+                    sw.WriteLine("grid: true");
+                    sw.WriteLine("}, {");
+                    sw.WriteLine("type: 'Category',");
+                    sw.WriteLine("fields: 'δ',");
+                    sw.WriteLine("position: 'bottom',");
+                    sw.WriteLine("grid: true,");
+                    sw.WriteLine("label: { rotate: { degrees: 270 } }");
+                    sw.WriteLine("}],");
+                    sw.WriteLine("series: [{");
+                    sw.WriteLine("type: 'line',");
+                    sw.WriteLine("axis: 'left',");
+                    sw.WriteLine("title: 'Зависимость δ от Fтм',");
+                    sw.WriteLine("xField: 'δ',");
+                    sw.WriteLine("yField: 'Fтм',");
+                    sw.WriteLine("style:");
+                    sw.WriteLine("{");
+                    sw.WriteLine("'stroke-width': 4");
+                    sw.WriteLine("},");
+                    sw.WriteLine("markerConfig:");
+                    sw.WriteLine("{");
+                    sw.WriteLine("radius: 4");
+                    sw.WriteLine("},");
+                    sw.WriteLine("highlight:");
+                    sw.WriteLine("{");
+                    sw.WriteLine("fill: '#000',");
+                    sw.WriteLine("radius: 5,");
+                    sw.WriteLine("'stroke-width': 2,");
+                    sw.WriteLine("stroke: '#fff'");
+                    sw.WriteLine("},");
+                    sw.WriteLine("tips:");
+                    sw.WriteLine("{");
+                    sw.WriteLine("trackMouse: true,");
+                    sw.WriteLine("style: 'background: #FFF',");
+                    sw.WriteLine("height: 20,");
+                    sw.WriteLine("width: 160,");
+                    sw.WriteLine("renderer: function(storeItem, item) {");
+                    sw.WriteLine("var title = item.series.title;");
+                    sw.WriteLine("this.setTitle(storeItem.get(item.series.yField));");
+                    sw.WriteLine("}");
+                    sw.WriteLine("}");
+                    sw.WriteLine("}]");
+                    sw.WriteLine("}];");
+                    sw.WriteLine("this.callParent();");
+                    sw.WriteLine("}");
+                    sw.WriteLine("});");
+                    sw.WriteLine("</script>");
+                }
 
                 sw.WriteLine("<title>Результаты расчета</title>");
                 sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
@@ -285,9 +392,21 @@ namespace IVMElectro.ViewModel.Premag {
 
                 sw.WriteLine("</table>");
 
+                if (isPlot)
+                {
+                    sw.WriteLine("<h2>График функции</h2>");
+                    sw.WriteLine("<div id='chart'></div>");
+                    sw.WriteLine("<script>");
+                    sw.WriteLine("Ext.onReady(function(){");
+                    sw.WriteLine("Ext.create('Report.view.chart',{");
+                    sw.WriteLine("renderTo: 'chart'");
+                    sw.WriteLine("});");
+                    sw.WriteLine("});");
+                    sw.WriteLine("</script>");
+                }
+
                 sw.WriteLine("</div></body>");
                 sw.WriteLine("</html>");
-
 
                 // Закрываем поток для записи в файл
                 sw.Close();
