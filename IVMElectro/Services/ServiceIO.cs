@@ -20,6 +20,24 @@ namespace IVMElectro.Services {
         /// </summary>
         private static string _file_name;
 
+        /// <summary>
+        /// Поток для записи лога
+        /// </summary>
+        private static StreamWriter log_sw;
+        
+        public static void WriteToLog(string s)
+        {
+            if (log_sw == null)
+            {
+                log_sw = new StreamWriter("IVMElectro.log");
+                log_sw.Close();
+            }
+            
+            log_sw = new StreamWriter("IVMElectro.log", true);
+            log_sw.WriteLine(s);
+            log_sw.Close();
+        }
+
         public static string FileName
         {
             get => _file_name;
