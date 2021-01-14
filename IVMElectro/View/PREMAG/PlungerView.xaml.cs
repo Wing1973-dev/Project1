@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,7 +44,6 @@ namespace IVMElectro.View.PREMAG {
             }
             ((PremagPlungerVM)DataContext).Diagnostic = $"Открыт файл {namefile}";
         }
-
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
             XElement inputData = new XElement("inputData",
                 new XElement("tbxBδ", ((PremagPlungerVM)DataContext).Bδ),
@@ -114,6 +114,16 @@ namespace IVMElectro.View.PREMAG {
                         StringOfVarParametersPlunger removeItem = ((PremagPlungerVM)DataContext).VariationData.Where(i => i.ID_culc == varParamsVM.Model.ID_culc).FirstOrDefault();
                         ((PremagPlungerVM)DataContext).VariationData.Remove(removeItem);
                         ((PremagPlungerVM)DataContext).VariationData.Add(varParamsVM.Model);
+
+                        #region sorting
+                        var sortshot = ((PremagPlungerVM)DataContext).VariationData.OrderBy(i => i.ID_culc);
+                        ObservableCollection<StringOfVarParametersPlunger> snapshot = new ObservableCollection<StringOfVarParametersPlunger>();
+                        foreach (StringOfVarParametersPlunger item in sortshot)
+                            snapshot.Add(item);
+                        ((PremagPlungerVM)DataContext).VariationData.Clear();
+                        foreach (StringOfVarParametersPlunger item in snapshot)
+                            ((PremagPlungerVM)DataContext).VariationData.Add(item);
+                        #endregion
                     }
                     break;
                 case "btnDel":

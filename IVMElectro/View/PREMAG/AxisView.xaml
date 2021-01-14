@@ -260,15 +260,15 @@
                                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
                                     <StackPanel Orientation="Vertical" Margin="10">
                                         <Button Name="btnAddUp" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
-                                            ToolTip="Добавить строку" Click="btnTableUp_Click">
+                                            ToolTip="Добавить строку" Click="btnTableVarParams_Click">
                                             <materialDesign:PackIcon Kind="Plus"  />
                                         </Button>
                                         <Button Name="btnDelUp" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
-                                            ToolTip="Удалить строку" Click="btnTableUp_Click">
+                                            ToolTip="Удалить строку" Click="btnTableVarParams_Click">
                                             <materialDesign:PackIcon Kind="Minus" />
                                         </Button>
                                         <Button Name="btnEditUp" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
-                                            ToolTip="Редактировать строку" Click="btnTableUp_Click">
+                                            ToolTip="Редактировать строку" Click="btnTableVarParams_Click">
                                             <materialDesign:PackIcon Kind="Edit" />
                                         </Button>
                                     </StackPanel>
@@ -374,20 +374,10 @@
                                 <Run Text=" Ws  -  число витков обмотки катушки"/>
                             </TextBlock>
                             <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
-                                <StackPanel Orientation="Vertical" Margin="10">
-                                    <Button Name="btnAddDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
-                                            ToolTip="Добавить строку" Click="btnTableDwn_Click">
-                                        <materialDesign:PackIcon Kind="Plus"  />
-                                    </Button>
-                                    <Button Name="btnDelDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
-                                            ToolTip="Удалить строку" Click="btnTableDwn_Click">
-                                        <materialDesign:PackIcon Kind="Minus" />
-                                    </Button>
-                                    <Button Name="btnEditDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
-                                            ToolTip="Редактировать строку" Click="btnTableDwn_Click">
-                                        <materialDesign:PackIcon Kind="Edit" />
-                                    </Button>
-                                </StackPanel>
+                                <Button Name="btnEditDwn" Margin="10" Style="{DynamicResource MaterialDesignFlatLightBgButton}" 
+                                            ToolTip="Редактировать строку" Click="btnTableVarParams_Click">
+                                    <materialDesign:PackIcon Kind="Edit" />
+                                </Button>
                                 <DataGrid Name="dtgrdVarParamsDwn" Margin="10" FontWeight="Normal" 
                                       CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
                                           CanUserReorderColumns="False" CanUserSortColumns="False"

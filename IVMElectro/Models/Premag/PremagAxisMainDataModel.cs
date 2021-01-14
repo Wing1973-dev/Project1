@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Xml.Linq;
 using static IVMElectro.Services.DataSharedPremagContent;
 
 namespace IVMElectro.Models.Premag {
@@ -17,11 +18,9 @@ namespace IVMElectro.Models.Premag {
         public double dпз1 { get; set; }
         public double dвст { get; set; }
         public double Δk1 { get; set; }
-        //public string MarkSteel { get; set; }
         #endregion
         public PremagAxisMainDataModel() {
             Bδ = ρx = ρГ = hяр = hяк = R0 = R10 = dпз1 = dвст = Δk1 = 0;
-            //MarkSteel = "09Х17Н";
         }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "Bδ", Bδ } , { "ρx", ρx }, { "ρГ", ρГ }, { "hяр", hяр }, { "hяк", hяк }, { "R0", R0 }, { "R10", R10 }, { "dпз1", dпз1 }, { "dвст", dвст }, { "Δk1", Δk1 } };
@@ -37,13 +36,35 @@ namespace IVMElectro.Models.Premag {
             if (dпз1 < 0) errors.Add(new ValidationResult(errordпз1));
             if (dвст < 0) errors.Add(new ValidationResult(errordвст));
             if (Δk1 <= 0) errors.Add(new ValidationResult(errorΔk1));
-            //such a state is unattainable. This is used for  Validator.TryValidateObject(..., true)
-            //if (string.IsNullOrEmpty(MarkSteel)) errors.Add(new ValidationResult("Error MarkSteel"));
             return errors;
         }
 
-        public object Clone() => new PremagAxisMainDataModel {   ID_slot = ID_slot, Bδ = Bδ, ρx = ρx, ρГ = ρГ,   hяр = hяр,  hяк = hяк,
-            R0 = R0,  R10 = R10,dпз1 = dпз1, dвст = dвст, Δk1 = Δk1
+        public object Clone() => new PremagAxisMainDataModel {
+            ID_slot = ID_slot,
+            Bδ = Bδ,
+            ρx = ρx,
+            ρГ = ρГ,
+            hяр = hяр,
+            hяк = hяк,
+            R0 = R0,
+            R10 = R10,
+            dпз1 = dпз1,
+            dвст = dвст,
+            Δk1 = Δk1
         };
+
+        public XElement Serialise() => new XElement($"MainData {ID_slot}",
+            new XElement("ID_slot", ID_slot),
+            new XElement("Bδ", Bδ),
+            new XElement("ρx", ρx),
+            new XElement("ρГ", ρГ),
+            new XElement("hяр", hяр),
+            new XElement("hяк", hяк),
+            new XElement("R0", R0),
+            new XElement("R10", R10),
+            new XElement("dпз1", dпз1),
+            new XElement("dвст", dвст),
+            new XElement("Δk1", Δk1)
+            );
     }
 }

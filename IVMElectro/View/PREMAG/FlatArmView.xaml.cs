@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -103,6 +104,16 @@ namespace IVMElectro.View.PREMAG {
                         StringOfVarParameters removeItem = ((PremagFlatArmVM)DataContext).VariationData.Where(i => i.ID_culc == varParamsVM.Model.ID_culc).FirstOrDefault();
                         ((PremagFlatArmVM)DataContext).VariationData.Remove(removeItem);
                         ((PremagFlatArmVM)DataContext).VariationData.Add(varParamsVM.Model);
+                        
+                        #region sorting
+                        var sortshot = ((PremagFlatArmVM)DataContext).VariationData.OrderBy(i => i.ID_culc);
+                        ObservableCollection<StringOfVarParameters> snapshot = new ObservableCollection<StringOfVarParameters>();
+                        foreach (StringOfVarParameters item in sortshot)
+                            snapshot.Add(item);
+                        ((PremagFlatArmVM)DataContext).VariationData.Clear();
+                        foreach (StringOfVarParameters item in snapshot)
+                            ((PremagFlatArmVM)DataContext).VariationData.Add(item);
+                        #endregion
                     }
                     break;
                 case "btnDel":

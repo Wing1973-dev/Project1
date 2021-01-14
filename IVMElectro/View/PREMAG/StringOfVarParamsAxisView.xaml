@@ -10,7 +10,7 @@
     <Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <TextBlock Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" >
-                <Run Text="Вариационные расчетные данные верхних электромагнитов"/>
+                <Run Text="Вариационные расчетные данные электромагнитов"/>
             </TextBlock>
         </Grid>
         <Grid Margin="0 60 0 0" Style="{DynamicResource mainTabGrid}" >

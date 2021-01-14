@@ -13,6 +13,8 @@ using System.Windows.Shapes;
 using IVMElectro.Models.Premag;
 using IVMElectro.ViewModel.Premag;
 using System.Collections.ObjectModel;
+using System.Xml.Linq;
+using static IVMElectro.Services.ServiceIO;
 
 namespace IVMElectro.View.PREMAG {
     /// <summary>
@@ -21,9 +23,32 @@ namespace IVMElectro.View.PREMAG {
     public partial class AxisView : Window {
         public AxisView() => InitializeComponent();
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) { }
-        private void SaveFile(object sender, ExecutedRoutedEventArgs e) { }
-        //TODO provide an insert at a specific location
-        private void btnTableUp_Click(object sender, RoutedEventArgs e) {
+        private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
+            XElement inputData = new XElement("inputData",
+                    new XElement("cbx_MarkSteel", ((PremagPlungerVM)DataContext).MarkSteel));
+            //serialise main data
+            XElement elementMD = new XElement("AxisMainData");
+            if (((PremagAxisVM)DataContext).VariationDataMainData.Count != 0)
+                foreach (PremagAxisMainDataModel item in ((PremagAxisVM)DataContext).VariationDataMainData)
+                    elementMD.Add(item.Serialise());
+            inputData.Add(elementMD);
+            //serialise UpMagnets data
+            XElement elementUpD = new XElement("DataUp");
+            if (((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0)
+                foreach (StringOfVarParametersAxis item in ((PremagAxisVM)DataContext).VariationDataUpMagnets)
+                    elementUpD.Add(item.Serialise());
+            inputData.Add(elementUpD);
+            //serialise UpMagnets data
+            XElement elementDwnD = new XElement("DataDown");
+            if (((PremagAxisVM)DataContext).VariationDataDownMagnets.Count != 0)
+                foreach (StringOfVarParametersAxis item in ((PremagAxisVM)DataContext).VariationDataDownMagnets)
+                    elementDwnD.Add(item.Serialise());
+            inputData.Add(elementDwnD);
+
+            string namefile = SaveObjectToXMLFile(inputData);
+            ((PremagAxisVM)DataContext).Diagnostic = $"Сохранен файл {namefile}";
+        }
+        private void btnTableVarParams_Click(object sender, RoutedEventArgs e) {
             StringOfVarParametersAxis stringOfVar = null;
             StringOfVarParamsAxisVM varParamsVM = null;
             StringOfVarParamsAxisView view = null;
@@ -36,21 +61,23 @@ namespace IVMElectro.View.PREMAG {
                         0;
                     int max_idSlot = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
                         ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_slot).Max() :
-                        0;
+                        ((PremagAxisVM)DataContext).VariationDataMainData.Select(i => i.ID_slot).Max();
                     //for all slots
                     for (int i = 0; i < max_idSlot; i++) {
-                        stringOfVar = new StringOfVarParametersAxis { ID_culc = ++max_idCulc, ID_slot = i + 1 };
+                        stringOfVar = new StringOfVarParametersAxis { ID_culc = max_idCulc + 1, ID_slot = i + 1 };
                         varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
                         view = new StringOfVarParamsAxisView { DataContext = varParamsVM, Owner = this };
                         view.ShowDialog();
                         if (!varParamsVM.IsOK) return;
                         ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model); //add to db
+                        ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(varParamsVM.Model);
                     }
                     break;
                 case "btnEditUp":
                     if (dtgrdVarParamsUp.SelectedItem != null) {
                         StringOfVarParametersAxis selectedStringOfVar = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Where(
-                            i => i.ID_culc == ((StringOfVarParametersAxis)dtgrdVarParamsUp.SelectedItem).ID_culc).FirstOrDefault();
+                            i => i.ID_culc == ((StringOfVarParametersAxis)dtgrdVarParamsUp.SelectedItem).ID_culc &&
+                            i.ID_slot == ((StringOfVarParametersAxis)dtgrdVarParamsUp.SelectedItem).ID_slot).FirstOrDefault();
                         stringOfVar = (StringOfVarParametersAxis)selectedStringOfVar.Clone();
                         varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
                         view = new StringOfVarParamsAxisView {
@@ -61,17 +88,52 @@ namespace IVMElectro.View.PREMAG {
                         if (!varParamsVM.IsOK) return;
                         //modify the db
                         StringOfVarParametersAxis removeItem =
-                            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Where(i => i.ID_culc == varParamsVM.Model.ID_culc).FirstOrDefault();
+                            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Where(
+                                i => i.ID_culc == varParamsVM.Model.ID_culc && i.ID_slot == varParamsVM.Model.ID_slot).FirstOrDefault();
                         ((PremagAxisVM)DataContext).VariationDataUpMagnets.Remove(removeItem);
-                        //provide an insert at a specific location
                         ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model);
+                        SortOfVariationDataUpMagnets();
                     }
                     break;
+                case "btnEditDwn":
+                    if (dtgrdVarParamsDwn.SelectedItem != null) {
+                        StringOfVarParametersAxis selectedStringOfVar = ((PremagAxisVM)DataContext).VariationDataDownMagnets.Where(
+                            i => i.ID_culc == ((StringOfVarParametersAxis)dtgrdVarParamsDwn.SelectedItem).ID_culc &&
+                            i.ID_slot == ((StringOfVarParametersAxis)dtgrdVarParamsDwn.SelectedItem).ID_slot).FirstOrDefault();
+                        stringOfVar = (StringOfVarParametersAxis)selectedStringOfVar.Clone();
+                        varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
+                        view = new StringOfVarParamsAxisView {
+                            DataContext = varParamsVM,
+                            Owner = this
+                        };
+                        view.ShowDialog();
+                        if (!varParamsVM.IsOK) return;
+                        //modify the db
+                        StringOfVarParametersAxis removeItem =
+                            ((PremagAxisVM)DataContext).VariationDataDownMagnets.Where(
+                                i => i.ID_culc == varParamsVM.Model.ID_culc && i.ID_slot == varParamsVM.Model.ID_slot).FirstOrDefault();
+                        ((PremagAxisVM)DataContext).VariationDataDownMagnets.Remove(removeItem);
+                        ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(varParamsVM.Model);
+                        #region sorting
+                        SortOfVariationDataDownMagnets();
+                        #endregion
+                    }
+
+                    break;
                 case "btnDelUp":
+                    if (dtgrdVarParamsUp.SelectedItem != null) {
+                        int idCulc = ((StringOfVarParametersAxis)dtgrdVarParamsUp.SelectedItem).ID_culc;
+                        for (int i = 0; i < ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count; i++) {
+                            if (((PremagAxisVM)DataContext).VariationDataUpMagnets[i].ID_culc == idCulc) {
+                                ((PremagAxisVM)DataContext).VariationDataUpMagnets.Remove(((PremagAxisVM)DataContext).VariationDataUpMagnets[i]);
+                                ((PremagAxisVM)DataContext).VariationDataDownMagnets.Remove(((PremagAxisVM)DataContext).VariationDataDownMagnets[i]);
+                                i--;
+                            }
+                        }
+                    }
                     break;
             }
         }
-        private void btnTableDwn_Click(object sender, RoutedEventArgs e) { }
         private void btnTableMD_Click(object sender, RoutedEventArgs e) {
             PremagAxisMainDataModel stringOfVar = null;
             PremagAxisMDVM varParamsVM = null;
@@ -99,7 +161,9 @@ namespace IVMElectro.View.PREMAG {
                         }
                         foreach (StringOfVarParametersAxis vp in appendVarParams) {
                             ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(vp);
+                            ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(vp);
                         }
+                        SortOfVariationDataUpMagnets(); SortOfVariationDataDownMagnets();
                     }
                     #endregion
                     break;
@@ -136,13 +200,32 @@ namespace IVMElectro.View.PREMAG {
                         int idSlot = ((PremagAxisMainDataModel)dtgrdMainParams.SelectedItem).ID_slot;
                         ((PremagAxisVM)DataContext).VariationDataMainData.Remove((PremagAxisMainDataModel)dtgrdMainParams.SelectedItem);
                         for (int i = 0; i < ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count; i++) {
-                            if (((PremagAxisVM)DataContext).VariationDataUpMagnets[i].ID_slot == idSlot)
+                            if (((PremagAxisVM)DataContext).VariationDataUpMagnets[i].ID_slot == idSlot) {
                                 ((PremagAxisVM)DataContext).VariationDataUpMagnets.Remove(((PremagAxisVM)DataContext).VariationDataUpMagnets[i]);
+                                ((PremagAxisVM)DataContext).VariationDataDownMagnets.Remove(((PremagAxisVM)DataContext).VariationDataDownMagnets[i]);
+                            }
                         }
                     }
                     break;
             }
         }
-
+        void SortOfVariationDataUpMagnets() {
+            var sortshot = ((PremagAxisVM)DataContext).VariationDataUpMagnets.OrderBy(i => i.ID_culc).ThenBy(i => i.ID_slot);
+            ObservableCollection<StringOfVarParametersAxis> snapshot = new ObservableCollection<StringOfVarParametersAxis>();
+            foreach (StringOfVarParametersAxis item in sortshot)
+                snapshot.Add(item);
+            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Clear();
+            foreach (StringOfVarParametersAxis item in snapshot)
+                ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(item);
+        }
+        void SortOfVariationDataDownMagnets() {
+            var sortshot = ((PremagAxisVM)DataContext).VariationDataDownMagnets.OrderBy(i => i.ID_culc).ThenBy(i => i.ID_slot);
+            ObservableCollection<StringOfVarParametersAxis> snapshot = new ObservableCollection<StringOfVarParametersAxis>();
+            foreach (StringOfVarParametersAxis item in sortshot)
+                snapshot.Add(item);
+            ((PremagAxisVM)DataContext).VariationDataDownMagnets.Clear();
+            foreach (StringOfVarParametersAxis item in snapshot)
+                ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(item);
+        }
     }
 }

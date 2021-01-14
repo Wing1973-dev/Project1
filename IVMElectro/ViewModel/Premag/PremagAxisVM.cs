@@ -124,14 +124,15 @@ namespace IVMElectro.ViewModel.Premag {
                     isStrVarParam = Validator.TryValidateObject(setVarData, context, results, true);
                     if (!isStrVarParam) break;
                 }
-                if (!isStrVarParam) break;
                 //Down EM
-                foreach (StringOfVarParametersAxis setVarData in VariationDataDownMagnets) {
-                    setVarData.SetParametersForModelValidation(slot.R0, slot.R10, slot.dпз1, slot.dвст);
-                    var results = new List<ValidationResult>();
-                    var context = new ValidationContext(setVarData);
-                    isStrVarParam = Validator.TryValidateObject(setVarData, context, results, true);
-                    if (!isStrVarParam) break;
+                if (isStrVarParam) {
+                    foreach (StringOfVarParametersAxis setVarData in VariationDataDownMagnets) {
+                        setVarData.SetParametersForModelValidation(slot.R0, slot.R10, slot.dпз1, slot.dвст);
+                        var results = new List<ValidationResult>();
+                        var context = new ValidationContext(setVarData);
+                        isStrVarParam = Validator.TryValidateObject(setVarData, context, results, true);
+                        if (!isStrVarParam) break;
+                    }
                 }
                 if (!isStrVarParam) break;
             }
