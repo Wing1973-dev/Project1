@@ -22,6 +22,19 @@ namespace IVMElectro.Models.Premag {
         public PremagAxisMainDataModel() {
             Bδ = ρx = ρГ = hяр = hяк = R0 = R10 = dпз1 = dвст = Δk1 = 0;
         }
+        public PremagAxisMainDataModel(XElement input) {
+            if (input.Element("ID_slot") != null) ID_slot = Convert.ToInt32(input.Element("ID_slot").Value.Trim());
+            if (input.Element("Bδ") != null) Bδ = Convert.ToDouble(input.Element("Bδ").Value.Trim());
+            if (input.Element("ρx") != null) ρx = Convert.ToDouble(input.Element("ρx").Value.Trim());
+            if (input.Element("ρГ") != null) ρГ = Convert.ToDouble(input.Element("ρГ").Value.Trim());
+            if (input.Element("hяр") != null) hяр = Convert.ToDouble(input.Element("hяр").Value.Trim());
+            if (input.Element("hяк") != null) hяк = Convert.ToDouble(input.Element("hяк").Value.Trim());
+            if (input.Element("R0") != null) R0 = Convert.ToDouble(input.Element("R0").Value.Trim());
+            if (input.Element("R10") != null) R10 = Convert.ToDouble(input.Element("R10").Value.Trim());
+            if (input.Element("dпз1") != null) dпз1 = Convert.ToDouble(input.Element("dпз1").Value.Trim());
+            if (input.Element("dвст") != null) dвст = Convert.ToDouble(input.Element("dвст").Value.Trim());
+            if (input.Element("Δk1") != null) Δk1 = Convert.ToDouble(input.Element("Δk1").Value.Trim());
+        }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "Bδ", Bδ } , { "ρx", ρx }, { "ρГ", ρГ }, { "hяр", hяр }, { "hяк", hяк }, { "R0", R0 }, { "R10", R10 }, { "dпз1", dпз1 }, { "dвст", dвст }, { "Δk1", Δk1 } };
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
@@ -53,7 +66,7 @@ namespace IVMElectro.Models.Premag {
             Δk1 = Δk1
         };
 
-        public XElement Serialise() => new XElement($"MainData {ID_slot}",
+        public XElement Serialise() => new XElement($"MainData{ID_slot}",
             new XElement("ID_slot", ID_slot),
             new XElement("Bδ", Bδ),
             new XElement("ρx", ρx),

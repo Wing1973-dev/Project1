@@ -22,10 +22,40 @@ namespace IVMElectro.View.PREMAG {
     /// </summary>
     public partial class AxisView : Window {
         public AxisView() => InitializeComponent();
-        private void OpenFile(object sender, ExecutedRoutedEventArgs e) { }
+        private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
+            string namefile = string.Empty;
+            XElement inputData = LoadFromFile(ref namefile);
+            if (inputData != null) {
+                if (inputData.Element("cbx_MarkSteel") != null) ((PremagAxisVM)DataContext).MarkSteel = inputData.Element("cbx_MarkSteel").Value.Trim();
+                //load main data
+                if (inputData.Element("AxisMainData") != null) {
+                    if (inputData.Element("AxisMainData").Elements().Count() != 0) {
+                        ((PremagAxisVM)DataContext).VariationDataMainData.Clear();
+                        foreach (XElement item in inputData.Element("AxisMainData").Elements())
+                            ((PremagAxisVM)DataContext).VariationDataMainData.Add(new PremagAxisMainDataModel(item));
+                    }
+                }
+                //load UpMagnets data
+                if (inputData.Element("DataUp") != null) {
+                    if (inputData.Element("DataUp").Elements().Count() != 0) {
+                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Clear();
+                        foreach (XElement item in inputData.Element("DataUp").Elements())
+                            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(new StringOfVarParametersAxis(item));
+                    }
+                }
+                //save DownMagnets data
+                if (inputData.Element("DataDown") != null) {
+                    if (inputData.Element("DataDown").Elements().Count() != 0) {
+                        ((PremagAxisVM)DataContext).VariationDataDownMagnets.Clear();
+                        foreach (XElement item in inputData.Element("DataDown").Elements())
+                            ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(new StringOfVarParametersAxis(item));
+                    }
+                }
+            }
+        }
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
             XElement inputData = new XElement("inputData",
-                    new XElement("cbx_MarkSteel", ((PremagPlungerVM)DataContext).MarkSteel));
+                    new XElement("cbx_MarkSteel", ((PremagAxisVM)DataContext).MarkSteel));
             //serialise main data
             XElement elementMD = new XElement("AxisMainData");
             if (((PremagAxisVM)DataContext).VariationDataMainData.Count != 0)
@@ -38,7 +68,7 @@ namespace IVMElectro.View.PREMAG {
                 foreach (StringOfVarParametersAxis item in ((PremagAxisVM)DataContext).VariationDataUpMagnets)
                     elementUpD.Add(item.Serialise());
             inputData.Add(elementUpD);
-            //serialise UpMagnets data
+            //serialise DownMagnets data
             XElement elementDwnD = new XElement("DataDown");
             if (((PremagAxisVM)DataContext).VariationDataDownMagnets.Count != 0)
                 foreach (StringOfVarParametersAxis item in ((PremagAxisVM)DataContext).VariationDataDownMagnets)

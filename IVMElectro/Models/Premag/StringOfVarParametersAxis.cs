@@ -7,6 +7,10 @@ namespace IVMElectro.Models.Premag {
         #region properties
         public int ID_slot { get; set; }
         #endregion
+        public StringOfVarParametersAxis() { }
+        public StringOfVarParametersAxis(XElement input) : base(input) {
+            if (input.Element("ID_slot") != null) ID_slot = Convert.ToInt32(input.Element("ID_slot").Value.Trim());
+        }
         public new object Clone() => new StringOfVarParametersAxis {
             ID_culc = ID_culc,
             ID_slot = ID_slot,

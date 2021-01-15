@@ -65,7 +65,7 @@ namespace IVMElectro.Models.Premag {
         }
 
         public object Clone() => new StringOfVarParameters { ID_culc = ID_culc, U = U, δ = δ, q = q, h = h, R1 = R1, R2 = R2, R3 = R3, qm = qm, Ws = Ws };
-        public virtual XElement Serialise() => new XElement($"StringOfVarParameters {ID_culc}",
+        public virtual XElement Serialise() => new XElement($"StringOfVarParameters{ID_culc}",
             new XElement("ID_culc", ID_culc),
             new XElement("U", U),
             new XElement("δ", δ),

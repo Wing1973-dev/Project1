@@ -53,6 +53,7 @@ namespace IVMElectro.ViewModel.Premag {
                 return CalculationCommand;
             }
         }
+        //TODO  FтмSum
         void Calculation() {
             Dictionary<int, double> FтмSumUp = new Dictionary<int, double>(), FтмSumDwn = new Dictionary<int, double>();
             double _markSteel = 0;
@@ -102,8 +103,8 @@ namespace IVMElectro.ViewModel.Premag {
                     else
                         report.AppendLine($@"Расчет №{setVarData.ID_culc} для нижнего ЭМ №{slot.ID_slot} - прерван. Смотри содержимое файла logs\*.log");
                 }
-
-                commonResult.Add($"Слот №{slot.ID_slot}", resultUpVarData); commonResult.Add($"Слот №{slot.ID_slot}", resultDownVarData);
+                commonResult.Add($"Слот №{slot.ID_slot}", resultUpVarData);
+                commonResult[$"Слот №{slot.ID_slot}"] = commonResult[$"Слот №{slot.ID_slot}"].Union(resultDownVarData).ToDictionary(i => i.Key, i => i.Value);
             }
             Diagnostic = report.ToString();
             OnPropertyChanged("Diagnostic");
