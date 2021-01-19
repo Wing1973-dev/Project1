@@ -45,6 +45,7 @@ namespace IVMElectro.ViewModel.Premag {
         #region commands
         AlgorithmPremagFlatEM algorithm = null;
         Dictionary<string, Dictionary<string, Dictionary<string, double>>> commonResult = null;
+        Dictionary<int, double> FтмSumUp, FтмSumDwn; //key - № расчета
 
         UserCommand CalculationCommand { get; set; }
         public ICommand CommandCalculation {
@@ -53,9 +54,8 @@ namespace IVMElectro.ViewModel.Premag {
                 return CalculationCommand;
             }
         }
-        //TODO  FтмSum
         void Calculation() {
-            Dictionary<int, double> FтмSumUp = new Dictionary<int, double>(), FтмSumDwn = new Dictionary<int, double>();
+            FтмSumUp = new Dictionary<int, double>(); FтмSumDwn = new Dictionary<int, double>();
             double _markSteel = 0;
             switch (MarkSteel) {
                 case "09Х17Н": _markSteel = 0; break;
