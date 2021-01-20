@@ -123,7 +123,6 @@ namespace IVMElectro.Services {
             Process.Start(new ProcessStartInfo(browserName, url));
         }
 
-
         /// <summary>
         /// Сохранение в файл по умолчанию
         /// </summary>

@@ -11,13 +11,16 @@ namespace IVMElectro.View.PREMAG {
         private void Exit_Click(object sender, RoutedEventArgs e) {
             switch (((Button)sender).Name) {
                 case "OK":
-                    //if (((StringOfVarParamsAxisVM)DataContext).CanOK())
-                    //    ((StringOfVarParamsAxisVM)DataContext).IsOK = true;
-                    ((StringOfVarParamsAxisVM)DataContext).IsOK = ((StringOfVarParamsAxisVM)DataContext).CanOK();
+                    if (((StringOfVarParamsVM)DataContext).CanOK()) {
+                        ((StringOfVarParamsVM)DataContext).IsOK = true;
+                        Close();
+                    }
+                    break;
+                case "CANSEL":
+                    ((StringOfVarParamsVM)DataContext).IsOK = false;
+                    Close();
                     break;
             }
-            Close();
         }
-
     }
 }

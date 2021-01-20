@@ -24,10 +24,13 @@ namespace IVMElectro.Models.Premag {
             qm = qm,
             Ws = Ws
         };
+
+        #region require for realise Contains(this)
         public bool Equals([AllowNull] StringOfVarParametersAxis other) {
             return ID_culc == other.ID_culc && ID_slot == other.ID_slot;
         }
-        public override int GetHashCode() => ID_culc * 73 + ID_slot;
+        public override int GetHashCode() => ID_culc * 73 + ID_slot; 
+        #endregion
 
         public override XElement Serialise() {
             XElement resultObject = base.Serialise();

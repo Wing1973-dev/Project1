@@ -14,9 +14,7 @@ namespace IVMElectro.View {
     /// Interaction logic for ASDNView.xaml
     /// </summary>
     public partial class ASDNView : Window {
-        public ASDNView() {
-            InitializeComponent();
-        }
+        public ASDNView() => InitializeComponent();
 
         private void TxtBx_GotFocus(object sender, RoutedEventArgs e) => UpdateBinding();
 
@@ -195,57 +193,149 @@ namespace IVMElectro.View {
             }
         }
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
+            bool isFormat = true;
             string namefile = "";
             XElement inputData = LoadFromFile(ref namefile);
             if(inputData != null) {
                 if (inputData.Element("tbxP12") != null) ((AsdnSingleViewModel)DataContext).P12 = inputData.Element("tbxP12").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbxU") != null) ((AsdnSingleViewModel)DataContext).U1 = inputData.Element("tbxU").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_f1") != null) ((AsdnSingleViewModel)DataContext).f1 = inputData.Element("tbx_f1").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("cbx_p") != null) ((AsdnSingleViewModel)DataContext).p = inputData.Element("cbx_p").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxPmex") != null) ((AsdnSingleViewModel)DataContext).Pмех = inputData.Element("tbxPmex").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxDi") != null) ((AsdnSingleViewModel)DataContext).Di = inputData.Element("tbxDi").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxΔГ1") != null) ((AsdnSingleViewModel)DataContext).ΔГ1 = inputData.Element("tbxΔГ1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxZ1") != null) ((AsdnSingleViewModel)DataContext).Z1 = inputData.Element("tbxZ1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxDa") != null) ((AsdnSingleViewModel)DataContext).Da = inputData.Element("tbxDa").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_a1") != null) ((AsdnSingleViewModel)DataContext).a1 = inputData.Element("tbx_a1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_a2") != null) ((AsdnSingleViewModel)DataContext).a2 = inputData.Element("tbx_a2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxΔкр") != null) ((AsdnSingleViewModel)DataContext).Δкр = inputData.Element("tbxΔкр").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dиз") != null) ((AsdnSingleViewModel)DataContext).dиз = inputData.Element("tbx_dиз").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_qГ") != null) ((AsdnSingleViewModel)DataContext).qГ = inputData.Element("tbx_qГ").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_bz1") != null) ((AsdnSingleViewModel)DataContext).bz1 = inputData.Element("tbx_bz1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_h8") != null) ((AsdnSingleViewModel)DataContext).h8 = inputData.Element("tbx_h8").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_h7") != null) ((AsdnSingleViewModel)DataContext).h7 = inputData.Element("tbx_h7").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_h6") != null) ((AsdnSingleViewModel)DataContext).h6 = inputData.Element("tbx_h6").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_h5") != null) ((AsdnSingleViewModel)DataContext).h5 = inputData.Element("tbx_h5").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_h3") != null) ((AsdnSingleViewModel)DataContext).h3 = inputData.Element("tbx_h3").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_h4") != null) ((AsdnSingleViewModel)DataContext).h4 = inputData.Element("tbx_h4").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_ac") != null) ((AsdnSingleViewModel)DataContext).ac = inputData.Element("tbx_ac").Value.Trim();
-                //if (inputData.Element("tbx_bПН") != null) ((AsdnSingleViewModel)DataContext).bПН = inputData.Element("tbx_bПН").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_li") != null) ((AsdnSingleViewModel)DataContext).li = inputData.Element("tbx_li").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_cз") != null) ((AsdnSingleViewModel)DataContext).cз = inputData.Element("tbx_cз").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxKзап") != null) ((AsdnSingleViewModel)DataContext).Kзап = inputData.Element("tbxKзап").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_y1") != null) ((AsdnSingleViewModel)DataContext).y1 = inputData.Element("tbx_y1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_K2") != null) ((AsdnSingleViewModel)DataContext).K2 = inputData.Element("tbx_K2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_d1") != null) ((AsdnSingleViewModel)DataContext).d1 = inputData.Element("tbx_d1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_Kfe1") != null) ((AsdnSingleViewModel)DataContext).Kfe1 = inputData.Element("tbx_Kfe1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_ρ1x") != null) ((AsdnSingleViewModel)DataContext).ρ1x = inputData.Element("tbx_ρ1x").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_ρРУБ") != null) ((AsdnSingleViewModel)DataContext).ρРУБ = inputData.Element("tbx_ρРУБ").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_ρ1Г") != null) ((AsdnSingleViewModel)DataContext).ρ1Г = inputData.Element("tbx_ρ1Г").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxB") != null) ((AsdnSingleViewModel)DataContext).B = inputData.Element("tbxB").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("cbxPЗ") != null) ((AsdnSingleViewModel)DataContext).PЗ = inputData.Element("cbxPЗ").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_p10_50") != null) ((AsdnSingleViewModel)DataContext).p10_50 = inputData.Element("tbx_p10_50").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxΔГ2") != null) ((AsdnSingleViewModel)DataContext).ΔГ2 = inputData.Element("tbxΔГ2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxDpст") != null) ((AsdnSingleViewModel)DataContext).Dpст = inputData.Element("tbxDpст").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("cbx_bСК") != null) ((AsdnSingleViewModel)DataContext).bСК = inputData.Element("cbx_bСК").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_bП2") != null) ((AsdnSingleViewModel)DataContext).bП2 = inputData.Element("tbx_bП2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxZ2") != null) ((AsdnSingleViewModel)DataContext).Z2 = inputData.Element("tbxZ2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_hp") != null) ((AsdnSingleViewModel)DataContext).hp = inputData.Element("tbx_hp").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dв") != null) ((AsdnSingleViewModel)DataContext).dв = inputData.Element("tbx_dв").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_bк") != null) ((AsdnSingleViewModel)DataContext).bк = inputData.Element("tbx_bк").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_aк") != null) ((AsdnSingleViewModel)DataContext).aк = inputData.Element("tbx_aк").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_γ") != null) ((AsdnSingleViewModel)DataContext).γ = inputData.Element("tbx_γ").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_ρ2Г") != null) ((AsdnSingleViewModel)DataContext).ρ2Г = inputData.Element("tbx_ρ2Г").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_Kfe2") != null) ((AsdnSingleViewModel)DataContext).Kfe2 = inputData.Element("tbx_Kfe2").Value.Trim();
+                else
+                    isFormat = false;
+                if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
             }
 
             ((AsdnSingleViewModel)DataContext).Diagnostic = $"Открыт файл {namefile}";
@@ -307,7 +397,5 @@ namespace IVMElectro.View {
             ((AsdnSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
             UpdateBinding();
         }
-
-       
     }
 }

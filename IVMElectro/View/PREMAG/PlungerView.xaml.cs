@@ -16,31 +16,58 @@ namespace IVMElectro.View.PREMAG {
     public partial class PlungerView : Window {
         public PlungerView() => InitializeComponent();
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
+            bool isFormat = true;
             string namefile = string.Empty;
             XElement inputData = LoadFromFile(ref namefile);
             if (inputData != null) {
                 if (inputData.Element("tbxBδ") != null) ((PremagPlungerVM)DataContext).Bδ = inputData.Element("tbxBδ").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_ρx") != null) ((PremagPlungerVM)DataContext).ρx = inputData.Element("tbx_ρx").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_ρГ") != null) ((PremagPlungerVM)DataContext).ρГ = inputData.Element("tbx_ρГ").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_Δk1") != null) ((PremagPlungerVM)DataContext).Δk1 = inputData.Element("tbx_Δk1").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbxR0") != null) ((PremagPlungerVM)DataContext).R0 = inputData.Element("tbxR0").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbxR10") != null) ((PremagPlungerVM)DataContext).R10 = inputData.Element("tbxR10").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxR110") != null) ((PremagPlungerVM)DataContext).R110 = inputData.Element("tbxR110").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxR1110") != null) ((PremagPlungerVM)DataContext).R1110 = inputData.Element("tbxR1110").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dпз1") != null) ((PremagPlungerVM)DataContext).dпз1 = inputData.Element("tbx_dпз1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dпз2") != null) ((PremagPlungerVM)DataContext).dпз2 = inputData.Element("tbx_dпз2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_hфл") != null) ((PremagPlungerVM)DataContext).hфл = inputData.Element("tbx_hфл").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dвст") != null) ((PremagPlungerVM)DataContext).dвст = inputData.Element("tbx_dвст").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_l1") != null) ((PremagPlungerVM)DataContext).l1 = inputData.Element("tbx_l1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_l2") != null) ((PremagPlungerVM)DataContext).l2 = inputData.Element("tbx_l2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("cbx_MarkSteel") != null) ((PremagPlungerVM)DataContext).MarkSteel = inputData.Element("cbx_MarkSteel").Value.Trim();
-                if (inputData.Element("VarParameters") != null) {
-                    if (inputData.Element("VarParameters").Elements().Count() != 0) {
-                        ((PremagPlungerVM)DataContext).VariationData.Clear();
-                        foreach (XElement item in inputData.Element("VarParameters").Elements())
-                            ((PremagPlungerVM)DataContext).VariationData.Add(new StringOfVarParametersPlunger(item));
-                    }
+                else
+                    isFormat = false;
+                if (inputData.Element("VarParameters") != null && inputData.Element("VarParameters").Elements().Count() != 0) {
+                    ((PremagPlungerVM)DataContext).VariationData.Clear();
+                    foreach (XElement item in inputData.Element("VarParameters").Elements())
+                        ((PremagPlungerVM)DataContext).VariationData.Add(new StringOfVarParametersPlunger(item));
                 }
+                else
+                    isFormat = false;
+                if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
             }
             ((PremagPlungerVM)DataContext).Diagnostic = $"Открыт файл {namefile}";
         }

@@ -17,27 +17,48 @@ namespace IVMElectro.View.PREMAG {
         public FlatArmView() => InitializeComponent();
 
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
+            bool isFormat = true;
             string namefile = string.Empty;
             XElement inputData = LoadFromFile(ref namefile);
             if (inputData != null) {
                 if (inputData.Element("tbxBδ") != null) ((PremagFlatArmVM)DataContext).Bδ = inputData.Element("tbxBδ").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_ρx") != null) ((PremagFlatArmVM)DataContext).ρx = inputData.Element("tbx_ρx").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_ρГ") != null) ((PremagFlatArmVM)DataContext).ρГ = inputData.Element("tbx_ρГ").Value.Trim();
+                else isFormat = false;
                 if (inputData.Element("tbx_Δk1") != null) ((PremagFlatArmVM)DataContext).Δk1 = inputData.Element("tbx_Δk1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxR0") != null) ((PremagFlatArmVM)DataContext).R0 = inputData.Element("tbxR0").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbxR10") != null) ((PremagFlatArmVM)DataContext).R10 = inputData.Element("tbxR10").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dпз1") != null) ((PremagFlatArmVM)DataContext).dпз1 = inputData.Element("tbx_dпз1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_dвст") != null) ((PremagFlatArmVM)DataContext).dвст = inputData.Element("tbx_dвст").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_hяр") != null) ((PremagFlatArmVM)DataContext).hяр = inputData.Element("tbx_hяр").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_hяк") != null) ((PremagFlatArmVM)DataContext).hяк = inputData.Element("tbx_hяк").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("cbx_MarkSteel") != null) ((PremagFlatArmVM)DataContext).MarkSteel = inputData.Element("cbx_MarkSteel").Value.Trim();
-                if (inputData.Element("VarParameters") != null) {
-                    if (inputData.Element("VarParameters").Elements().Count() != 0) {
-                        ((PremagFlatArmVM)DataContext).VariationData.Clear();
-                        foreach (XElement item in inputData.Element("VarParameters").Elements()) 
-                            ((PremagFlatArmVM)DataContext).VariationData.Add(new StringOfVarParameters(item));
-                    }
+                else
+                    isFormat = false;
+                if (inputData.Element("VarParameters") != null && inputData.Element("VarParameters").Elements().Count() != 0) {
+                    ((PremagFlatArmVM)DataContext).VariationData.Clear();
+                    foreach (XElement item in inputData.Element("VarParameters").Elements())
+                        ((PremagFlatArmVM)DataContext).VariationData.Add(new StringOfVarParameters(item));
                 }
+                else
+                    isFormat = false;
+                if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
             }
             ((PremagFlatArmVM)DataContext).Diagnostic = $"Открыт файл {namefile}";
         }

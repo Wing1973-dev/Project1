@@ -23,34 +23,35 @@ namespace IVMElectro.View.PREMAG {
     public partial class AxisView : Window {
         public AxisView() => InitializeComponent();
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
+            bool isFormat = true;
             string namefile = string.Empty;
             XElement inputData = LoadFromFile(ref namefile);
             if (inputData != null) {
                 if (inputData.Element("cbx_MarkSteel") != null) ((PremagAxisVM)DataContext).MarkSteel = inputData.Element("cbx_MarkSteel").Value.Trim();
+                else isFormat = false;
                 //load main data
-                if (inputData.Element("AxisMainData") != null) {
-                    if (inputData.Element("AxisMainData").Elements().Count() != 0) {
+                if (inputData.Element("AxisMainData") != null && inputData.Element("AxisMainData").Elements().Count() != 0) {
                         ((PremagAxisVM)DataContext).VariationDataMainData.Clear();
                         foreach (XElement item in inputData.Element("AxisMainData").Elements())
                             ((PremagAxisVM)DataContext).VariationDataMainData.Add(new PremagAxisMainDataModel(item));
-                    }
                 }
+                else isFormat = false;
                 //load UpMagnets data
-                if (inputData.Element("DataUp") != null) {
-                    if (inputData.Element("DataUp").Elements().Count() != 0) {
+                if (inputData.Element("DataUp") != null && inputData.Element("DataUp").Elements().Count() != 0) {
                         ((PremagAxisVM)DataContext).VariationDataUpMagnets.Clear();
                         foreach (XElement item in inputData.Element("DataUp").Elements())
                             ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(new StringOfVarParametersAxis(item));
-                    }
                 }
-                //save DownMagnets data
-                if (inputData.Element("DataDown") != null) {
-                    if (inputData.Element("DataDown").Elements().Count() != 0) {
+                else isFormat = false;
+                //load DownMagnets data
+                if (inputData.Element("DataDown") != null && inputData.Element("DataDown").Elements().Count() != 0) {
                         ((PremagAxisVM)DataContext).VariationDataDownMagnets.Clear();
                         foreach (XElement item in inputData.Element("DataDown").Elements())
                             ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(new StringOfVarParametersAxis(item));
-                    }
                 }
+                else isFormat = false;
+                if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
+                ((PremagAxisVM)DataContext).Diagnostic = $"Открыт файл {namefile}";
             }
         }
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {

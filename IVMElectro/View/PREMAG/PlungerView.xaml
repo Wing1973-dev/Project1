@@ -333,18 +333,18 @@
                             <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignTextBlock}" Margin="35 20 35 0" HorizontalAlignment="Center">
-                            <Run Text="U  -  напряжение питающей сети;  "/>
-                            <Run Text=" δ  -  воздушный зазор;  " />
-                            <Run Text=" q  -  продолжительность включения; "/>
-                            <Run Text="h   -   высота окна под катушку;"/>
+                            <Run Text="U  —  напряжение питающей сети;  "/>
+                            <Run Text=" δ  —  воздушный зазор;  " />
+                            <Run Text=" q  —  продолжительность включения; "/>
+                            <Run Text="h   —   высота окна под катушку;"/>
                             <LineBreak/>
-                            <Run Text="R1 - наружный радиус внутреннего полюса;" />
-                            <Run Text=" R2 - внутренний радиус внешнего полюса;"/>
-                            <Run Text=" R3 - наружний радиус внешнего полюса;"/>
+                            <Run Text="R1 — наружный радиус внутреннего полюса;" />
+                            <Run Text=" R2 — внутренний радиус внешнего полюса;"/>
+                            <Run Text=" R3 — наружний радиус внешнего полюса;"/>
                             <LineBreak/>
-                            <Run Text="qм  -  сечение проволоки (токопроводящей жилы);     "/>
-                            <Run Text=" Ws  -  число витков обмотки катушки;     "/>
-                            <Run Text=" α  -  угол при основании конуса"/>
+                            <Run Text="qм  —  сечение проволоки (токопроводящей жилы);     "/>
+                            <Run Text=" Ws  —  число витков обмотки катушки;     "/>
+                            <Run Text=" α  —  угол при основании конуса"/>
                         </TextBlock>
                         <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
                             <StackPanel Orientation="Vertical" Margin="10">
