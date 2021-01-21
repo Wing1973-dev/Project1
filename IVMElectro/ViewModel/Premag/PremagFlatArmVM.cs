@@ -271,7 +271,7 @@ namespace IVMElectro.ViewModel.Premag {
                     sw.WriteLine("series: [{");
                     sw.WriteLine("type: 'line',");
                     sw.WriteLine("axis: 'left',");
-                    sw.WriteLine("title: 'Зависимость δ от Fтм',");
+                    sw.WriteLine("title: 'Зависимость Fтм от δ',");
                     sw.WriteLine("xField: 'δ',");
                     sw.WriteLine("yField: 'Fтм',");
                     sw.WriteLine("style:");
