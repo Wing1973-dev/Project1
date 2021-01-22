@@ -68,36 +68,36 @@
                                     <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignTextBlock}" Margin="70 20 30 0">
                                 <Run Text="B"/>
                                 <Run Text="δ" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" - магнитная индукция в воздушном зазоре; "/>
+                                <Run Text=" — магнитная индукция в воздушном зазоре; "/>
                                 <Run Text="ρ"/>
                                 <Run Text="x" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" - удельное электросопротивление меди при 20°С; "/>
+                                <Run Text=" — удельное электросопротивление меди при 20°С; "/>
                                 <Run Text="ρ"/>
                                 <Run Text="Г" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" - удельное электросопротивление меди при рабочей температуре;"/>
+                                <Run Text=" — удельное электросопротивление меди при рабочей температуре;"/>
                                 <LineBreak/>
                                 <Run Text="h"/>
                                 <Run Text="яр" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" -  высота ярма;     "/>
+                                <Run Text=" —  высота ярма;     "/>
                                 <Run Text=" h"/>
                                 <Run Text="як" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" -  высота якоря;     "/>
+                                <Run Text=" —  высота якоря;   "/>
                                 <Run Text=" R"/>
                                 <Run Text="0" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" -  радиус сверления во внутреннем полюсе;          "/>
+                                <Run Text=" —  радиус сверления во внутреннем полюсе;         "/>
                                 <Run Text=" R'"/>
                                 <Run Text="0" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" -  радиус сверления в якоре;                  "/>
+                                <Run Text=" —  радиус сверления в якоре;                 "/>
                                 <Run Text=" d"/>
                                 <Run Text="пз1" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" -  паразитный зазор;"/>
+                                <Run Text=" —  паразитный зазор;"/>
                                 <LineBreak/>
                                 <Run Text="d"/>
                                 <Run Text="вст" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" - толщина немагнитной вставки;                 "/>
+                                <Run Text=" — толщина немагнитной вставки;                 "/>
                                 <Run Text="Δk"/>
                                 <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
-                                <Run Text=" - толщина цилиндрической части каркаса катушки"/>
+                                <Run Text=" — толщина цилиндрической части каркаса катушки"/>
                             </TextBlock>
                                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
                                         <StackPanel Orientation="Vertical" Margin="10">
@@ -245,17 +245,17 @@
                                     <ColumnDefinition Width="*"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="1" Style="{DynamicResource MaterialDesignTextBlock}" Margin="130 20 70 0">
-                                <Run Text="U  -  напряжение питающей сети;  "/>
-                                <Run Text=" δ  -  воздушный зазор;  " />
-                                <Run Text=" q  -  продолжительность включения; "/>
-                                <Run Text="h   -   высота окна под катушку;"/>
+                                <Run Text="U  —  напряжение питающей сети;  "/>
+                                <Run Text=" δ  —  воздушный зазор;  " />
+                                <Run Text=" q  —  продолжительность включения; "/>
+                                <Run Text="h   —   высота окна под катушку;"/>
                                 <LineBreak/>
-                                <Run Text="R1 - наружный радиус внутреннего полюса;" />
-                                <Run Text=" R2 - внутренний радиус внешнего полюса;"/>
-                                <Run Text=" R3 - наружний радиус внешнего полюса;"/>
+                                <Run Text="R1 — наружный радиус внутреннего полюса;" />
+                                <Run Text=" R2 — внутренний радиус внешнего полюса;"/>
+                                <Run Text=" R3 — наружний радиус внешнего полюса;"/>
                                 <LineBreak/>
-                                <Run Text="qм  -  сечение проволоки (токопроводящей жилы);  "/>
-                                <Run Text=" Ws  -  число витков обмотки катушки"/>
+                                <Run Text="qм  —  сечение проволоки (токопроводящей жилы);  "/>
+                                <Run Text=" Ws  —  число витков обмотки катушки"/>
                                 </TextBlock>
                                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" Margin="10">
                                     <StackPanel Orientation="Vertical" Margin="10">

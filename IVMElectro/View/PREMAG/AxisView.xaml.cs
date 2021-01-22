@@ -51,8 +51,10 @@ namespace IVMElectro.View.PREMAG {
                 }
                 else isFormat = false;
                 if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
-                ((PremagAxisVM)DataContext).Diagnostic = $"Открыт файл {namefile}";
             }
+
+            ((PremagAxisVM)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Открыт файл {namefile}";
+            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
             XElement inputData = new XElement("inputData",
@@ -77,7 +79,9 @@ namespace IVMElectro.View.PREMAG {
             inputData.Add(elementDwnD);
 
             string namefile = SaveObjectToXMLFile(inputData);
-            ((PremagAxisVM)DataContext).Diagnostic = $"Сохранен файл {namefile}";
+            
+            ((PremagAxisVM)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Сохранен файл {namefile}";
+            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
         private void btnTableVarParams_Click(object sender, RoutedEventArgs e) {
             StringOfVarParametersAxis stringOfVar = null;

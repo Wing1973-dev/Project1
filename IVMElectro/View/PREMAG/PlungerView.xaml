@@ -372,7 +372,7 @@
                                   ItemsSource="{Binding Path=VariationData}" 
                                       ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
                                 <DataGrid.Columns>
-                                    <DataGridTextColumn Header="№п/п" Binding="{Binding Path=ID}" Width="auto" />
+                                    <DataGridTextColumn Header="№п/п" Binding="{Binding Path=ID_culc}" Width="auto" />
                                     <DataGridTextColumn Header="U, В" Binding="{Binding Path=U}" Width="auto"/>
                                     <DataGridTextColumn Header="δ, мм" Binding="{Binding Path=δ}" Width="auto"/>
                                     <DataGridTextColumn Header="q, %" Binding="{Binding Path=q}" Width="auto"/>

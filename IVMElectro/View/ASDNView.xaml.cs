@@ -46,11 +46,8 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbx_bк, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_aкBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_aк, TextBox.TextProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(cbx_p, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(cbxPЗ, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(cbx_bСК, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
 
-            BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
+            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
         private void btnMenu_Click(object sender, RoutedEventArgs e) {
             switch (((Button)sender).Name) {
@@ -93,6 +90,7 @@ namespace IVMElectro.View {
                             DataContext = ((AsdnSingleViewModel)DataContext).Get_collectionZ2,
                             Owner = this
                         };
+                        z2View.CollectionIsZero.Content = ((AsdnSingleViewModel)DataContext).Get_collectionZ2.Z2.Count == 0 ? "нет данных" : string.Empty;
                         z2View.Show();
                     } break;
                 case "btn_ImageStator": {
@@ -194,7 +192,7 @@ namespace IVMElectro.View {
         }
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
             bool isFormat = true;
-            string namefile = "";
+            string namefile = string.Empty;
             XElement inputData = LoadFromFile(ref namefile);
             if(inputData != null) {
                 if (inputData.Element("tbxP12") != null) ((AsdnSingleViewModel)DataContext).P12 = inputData.Element("tbxP12").Value.Trim();
@@ -338,8 +336,7 @@ namespace IVMElectro.View {
                 if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
             }
 
-            ((AsdnSingleViewModel)DataContext).Diagnostic = $"Открыт файл {namefile}";
-
+            ((AsdnSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile)? string.Empty : $"Открыт файл {namefile}";
             UpdateBinding();
         }
         //save only user input
@@ -367,7 +364,6 @@ namespace IVMElectro.View {
                     new XElement("tbx_h3", ((AsdnSingleViewModel)DataContext).h3),
                     new XElement("tbx_h4", ((AsdnSingleViewModel)DataContext).h4),
                     new XElement("tbx_ac", ((AsdnSingleViewModel)DataContext).ac),
-                    //new XElement("tbx_bПН", ((AsdnSingleViewModel)DataContext).bПН),
                     new XElement("tbx_li", ((AsdnSingleViewModel)DataContext).li),
                     new XElement("tbx_cз", ((AsdnSingleViewModel)DataContext).cз),
                     new XElement("tbxKзап", ((AsdnSingleViewModel)DataContext).Kзап),
@@ -394,6 +390,7 @@ namespace IVMElectro.View {
                     new XElement("tbx_ρ2Г", ((AsdnSingleViewModel)DataContext).ρ2Г),
                     new XElement("tbx_Kfe2", ((AsdnSingleViewModel)DataContext).Kfe2));
             string namefile = SaveObjectToXMLFile(inputData);
+            
             ((AsdnSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
             UpdateBinding();
         }

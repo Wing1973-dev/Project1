@@ -46,9 +46,6 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbx_bк, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_dкп, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_dкпBounds, ContentProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(cbx_p, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(cbxPAS, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
-            //BindingOperations.GetBindingExpression(cbx_bСК, System.Windows.Controls.Primitives.Selector.SelectedValueProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_bZH, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_bZHBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_aкн, TextBox.TextProperty).UpdateTarget();
@@ -98,6 +95,7 @@ namespace IVMElectro.View {
                             DataContext = ((AsdnRedSingleViewModel)DataContext).Get_collectionZ2,
                             Owner = this
                         };
+                        z2View.CollectionIsZero.Content = ((AsdnSingleViewModel)DataContext).Get_collectionZ2.Z2.Count == 0 ? "нет данных" : string.Empty;
                         z2View.Show();
                     }
                     break;
@@ -366,7 +364,6 @@ namespace IVMElectro.View {
             }
 
             ((AsdnRedSingleViewModel)DataContext).Diagnostic = $"Открыт файл {namefile}";
-
             UpdateBinding();
         }
 
@@ -427,6 +424,7 @@ namespace IVMElectro.View {
                         new XElement("tbx_aкн", ((AsdnRedSingleViewModel)DataContext).aкн)
                         );
             string namefile = SaveObjectToXMLFile(inputData);
+            
             ((AsdnRedSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
             UpdateBinding();
         }

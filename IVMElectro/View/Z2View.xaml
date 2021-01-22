@@ -20,6 +20,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -61,9 +62,7 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </StackPanel>
-            
-
-            
+            <Label Name="CollectionIsZero" Grid.Row="4" Margin="10" FontSize="17" FontWeight="Bold"/>
         </Grid>
     </Grid>
 </Window>

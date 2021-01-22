@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Xml.Linq;
 using IVMElectro.Models.Premag;
@@ -69,7 +70,9 @@ namespace IVMElectro.View.PREMAG {
                     isFormat = false;
                 if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
             }
+            
             ((PremagPlungerVM)DataContext).Diagnostic = $"Открыт файл {namefile}";
+            BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
             XElement inputData = new XElement("inputData",
@@ -94,7 +97,9 @@ namespace IVMElectro.View.PREMAG {
                     elementVP.Add(item.Serialise());
             inputData.Add(elementVP);
             string namefile = SaveObjectToXMLFile(inputData);
+            
             ((PremagPlungerVM)DataContext).Diagnostic = $"Сохранен файл {namefile}";
+            BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
 
         private void btnTable_Click(object sender, RoutedEventArgs e) {

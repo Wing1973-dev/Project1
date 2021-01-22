@@ -29,7 +29,8 @@ namespace IVMElectro.ViewModel.Premag {
             };
         }
         #region properties
-        public string Diagnostic { get; set; }
+        string diagnostic = string.Empty;
+        public string Diagnostic { get => diagnostic; set { diagnostic = value; OnPropertyChanged("Diagnostic"); } }
         Logger Logger { get; set; }
 
         string markSteel = "09Х17Н";
@@ -107,7 +108,7 @@ namespace IVMElectro.ViewModel.Premag {
                 commonResult[$"Слот №{slot.ID_slot}"] = commonResult[$"Слот №{slot.ID_slot}"].Union(resultDownVarData).ToDictionary(i => i.Key, i => i.Value);
             }
             Diagnostic = report.ToString();
-            OnPropertyChanged("Diagnostic");
+            //OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
             bool isStrVarParam = true, isSlot = true; 

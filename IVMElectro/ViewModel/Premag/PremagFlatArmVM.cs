@@ -77,7 +77,8 @@ namespace IVMElectro.ViewModel.Premag {
         StreamWriter sw; // Поток для записи в файл с результатом расчета
         PremagCompositeModel Model { get; set; }
         Logger Logger { get; set; }
-        public string Diagnostic { get; set; }
+        string diagnostic = string.Empty;
+        public string Diagnostic { get => diagnostic; set { diagnostic = value; OnPropertyChanged("Diagnostic"); } }
         #region main data
         public string Bδ { get => Model.Common.Bδ.ToString(); set { Model.Common.Bδ = StringToDouble(value); OnPropertyChanged("Bδ"); } }
         public string ρx { get => Model.Common.ρx.ToString(); set { Model.Common.ρx = StringToDouble(value); OnPropertyChanged("ρx"); } }
@@ -133,7 +134,7 @@ namespace IVMElectro.ViewModel.Premag {
             //    Logger.Error(item);
 
             Diagnostic = report.ToString();
-            OnPropertyChanged("Diagnostic");
+            //OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
             //validation of variation string

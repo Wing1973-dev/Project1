@@ -12,7 +12,6 @@ using NLog;
 using static IVMElectro.Services.DataSharedPremagContent;
 using static LibraryAlgorithms.Services.ServiceDT;
 using System.IO;
-using System;
 
 namespace IVMElectro.ViewModel.Premag {
     public class PremagPlungerVM : INotifyPropertyChanged, IDataErrorInfo {
