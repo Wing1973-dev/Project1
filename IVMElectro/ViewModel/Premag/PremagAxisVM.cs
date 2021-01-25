@@ -334,6 +334,44 @@ namespace IVMElectro.ViewModel.Premag {
                         sw.WriteLine("</div>");
                     }
 
+                sw.WriteLine("<h3>Сумма верхних электромагнитов</h3>");
+
+                sw.WriteLine("<table class='table table-striped table-fit'>");
+                sw.WriteLine("<tr>");
+
+                for (int i = 0; i < FтмSumUp.Count; i++)
+                {
+                    sw.WriteLine("<td>Расчет " + (i + 1).ToString() + "</td>");
+                }
+                
+                sw.WriteLine("</tr><tr>");                
+
+                for (int i = 0; i < FтмSumUp.Count; i++)
+                {
+                    sw.WriteLine("<td>" + FтмSumUp.ElementAt(i).Value.ToString("F5") + "</td>");
+                }
+                sw.WriteLine("</tr>");
+                sw.WriteLine("</table>");
+
+                sw.WriteLine("<h3>Сумма нижних электромагнитов</h3>");
+
+                sw.WriteLine("<table class='table table-striped table-fit'>");
+                sw.WriteLine("<tr>");
+
+                for (int i = 0; i < FтмSumDwn.Count; i++)
+                {
+                    sw.WriteLine("<td>Расчет " + (i + 1).ToString() + "</td>");
+                }
+
+                sw.WriteLine("</tr><tr>");
+
+                for (int i = 0; i < FтмSumDwn.Count; i++)
+                {
+                    sw.WriteLine("<td>" + FтмSumDwn.ElementAt(i).Value.ToString("F5") + "</td>");
+                }
+                sw.WriteLine("</tr>");
+                sw.WriteLine("</table>");
+
                 sw.WriteLine("</div></body>");
                 sw.WriteLine("</html>");
 
