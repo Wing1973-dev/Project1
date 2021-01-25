@@ -217,18 +217,15 @@ namespace IVMElectro.ViewModel.Premag {
 
                 sw.WriteLine("<h2>Электромагнит осевого электромагнитного подшипника</h2>");
 
-                for (int i = 0; i < commonResult.Count; i++)
-                {
-                    sw.WriteLine("<h3>ЭМ " + (i + 1).ToString() + "</h3>");
-
                     foreach (var x in commonResult.Keys)
                     {
-                        sw.WriteLine("<div class='view-source'><a href='#'>" + (x).ToString() + " для верхнего</a>");
+                        sw.WriteLine("<h3>" + (x).ToString() + "</h3>");
+
+                        sw.WriteLine("<div class='view-source'><a href='#'>Верхние электромагниты</a>");
 
                         Dictionary<string, Dictionary<string, double>> calcs = commonResult[x];
 
                         sw.WriteLine("<div class='hide'>");
-
                         sw.WriteLine("<table class='table table-striped table-fit'>");
 
                         // Делаем шапку таблицы
@@ -278,18 +275,11 @@ namespace IVMElectro.ViewModel.Premag {
                         WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "верхнего");
                         WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "верхнего");
                         WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "верхнего");
-
                         sw.WriteLine("</table>");
+                        sw.WriteLine("</div>");                        
 
-                        sw.WriteLine("</div>");
-
-
-                        ///////////////////////////////////////////////////////////////////////////////////////                        
-
-                        sw.WriteLine("<div class='view-source'><a href='#'>" + (x).ToString() + " для нижнего</a>");
-
+                        sw.WriteLine("<div class='view-source'><a href='#'>Нижние электромагниты</a>");
                         sw.WriteLine("<div class='hide'>");
-
                         sw.WriteLine("<table class='table table-striped table-fit'>");
 
                         // Делаем шапку таблицы
@@ -341,10 +331,8 @@ namespace IVMElectro.ViewModel.Premag {
                         WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "нижнего");
 
                         sw.WriteLine("</table>");
-
                         sw.WriteLine("</div>");
                     }
-                }
 
                 sw.WriteLine("</div></body>");
                 sw.WriteLine("</html>");
