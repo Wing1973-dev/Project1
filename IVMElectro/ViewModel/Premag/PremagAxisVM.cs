@@ -10,6 +10,7 @@ using IVMElectro.Commands;
 using IVMElectro.Models.Premag;
 using LibraryAlgorithms;
 using NLog;
+using System.IO;
 using static IVMElectro.Services.DataSharedPremagContent;
 
 namespace IVMElectro.ViewModel.Premag {
@@ -29,6 +30,7 @@ namespace IVMElectro.ViewModel.Premag {
             };
         }
         #region properties
+        StreamWriter sw; // Поток для записи в файл с результатом расчета
         string diagnostic = string.Empty;
         public string Diagnostic { get => diagnostic; set { diagnostic = value; OnPropertyChanged("Diagnostic"); } }
         Logger Logger { get; set; }
@@ -47,6 +49,19 @@ namespace IVMElectro.ViewModel.Premag {
         AlgorithmPremagFlatEM algorithm = null;
         Dictionary<string, Dictionary<string, Dictionary<string, double>>> commonResult = null;
         Dictionary<int, double> FтмSumUp, FтмSumDwn; //key - № расчета
+
+        // Записать параметр в файл с результатом расчета
+        private void WriteParamToResultFile(string param, string caption, Dictionary<string, Dictionary<string, double>> calcs, string filter)
+        {
+            sw.WriteLine("<tr><td>" + caption + "</td>");
+
+            foreach (var calc in calcs.Keys.Where(key => key.Contains(filter)))
+            {
+                sw.WriteLine("<td>" + calcs[calc][param].ToString("F5") + "</td>");
+            }
+
+            sw.WriteLine("</tr>");
+        }
 
         UserCommand CalculationCommand { get; set; }
         public ICommand CommandCalculation {
@@ -149,9 +164,195 @@ namespace IVMElectro.ViewModel.Premag {
             }
         }
         void ViewResult() {
-            if (commonResult != null || commonResult.Count > 0) {
+            if (commonResult != null || commonResult.Count > 0)
+            {
 
-                
+                string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";
+
+                // Создаем поток для записи в файл
+                sw = new StreamWriter(file_name);
+
+                sw.WriteLine("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>");
+                sw.WriteLine("<html>");
+                sw.WriteLine("<head>");
+                sw.WriteLine("<meta http-equiv='content-type' content='text/html; charset=UTF-8' />");
+
+                sw.WriteLine("<style>");
+                sw.WriteLine(".table td, .table th {");
+                sw.WriteLine("padding: .75rem;");
+                sw.WriteLine("vertical-align: top;");
+                sw.WriteLine("border-top: 1px solid #dee2e6;}");
+                sw.WriteLine("table {");
+                sw.WriteLine("border-collapse: collapse;}");
+                sw.WriteLine(".table-striped tbody tr:nth-of-type(odd){ background-color:rgba(0, 0, 0, .05)}");
+                sw.WriteLine(".h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{");
+                sw.WriteLine("font-family: sans-serif;}");
+                sw.WriteLine(".ml -auto, .mx-auto { margin-left: auto!important; }");
+                sw.WriteLine(".mr -auto, .mx-auto { margin-right: auto!important; }");
+                sw.WriteLine("</style>");
+
+                sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+                sw.WriteLine("<title>Результаты расчета</title>");
+                sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+                sw.WriteLine("<script type='text/javascript' src='js/jquery-3.5.1.min.js'></script>");
+
+                sw.WriteLine("<script>");
+                sw.WriteLine("$(function(){");
+                sw.WriteLine("$('.view-source .hide').hide();");
+                sw.WriteLine("$a = $('.view-source a');");
+                sw.WriteLine("$a.on('click', function(event) {");
+                sw.WriteLine("event.preventDefault();");
+                sw.WriteLine("$a.not(this).next().slideUp(500);");
+                sw.WriteLine("$(this).next().slideToggle(500);");
+                sw.WriteLine("});");
+                sw.WriteLine("});");
+                sw.WriteLine("</script>");
+
+                sw.WriteLine("</head>");
+                sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");
+
+                sw.WriteLine("<h1>Результаты расчета</h1>");
+
+                sw.WriteLine("<h2>Электромагнит осевого электромагнитного подшипника</h2>");
+
+                for (int i = 0; i < commonResult.Count; i++)
+                {
+                    sw.WriteLine("<h3>ЭМ " + (i + 1).ToString() + "</h3>");
+
+                    foreach (var x in commonResult.Keys)
+                    {
+                        sw.WriteLine("<div class='view-source'><a href='#'>" + (x).ToString() + " для верхнего</a>");
+
+                        Dictionary<string, Dictionary<string, double>> calcs = commonResult[x];
+
+                        sw.WriteLine("<div class='hide'>");
+
+                        sw.WriteLine("<table class='table table-striped table-fit'>");
+
+                        // Делаем шапку таблицы
+
+                        sw.WriteLine("<tr><td>Параметр</td>");
+                        int calc_number = 1;
+                        foreach (var calc in calcs.Keys.Where(key => key.Contains("верхнего")))
+                        {
+                            sw.WriteLine("<td>Расчет " + (calc_number++).ToString() + "</td>");
+                        }
+                        sw.WriteLine("</tr>");
+
+                        WriteParamToResultFile("Sзаз", "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sзаз1", "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sзаз2", "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sяр", "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sяк", "S<sub>як</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("lяр", "l<sub>яр</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("lяк", "l<sub>як</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("lпол", "l<sub>пол</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("ν", "ν", calcs, "верхнего");
+                        WriteParamToResultFile("lср", "l<sub>ср</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("ls", "l<sub>s</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("r20", "r<sub>20</sub>,&nbsp;Ом", calcs, "верхнего");
+                        WriteParamToResultFile("rГ", "r<sub>Г</sub>,&nbsp;Ом", calcs, "верхнего");
+                        WriteParamToResultFile("I", "I,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Fм", "F<sub>м</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Qм", "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Kм", "K<sub>м</sub>", calcs, "верхнего");
+                        WriteParamToResultFile("Фδ", "Ф<sub>δ</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bδ", "B<sub>δ</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fδ", "F<sub>δ</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Фяр", "Ф<sub>яp</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bяр", "B<sub>яр</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fяр", "F<sub>яр</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Фяк", "Ф<sub>як</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bяк", "B<sub>як</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fяк", "F<sub>як</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Фp", "Ф<sub>p</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bp1", "B<sub>p1</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Bp2", "B<sub>p2</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fp1", "F<sub>p1</sub>&nbsp;A", calcs, "верхнего");
+                        WriteParamToResultFile("Fp2", "F<sub>p2</sub>&nbsp;A", calcs, "верхнего");
+                        WriteParamToResultFile("F", "F,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс∙см", calcs, "верхнего");
+                        WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;кг", calcs, "верхнего");
+                        WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "верхнего");
+                        WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "верхнего");
+                        WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "верхнего");
+
+                        sw.WriteLine("</table>");
+
+                        sw.WriteLine("</div>");
+
+
+                        ///////////////////////////////////////////////////////////////////////////////////////                        
+
+                        sw.WriteLine("<div class='view-source'><a href='#'>" + (x).ToString() + " для нижнего</a>");
+
+                        sw.WriteLine("<div class='hide'>");
+
+                        sw.WriteLine("<table class='table table-striped table-fit'>");
+
+                        // Делаем шапку таблицы
+
+                        sw.WriteLine("<tr><td>Параметр</td>");
+                        calc_number = 1;
+                        foreach (var calc in calcs.Keys.Where(key => key.Contains("нижнего")))
+                        {
+                            sw.WriteLine("<td>Расчет " + (calc_number++).ToString() + "</td>");
+                        }
+                        sw.WriteLine("</tr>");
+
+                        WriteParamToResultFile("Sзаз", "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sзаз1", "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sзаз2", "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sяр", "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sяк", "S<sub>як</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("lяр", "l<sub>яр</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("lяк", "l<sub>як</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("lпол", "l<sub>пол</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("ν", "ν", calcs, "нижнего");
+                        WriteParamToResultFile("lср", "l<sub>ср</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("ls", "l<sub>s</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("r20", "r<sub>20</sub>,&nbsp;Ом", calcs, "нижнего");
+                        WriteParamToResultFile("rГ", "r<sub>Г</sub>,&nbsp;Ом", calcs, "нижнего");
+                        WriteParamToResultFile("I", "I,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Fм", "F<sub>м</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Qм", "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Kм", "K<sub>м</sub>", calcs, "нижнего");
+                        WriteParamToResultFile("Фδ", "Ф<sub>δ</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bδ", "B<sub>δ</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fδ", "F<sub>δ</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Фяр", "Ф<sub>яp</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bяр", "B<sub>яр</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fяр", "F<sub>яр</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Фяк", "Ф<sub>як</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bяк", "B<sub>як</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fяк", "F<sub>як</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Фp", "Ф<sub>p</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bp1", "B<sub>p1</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Bp2", "B<sub>p2</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fp1", "F<sub>p1</sub>&nbsp;A", calcs, "нижнего");
+                        WriteParamToResultFile("Fp2", "F<sub>p2</sub>&nbsp;A", calcs, "нижнего");
+                        WriteParamToResultFile("F", "F,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс∙см", calcs, "нижнего");
+                        WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;кг", calcs, "нижнего");
+                        WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "нижнего");
+                        WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "нижнего");
+                        WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "нижнего");
+
+                        sw.WriteLine("</table>");
+
+                        sw.WriteLine("</div>");
+                    }
+                }
+
+                sw.WriteLine("</div></body>");
+                sw.WriteLine("</html>");
+
+                // Закрываем поток для записи в файл
+                sw.Close();
+
+                Services.ServiceIO.LaunchBrowser(file_name);
             }
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
