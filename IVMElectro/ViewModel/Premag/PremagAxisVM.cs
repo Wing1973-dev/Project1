@@ -195,6 +195,20 @@ namespace IVMElectro.ViewModel.Premag {
                 sw.WriteLine("<title>Результаты расчета</title>");
                 sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
 
+                sw.WriteLine("<script type='text/javascript' src='js/jquery-3.5.1.min.js'></script>");
+
+                sw.WriteLine("<script>");
+                sw.WriteLine("$(function(){");
+                sw.WriteLine("$('.view-source .hide').hide();");
+                sw.WriteLine("$a = $('.view-source a');");
+                sw.WriteLine("$a.on('click', function(event) {");
+                sw.WriteLine("event.preventDefault();");
+                sw.WriteLine("$a.not(this).next().slideUp(500);");
+                sw.WriteLine("$(this).next().slideToggle(500);");
+                sw.WriteLine("});");
+                sw.WriteLine("});");
+                sw.WriteLine("</script>");
+
                 sw.WriteLine("</head>");
                 sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");
 
@@ -208,9 +222,11 @@ namespace IVMElectro.ViewModel.Premag {
 
                     foreach (var x in commonResult.Keys)
                     {
-                        sw.WriteLine("<p>" + (x).ToString() + " для верхнего</p>");
+                        sw.WriteLine("<div class='view-source'><a href='#'>" + (x).ToString() + " для верхнего</a>");
 
                         Dictionary<string, Dictionary<string, double>> calcs = commonResult[x];
+
+                        sw.WriteLine("<div class='hide'>");
 
                         sw.WriteLine("<table class='table table-striped table-fit'>");
 
@@ -264,10 +280,14 @@ namespace IVMElectro.ViewModel.Premag {
                        
                         sw.WriteLine("</table>");
 
+                        sw.WriteLine("</div>");
+
 
                         ///////////////////////////////////////////////////////////////////////////////////////                        
+                        
+                        sw.WriteLine("<div class='view-source'><a href='#'>" + (x).ToString() + " для нижнего</a>");
 
-                        sw.WriteLine("<p>" + (x).ToString() + " для нижнего</p>");                        
+                        sw.WriteLine("<div class='hide'>");
 
                         sw.WriteLine("<table class='table table-striped table-fit'>");
 
@@ -320,6 +340,8 @@ namespace IVMElectro.ViewModel.Premag {
                         WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "нижнего");
 
                         sw.WriteLine("</table>");
+
+                        sw.WriteLine("</div>");
                     }                                        
                 }               
 
