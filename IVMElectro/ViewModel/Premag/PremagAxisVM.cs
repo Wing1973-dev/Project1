@@ -143,10 +143,15 @@ namespace IVMElectro.ViewModel.Premag {
         }
 
         // Записать параметр в файл с результатом расчета
-        private void WriteParamToResultFile(string param, string caption)
+        private void WriteParamToResultFile(string param, string caption, Dictionary<string, Dictionary<string, double>> calcs, string filter)
         {
-            sw.WriteLine("<tr><td>" + caption + ":</td>");            
-            sw.WriteLine("<td>" + param + "</td>");            
+            sw.WriteLine("<tr><td>" + caption + "</td>");
+
+            foreach (var calc in calcs.Keys.Where(key => key.Contains(filter)))
+            {
+                sw.WriteLine("<td>" + calcs[calc][param].ToString("F5") + "</td>");
+            }
+
             sw.WriteLine("</tr>");
         }
 
@@ -203,58 +208,118 @@ namespace IVMElectro.ViewModel.Premag {
 
                     foreach (var x in commonResult.Keys)
                     {
-                        sw.WriteLine("<p>" + (x).ToString() + "</p>");
+                        sw.WriteLine("<p>" + (x).ToString() + " для верхнего</p>");
 
                         Dictionary<string, Dictionary<string, double>> calcs = commonResult[x];
 
-                        foreach (var calc in calcs.Keys)
+                        sw.WriteLine("<table class='table table-striped table-fit'>");
+
+                        // Делаем шапку таблицы
+
+                        sw.WriteLine("<tr><td>Параметр</td>");
+                        int calc_number = 1;
+                        foreach (var calc in calcs.Keys.Where(key => key.Contains("верхнего")))
                         {
-                            sw.WriteLine("<p>" + (calc).ToString() + "</p>");
-
-                            Dictionary<string, double> parameters_of_calc = calcs[calc];
-
-                            sw.WriteLine("<table class='table table-striped table-fit'>");
-
-                            WriteParamToResultFile(parameters_of_calc["Sзаз"].ToString("F5"), "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>");
-                            WriteParamToResultFile(parameters_of_calc["Sзаз1"].ToString("F5"), "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>");
-                            WriteParamToResultFile(parameters_of_calc["Sзаз2"].ToString("F5"), "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>");
-                            WriteParamToResultFile(parameters_of_calc["Sяр"].ToString("F5"), "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>");
-                            WriteParamToResultFile(parameters_of_calc["Sяк"].ToString("F5"), "S<sub>як</sub>,&nbsp;мм<sup>2</sup>");
-                            WriteParamToResultFile(parameters_of_calc["lяр"].ToString("F5"), "l<sub>яр</sub>,&nbsp;мм");
-                            WriteParamToResultFile(parameters_of_calc["lяк"].ToString("F5"), "l<sub>як</sub>,&nbsp;мм");
-                            WriteParamToResultFile(parameters_of_calc["lпол"].ToString("F5"), "l<sub>пол</sub>,&nbsp;мм");
-                            WriteParamToResultFile(parameters_of_calc["ν"].ToString("F5"), "ν");
-                            WriteParamToResultFile(parameters_of_calc["lср"].ToString("F5"), "l<sub>ср</sub>,&nbsp;мм");
-                            WriteParamToResultFile(parameters_of_calc["ls"].ToString("F5"), "l<sub>s</sub>,&nbsp;мм");
-                            WriteParamToResultFile(parameters_of_calc["r20"].ToString("F5"), "r<sub>20</sub>,&nbsp;Ом");
-                            WriteParamToResultFile(parameters_of_calc["rГ"].ToString("F5"), "r<sub>Г</sub>,&nbsp;Ом");
-                            WriteParamToResultFile(parameters_of_calc["I"].ToString("F5"), "I,&nbsp;А");
-                            WriteParamToResultFile(parameters_of_calc["Fм"].ToString("F5"), "F<sub>м</sub>,&nbsp;А");
-                            WriteParamToResultFile(parameters_of_calc["Qм"].ToString("F5"), "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>");
-                            WriteParamToResultFile(parameters_of_calc["Kм"].ToString("F5"), "K<sub>м</sub>");
-                            WriteParamToResultFile(parameters_of_calc["Фδ"].ToString("F5"), "Ф<sub>δ</sub>,&nbsp;Мкс");
-                            WriteParamToResultFile(parameters_of_calc["Bδ"].ToString("F5"), "B<sub>δ</sub>,&nbsp;Гс");
-                            WriteParamToResultFile(parameters_of_calc["Fδ"].ToString("F5"), "F<sub>δ</sub>,&nbsp;А");
-                            WriteParamToResultFile(parameters_of_calc["Фяр"].ToString("F5"), "Ф<sub>яp</sub>,&nbsp;Мкс");
-                            WriteParamToResultFile(parameters_of_calc["Bяр"].ToString("F5"), "B<sub>яр</sub>,&nbsp;Гс");
-                            WriteParamToResultFile(parameters_of_calc["Fяр"].ToString("F5"), "F<sub>яр</sub>,&nbsp;А");
-                            WriteParamToResultFile(parameters_of_calc["Фяк"].ToString("F5"), "Ф<sub>як</sub>,&nbsp;Мкс");
-                            WriteParamToResultFile(parameters_of_calc["Bяк"].ToString("F5"), "B<sub>як</sub>,&nbsp;Гс");
-                            WriteParamToResultFile(parameters_of_calc["Fяк"].ToString("F5"), "F<sub>як</sub>,&nbsp;А");
-                            WriteParamToResultFile(parameters_of_calc["Фp"].ToString("F5"), "Ф<sub>p</sub>,&nbsp;Мкс");
-                            WriteParamToResultFile(parameters_of_calc["Bp1"].ToString("F5"), "B<sub>p1</sub>,&nbsp;Гс");
-                            WriteParamToResultFile(parameters_of_calc["Bp2"].ToString("F5"), "B<sub>p2</sub>,&nbsp;Гс");
-                            WriteParamToResultFile(parameters_of_calc["Fp1"].ToString("F5"), "F<sub>p1</sub>&nbsp;A");
-                            WriteParamToResultFile(parameters_of_calc["Fp2"].ToString("F5"), "F<sub>p2</sub>&nbsp;A");
-                            WriteParamToResultFile(parameters_of_calc["F"].ToString("F5"), "F,&nbsp;А");
-                            WriteParamToResultFile(parameters_of_calc["Wp"].ToString("F5"), "W<sub>p</sub>,&nbsp;кгс∙см");
-                            WriteParamToResultFile(parameters_of_calc["Fтм"].ToString("F5"), "F<sub>тм</sub>,&nbsp;кг");
-                            WriteParamToResultFile(parameters_of_calc["P"].ToString("F5"), "P,&nbsp;Вт");
-                            WriteParamToResultFile(parameters_of_calc["Δt"].ToString("F5"), "Δt,&nbsp;°С");
-                            WriteParamToResultFile(parameters_of_calc["Kt"].ToString("F5"), "Вт/см<sup>2</sup>&nbsp;°С");
-
-                            sw.WriteLine("</table>");
+                            sw.WriteLine("<td>Расчет " + (calc_number++).ToString() + "</td>");                         
                         }
+                        sw.WriteLine("</tr>");
+
+                        WriteParamToResultFile("Sзаз", "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sзаз1", "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sзаз2", "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");                        
+                        WriteParamToResultFile("Sяр", "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Sяк", "S<sub>як</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("lяр", "l<sub>яр</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("lяк", "l<sub>як</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("lпол", "l<sub>пол</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("ν", "ν", calcs, "верхнего");
+                        WriteParamToResultFile("lср", "l<sub>ср</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("ls", "l<sub>s</sub>,&nbsp;мм", calcs, "верхнего");
+                        WriteParamToResultFile("r20", "r<sub>20</sub>,&nbsp;Ом", calcs, "верхнего");
+                        WriteParamToResultFile("rГ", "r<sub>Г</sub>,&nbsp;Ом", calcs, "верхнего");
+                        WriteParamToResultFile("I", "I,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Fм", "F<sub>м</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Qм", "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>", calcs, "верхнего");
+                        WriteParamToResultFile("Kм", "K<sub>м</sub>", calcs, "верхнего");
+                        WriteParamToResultFile("Фδ", "Ф<sub>δ</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bδ", "B<sub>δ</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fδ", "F<sub>δ</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Фяр", "Ф<sub>яp</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bяр", "B<sub>яр</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fяр", "F<sub>яр</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Фяк", "Ф<sub>як</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bяк", "B<sub>як</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fяк", "F<sub>як</sub>,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Фp", "Ф<sub>p</sub>,&nbsp;Мкс", calcs, "верхнего");
+                        WriteParamToResultFile("Bp1", "B<sub>p1</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Bp2", "B<sub>p2</sub>,&nbsp;Гс", calcs, "верхнего");
+                        WriteParamToResultFile("Fp1", "F<sub>p1</sub>&nbsp;A", calcs, "верхнего");
+                        WriteParamToResultFile("Fp2", "F<sub>p2</sub>&nbsp;A", calcs, "верхнего");
+                        WriteParamToResultFile("F", "F,&nbsp;А", calcs, "верхнего");
+                        WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс∙см", calcs, "верхнего");
+                        WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;кг", calcs, "верхнего");
+                        WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "верхнего");
+                        WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "верхнего");
+                        WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "верхнего");                       
+                       
+                        sw.WriteLine("</table>");
+
+
+                        ///////////////////////////////////////////////////////////////////////////////////////                        
+
+                        sw.WriteLine("<p>" + (x).ToString() + " для нижнего</p>");                        
+
+                        sw.WriteLine("<table class='table table-striped table-fit'>");
+
+                        // Делаем шапку таблицы
+
+                        sw.WriteLine("<tr><td>Параметр</td>");
+                        calc_number = 1;
+                        foreach (var calc in calcs.Keys.Where(key => key.Contains("нижнего")))
+                        {
+                            sw.WriteLine("<td>Расчет " + (calc_number++).ToString() + "</td>");
+                        }
+                        sw.WriteLine("</tr>");
+
+                        WriteParamToResultFile("Sзаз", "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sзаз1", "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sзаз2", "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sяр", "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Sяк", "S<sub>як</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("lяр", "l<sub>яр</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("lяк", "l<sub>як</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("lпол", "l<sub>пол</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("ν", "ν", calcs, "нижнего");
+                        WriteParamToResultFile("lср", "l<sub>ср</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("ls", "l<sub>s</sub>,&nbsp;мм", calcs, "нижнего");
+                        WriteParamToResultFile("r20", "r<sub>20</sub>,&nbsp;Ом", calcs, "нижнего");
+                        WriteParamToResultFile("rГ", "r<sub>Г</sub>,&nbsp;Ом", calcs, "нижнего");
+                        WriteParamToResultFile("I", "I,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Fм", "F<sub>м</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Qм", "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>", calcs, "нижнего");
+                        WriteParamToResultFile("Kм", "K<sub>м</sub>", calcs, "нижнего");
+                        WriteParamToResultFile("Фδ", "Ф<sub>δ</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bδ", "B<sub>δ</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fδ", "F<sub>δ</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Фяр", "Ф<sub>яp</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bяр", "B<sub>яр</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fяр", "F<sub>яр</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Фяк", "Ф<sub>як</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bяк", "B<sub>як</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fяк", "F<sub>як</sub>,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Фp", "Ф<sub>p</sub>,&nbsp;Мкс", calcs, "нижнего");
+                        WriteParamToResultFile("Bp1", "B<sub>p1</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Bp2", "B<sub>p2</sub>,&nbsp;Гс", calcs, "нижнего");
+                        WriteParamToResultFile("Fp1", "F<sub>p1</sub>&nbsp;A", calcs, "нижнего");
+                        WriteParamToResultFile("Fp2", "F<sub>p2</sub>&nbsp;A", calcs, "нижнего");
+                        WriteParamToResultFile("F", "F,&nbsp;А", calcs, "нижнего");
+                        WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс∙см", calcs, "нижнего");
+                        WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;кг", calcs, "нижнего");
+                        WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "нижнего");
+                        WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "нижнего");
+                        WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "нижнего");
+
+                        sw.WriteLine("</table>");
                     }                                        
                 }               
 
