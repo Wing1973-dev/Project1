@@ -391,8 +391,8 @@ namespace IVMElectro.View {
                     new XElement("tbx_Kfe2", ((AsdnSingleViewModel)DataContext).Kfe2));
             string namefile = SaveObjectToXMLFile(inputData);
             
-            ((AsdnSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
-            UpdateBinding();
+            ((AsdnSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Сохранен файл {namefile}";
+            //UpdateBinding();
         }
     }
 }

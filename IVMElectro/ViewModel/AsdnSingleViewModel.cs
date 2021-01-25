@@ -241,7 +241,8 @@ namespace IVMElectro.ViewModel
         #region properties
         public AsdnCompositeModel Model { get; set; }
         Logger Logger { get; set; }
-        public string Diagnostic { get; set; }
+        string diagnostic = string.Empty;
+        public string Diagnostic { get => diagnostic; set { diagnostic = value; OnPropertyChanged("Diagnostic"); } }
         #region machine parameters
         public string P12 { get => Model.Common.P12.ToString(); set { Model.Common.P12 = StringToDouble(value); OnPropertyChanged("P12"); } }
         public string U1 { get => Model.Common.U1.ToString(); set { Model.Common.U1 = StringToDouble(value); OnPropertyChanged("U1"); } }
@@ -363,7 +364,7 @@ namespace IVMElectro.ViewModel
                 Logger.Error(item);
             
             Diagnostic = algorithm.SolutionIsDone ? "Расчет завершен успешно" : @"Расчет прерван. Смотри содержимое файла logs\*.log";
-            OnPropertyChanged("Diagnostic");
+            //OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
             Model.AsdnSingle.SetParametersForModelValidation(Model.Common.Dpст, Model.Common.ΔГ2, Model.Common.hp);

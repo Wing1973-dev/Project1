@@ -54,7 +54,7 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(lb_aкBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_hр2, TextBox.TextProperty).UpdateTarget();
 
-            BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
+            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
 
         private void btnMenu_Click(object sender, RoutedEventArgs e) {
@@ -363,7 +363,7 @@ namespace IVMElectro.View {
                 if (!isFormat) ErrorReport("Некорректный или неполный файл исходных данных.");
             }
 
-            ((AsdnRedSingleViewModel)DataContext).Diagnostic = $"Открыт файл {namefile}";
+            ((AsdnRedSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Открыт файл {namefile}";
             UpdateBinding();
         }
 
@@ -425,8 +425,8 @@ namespace IVMElectro.View {
                         );
             string namefile = SaveObjectToXMLFile(inputData);
             
-            ((AsdnRedSingleViewModel)DataContext).Diagnostic = $"Сохранен файл {namefile}";
-            UpdateBinding();
+            ((AsdnRedSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Сохранен файл {namefile}";
+            //UpdateBinding();
         }
 
         private void cbxPAS_SelectionChanged(object sender, SelectionChangedEventArgs e) {
