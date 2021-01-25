@@ -10,6 +10,7 @@ using IVMElectro.Commands;
 using IVMElectro.Models.Premag;
 using LibraryAlgorithms;
 using NLog;
+using System.IO;
 using static IVMElectro.Services.DataSharedPremagContent;
 
 namespace IVMElectro.ViewModel.Premag {
@@ -29,6 +30,7 @@ namespace IVMElectro.ViewModel.Premag {
             };
         }
         #region properties
+        StreamWriter sw; // Поток для записи в файл с результатом расчета
         public string Diagnostic { get; set; }
         Logger Logger { get; set; }
 
@@ -140,6 +142,14 @@ namespace IVMElectro.ViewModel.Premag {
             return isSlot && isStrVarParam;
         }
 
+        // Записать параметр в файл с результатом расчета
+        private void WriteParamToResultFile(string param, string caption)
+        {
+            sw.WriteLine("<tr><td>" + caption + ":</td>");            
+            sw.WriteLine("<td>" + param + "</td>");            
+            sw.WriteLine("</tr>");
+        }
+
         UserCommand ViewResultCommand { get; set; }
         public ICommand CommandViewResult {
             get {
@@ -150,7 +160,112 @@ namespace IVMElectro.ViewModel.Premag {
         void ViewResult() {
             if (commonResult != null || commonResult.Count > 0) {
 
-                
+
+                string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";
+
+                // Создаем поток для записи в файл
+                sw = new StreamWriter(file_name);
+
+                sw.WriteLine("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>");
+                sw.WriteLine("<html>");
+                sw.WriteLine("<head>");
+                sw.WriteLine("<meta http-equiv='content-type' content='text/html; charset=UTF-8' />");
+
+                sw.WriteLine("<style>");
+                sw.WriteLine(".table td, .table th {");
+                sw.WriteLine("padding: .75rem;");
+                sw.WriteLine("vertical-align: top;");
+                sw.WriteLine("border-top: 1px solid #dee2e6;}");
+                sw.WriteLine("table {");
+                sw.WriteLine("border-collapse: collapse;}");
+                sw.WriteLine(".table-striped tbody tr:nth-of-type(odd){ background-color:rgba(0, 0, 0, .05)}");
+                sw.WriteLine(".h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{");
+                sw.WriteLine("font-family: sans-serif;}");
+                sw.WriteLine(".ml -auto, .mx-auto { margin-left: auto!important; }");
+                sw.WriteLine(".mr -auto, .mx-auto { margin-right: auto!important; }");
+                sw.WriteLine("</style>");
+
+                sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+                sw.WriteLine("<title>Результаты расчета</title>");
+                sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+                sw.WriteLine("</head>");
+                sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");
+
+                sw.WriteLine("<h1>Результаты расчета</h1>");
+
+                sw.WriteLine("<h2>Электромагнит осевого электромагнитного подшипника</h2>");                
+
+                for (int i = 0; i < commonResult.Count; i++)
+                {
+                    sw.WriteLine("<h3>ЭМ " + (i + 1).ToString() + "</h3>");
+
+                    foreach (var x in commonResult.Keys)
+                    {
+                        sw.WriteLine("<p>" + (x).ToString() + "</p>");
+
+                        Dictionary<string, Dictionary<string, double>> calcs = commonResult[x];
+
+                        foreach (var calc in calcs.Keys)
+                        {
+                            sw.WriteLine("<p>" + (calc).ToString() + "</p>");
+
+                            Dictionary<string, double> parameters_of_calc = calcs[calc];
+
+                            sw.WriteLine("<table class='table table-striped table-fit'>");
+
+                            WriteParamToResultFile(parameters_of_calc["Sзаз"].ToString("F5"), "S<sub>заз</sub>,&nbsp;мм<sup>2</sup>");
+                            WriteParamToResultFile(parameters_of_calc["Sзаз1"].ToString("F5"), "S<sub>заз1</sub>,&nbsp;мм<sup>2</sup>");
+                            WriteParamToResultFile(parameters_of_calc["Sзаз2"].ToString("F5"), "S<sub>заз2</sub>,&nbsp;мм<sup>2</sup>");
+                            WriteParamToResultFile(parameters_of_calc["Sяр"].ToString("F5"), "S<sub>яр</sub>,&nbsp;мм<sup>2</sup>");
+                            WriteParamToResultFile(parameters_of_calc["Sяк"].ToString("F5"), "S<sub>як</sub>,&nbsp;мм<sup>2</sup>");
+                            WriteParamToResultFile(parameters_of_calc["lяр"].ToString("F5"), "l<sub>яр</sub>,&nbsp;мм");
+                            WriteParamToResultFile(parameters_of_calc["lяк"].ToString("F5"), "l<sub>як</sub>,&nbsp;мм");
+                            WriteParamToResultFile(parameters_of_calc["lпол"].ToString("F5"), "l<sub>пол</sub>,&nbsp;мм");
+                            WriteParamToResultFile(parameters_of_calc["ν"].ToString("F5"), "ν");
+                            WriteParamToResultFile(parameters_of_calc["lср"].ToString("F5"), "l<sub>ср</sub>,&nbsp;мм");
+                            WriteParamToResultFile(parameters_of_calc["ls"].ToString("F5"), "l<sub>s</sub>,&nbsp;мм");
+                            WriteParamToResultFile(parameters_of_calc["r20"].ToString("F5"), "r<sub>20</sub>,&nbsp;Ом");
+                            WriteParamToResultFile(parameters_of_calc["rГ"].ToString("F5"), "r<sub>Г</sub>,&nbsp;Ом");
+                            WriteParamToResultFile(parameters_of_calc["I"].ToString("F5"), "I,&nbsp;А");
+                            WriteParamToResultFile(parameters_of_calc["Fм"].ToString("F5"), "F<sub>м</sub>,&nbsp;А");
+                            WriteParamToResultFile(parameters_of_calc["Qм"].ToString("F5"), "Q<sub>м</sub>,&nbsp;мм<sup>2</sup>");
+                            WriteParamToResultFile(parameters_of_calc["Kм"].ToString("F5"), "K<sub>м</sub>");
+                            WriteParamToResultFile(parameters_of_calc["Фδ"].ToString("F5"), "Ф<sub>δ</sub>,&nbsp;Мкс");
+                            WriteParamToResultFile(parameters_of_calc["Bδ"].ToString("F5"), "B<sub>δ</sub>,&nbsp;Гс");
+                            WriteParamToResultFile(parameters_of_calc["Fδ"].ToString("F5"), "F<sub>δ</sub>,&nbsp;А");
+                            WriteParamToResultFile(parameters_of_calc["Фяр"].ToString("F5"), "Ф<sub>яp</sub>,&nbsp;Мкс");
+                            WriteParamToResultFile(parameters_of_calc["Bяр"].ToString("F5"), "B<sub>яр</sub>,&nbsp;Гс");
+                            WriteParamToResultFile(parameters_of_calc["Fяр"].ToString("F5"), "F<sub>яр</sub>,&nbsp;А");
+                            WriteParamToResultFile(parameters_of_calc["Фяк"].ToString("F5"), "Ф<sub>як</sub>,&nbsp;Мкс");
+                            WriteParamToResultFile(parameters_of_calc["Bяк"].ToString("F5"), "B<sub>як</sub>,&nbsp;Гс");
+                            WriteParamToResultFile(parameters_of_calc["Fяк"].ToString("F5"), "F<sub>як</sub>,&nbsp;А");
+                            WriteParamToResultFile(parameters_of_calc["Фp"].ToString("F5"), "Ф<sub>p</sub>,&nbsp;Мкс");
+                            WriteParamToResultFile(parameters_of_calc["Bp1"].ToString("F5"), "B<sub>p1</sub>,&nbsp;Гс");
+                            WriteParamToResultFile(parameters_of_calc["Bp2"].ToString("F5"), "B<sub>p2</sub>,&nbsp;Гс");
+                            WriteParamToResultFile(parameters_of_calc["Fp1"].ToString("F5"), "F<sub>p1</sub>&nbsp;A");
+                            WriteParamToResultFile(parameters_of_calc["Fp2"].ToString("F5"), "F<sub>p2</sub>&nbsp;A");
+                            WriteParamToResultFile(parameters_of_calc["F"].ToString("F5"), "F,&nbsp;А");
+                            WriteParamToResultFile(parameters_of_calc["Wp"].ToString("F5"), "W<sub>p</sub>,&nbsp;кгс∙см");
+                            WriteParamToResultFile(parameters_of_calc["Fтм"].ToString("F5"), "F<sub>тм</sub>,&nbsp;кг");
+                            WriteParamToResultFile(parameters_of_calc["P"].ToString("F5"), "P,&nbsp;Вт");
+                            WriteParamToResultFile(parameters_of_calc["Δt"].ToString("F5"), "Δt,&nbsp;°С");
+                            WriteParamToResultFile(parameters_of_calc["Kt"].ToString("F5"), "Вт/см<sup>2</sup>&nbsp;°С");
+
+                            sw.WriteLine("</table>");
+                        }
+                    }                                        
+                }               
+
+                sw.WriteLine("</div></body>");
+                sw.WriteLine("</html>");
+
+                // Закрываем поток для записи в файл
+                sw.Close();
+
+                Services.ServiceIO.LaunchBrowser(file_name);
+
             }
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
