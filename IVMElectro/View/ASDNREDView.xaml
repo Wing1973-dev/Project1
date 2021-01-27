@@ -26,13 +26,13 @@
                 </Grid.RowDefinitions>
                 <StackPanel Orientation="Vertical">
                     <ToolBar VerticalAlignment="Top" >
-                        <Button Command="Open" Margin="5">
+                        <Button Command="Open" Margin="5" ToolTip="Загрузка параметров расчета">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="FileDownloadOutline" Width="25" Height="25" />
                                 <TextBlock Margin="5">Загрузить</TextBlock>
                             </StackPanel>
                         </Button>
-                        <Button Command="Save" Margin="5">
+                        <Button Command="Save" Margin="5" ToolTip="Сохранение результатов расчета">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="FileUploadOutline" Width="25" Height="25"/>
                                 <TextBlock Margin="5">Сохранить</TextBlock>

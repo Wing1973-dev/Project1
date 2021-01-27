@@ -228,7 +228,7 @@ namespace IVMElectro.Services {
         public static string Get_OpenFileName() {
             string fileName = "";
             OpenFileDialog dlg = new OpenFileDialog() {
-                Title = "Открытие файла базы данных программы",
+                Title = "Загрузка параметров расчета",
                 InitialDirectory = pathFolder,
                 Filter = "Файлы разметки (*.xml)|*.xml"
             };

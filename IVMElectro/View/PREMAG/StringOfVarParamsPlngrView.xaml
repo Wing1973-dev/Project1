@@ -4,9 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-        xmlns:local="clr-namespace:IVMElectro.View.PREMAG"
         mc:Ignorable="d"
-        Height="500" MinHeight="500" MaxHeight="500" Width="900" MinWidth="900" MaxWidth="900"  WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"    
+        Height="530" MinHeight="530" MaxHeight="530" Width="900" MinWidth="900" MaxWidth="900"  WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"    
         FontFamily="{DynamicResource MaterialDesignFont}">
     <Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
