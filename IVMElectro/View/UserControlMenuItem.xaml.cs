@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using IVMElectro.Models.MainWindow;
 
 namespace IVMElectro.View {
@@ -40,6 +41,11 @@ namespace IVMElectro.View {
                     break;
                 }
             }
+        }
+
+        private void ExpanderMenu_Collapsed(object sender, RoutedEventArgs e) {
+            for (int i = 0; i < ListViewMenu.ItemContainerGenerator.Items.Count; i++)
+                ((ListViewItem)ListViewMenu.ItemContainerGenerator.ContainerFromIndex(i)).IsSelected = false;
         }
     }
 }

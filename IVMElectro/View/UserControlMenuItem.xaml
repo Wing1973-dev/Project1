@@ -5,11 +5,26 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" >
-    <Grid>
+    <Grid >
         <materialDesign:PackIcon Kind="{Binding Path=IconKind}" Width="15"  Height="15" Margin="10 16" Foreground="White"/>
         <ListBoxItem Name="ListViewItemMenu" Content="{Binding Path=Header}" Padding="37 14" FontSize="15" Foreground="White"/>
-        <Expander Name="ExpanderMenu" Header="{Binding Path=Header}" IsExpanded="False" Width="270" HorizontalAlignment="Right" Background="{x:Null}" Foreground="White">
+
+
+        <Expander Name="ExpanderMenu" Header="{Binding Path=Header}" IsExpanded="False" Width="270" HorizontalAlignment="Right" Background="{x:Null}" Foreground="White" Collapsed="ExpanderMenu_Collapsed">
             <ListView Name="ListViewMenu" ItemsSource="{Binding Path=SubItems}" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Control.Foreground" Value="Black" />
+                                <Setter Property="Control.FontSize" Value="15" />
+                            </Trigger>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Control.Foreground" Value="Black" />
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Path=Name}" Padding="20 5" MouseLeftButtonDown="TextBlock_MouseLeftButtonDown" />
