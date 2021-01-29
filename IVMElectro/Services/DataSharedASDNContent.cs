@@ -10,10 +10,13 @@ namespace IVMElectro.Services {
         public const string errorU1 = "Значение параметра U1 должно принадлежать [48 : 660].";
         public const string errorf1 = "Значение параметра f1 должно принадлежать [10 : 400].";
         public const string errorDi = "Значение параметра Di должно принадлежать (50 : 1100].";
+        public const string errorDa = "Ошибочное значение параметра Da. Ошибочные значения диапазона.";
+        public const string errorDрст = "Ошибочное значение параметра Dp.ст. Ошибочные значения диапазона.";
         public const string errorΔГ1 = "Значение параметра ΔГ1 должно принадлежать [0 : 10].";
         public const string errorZ1 = "Ошибочное значение параметра Z1.";
         public const string errora1 = "Ошибочное значение параметра a1.";
         public const string errora2 = "Значение параметра a2 должно принадлежать [0 : 30].";
+        public const string errorac = "Ошибочное значение параметра ac. Ошибочные значения диапазона.";
         public const string errorΔкр = "Значение параметра Δкр должено принадлежать [3 : 40].";
         public const string errordиз = "Ошибочное значение параметра dиз.";
         public const string errorqГ = "Ошибочное значение параметра qГ.";
@@ -51,7 +54,7 @@ namespace IVMElectro.Services {
         public const string errorbкн = "Значение параметра bкн должно принадлежать [5 : 35].";
         public const string erroraкRED = "Ошибочное значение параметра aк.";
         public const string errorbкRED = "Ошибочное значение параметра bк.";
-
+        public const string errory1 = "Ошибочное значение параметра y1. Ошибочные значения диапазона.";
         #endregion
         public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) => Math.Round((Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1, 3);
         public static List<string> p_Collection => new List<string> { "1", "2", "3", "4", "5", "6", "7", "8" };

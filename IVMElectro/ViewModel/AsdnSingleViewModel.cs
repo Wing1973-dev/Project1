@@ -41,11 +41,18 @@ namespace IVMElectro.ViewModel
                             error = errorDi;
                         break;
                     case "Dpст":
-                        if (!((Model.Common.DpстBoundCalculation - 5 <= Model.Common.Dpст) && (Model.Common.Dpст < Model.Common.DpстBoundCalculation - 0.1))) 
+                        //diapason problem
+                        if (Model.Common.DpстBoundCalculation - 5 <= 0 || Model.Common.DpстBoundCalculation - 0.1 <= 0)
+                            error = errorDрст;
+                        else if (!((Model.Common.DpстBoundCalculation - 5 <= Model.Common.Dpст) && (Model.Common.Dpст < Model.Common.DpстBoundCalculation - 0.1))) 
                             error = $"Значение параметра Dp.ст должно принадлежать {DpстBounds}.";
                         break;
                     case "Da":
-                        if (!((Get_DaBounds(Model.Common.Di).left <= Model.Common.Da) && (Model.Common.Da < Get_DaBounds(Model.Common.Di).right))) 
+                        //diapason problem
+                        if ((Get_DaBounds(Model.Common.Di).left == Get_DaBounds(Model.Common.Di).right) ||
+                        double.IsNaN(Get_DaBounds(Model.Common.Di).left) || double.IsNaN(Get_DaBounds(Model.Common.Di).right))
+                            error = errorDa;
+                        else if (!((Get_DaBounds(Model.Common.Di).left <= Model.Common.Da) && (Model.Common.Da < Get_DaBounds(Model.Common.Di).right)))
                             error = $"Значение параметра {columnName} должно принадлежать {DaBounds}.";
                         break;
                     case "Pмех":
@@ -134,7 +141,10 @@ namespace IVMElectro.ViewModel
                             error = errorρ2Г;
                         break;
                     case "ac":
-                        if (!((Model.Common.dиз < Model.Common.ac) && (Model.Common.ac < 2 * Model.Common.dиз))) 
+                        //diapason problem
+                        if (Model.Common.dиз == 2 * Model.Common.dиз)
+                            error = errorac;
+                        else if (!((Model.Common.dиз < Model.Common.ac) && (Model.Common.ac < 2 * Model.Common.dиз))) 
                             error = $"Значение параметра расчета {columnName} должно принадлежать {acBounds}.";
                         break;
                     case "Kfe1":
@@ -154,7 +164,10 @@ namespace IVMElectro.ViewModel
                             error = $"Значение параметра расчета {columnName} должно принадлежать {d1Bounds}.";
                         break;
                     case "y1":
-                        if (!((1 <= Model.Common.y1) && (Model.Common.y1 <= 0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p)))) 
+                        //diapason problem
+                        if (0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p) <= 1)
+                            error = errory1;
+                        else if (!((1 <= Model.Common.y1) && (Model.Common.y1 <= 0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p))))
                             error = $"Значение параметра расчета {columnName} должно принадлежать {y1Bounds}.";
                         break;
                     case "B":
