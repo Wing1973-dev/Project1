@@ -17,6 +17,9 @@ namespace IVMElectro.Services {
         public const string errora1 = "Ошибочное значение параметра a1.";
         public const string errora2 = "Значение параметра a2 должно принадлежать [0 : 30].";
         public const string errorac = "Ошибочное значение параметра ac. Ошибочные значения диапазона.";
+        public const string errordв = "Ошибочное значение параметра dв. Ошибочные значения диапазона.";
+        public const string errordкп = "Ошибочное значение параметра dкп. Ошибочные значения диапазона.";
+        public const string errorbZH = "Ошибочное значение параметра bZH. Ошибочные значения диапазона.";
         public const string errorΔкр = "Значение параметра Δкр должено принадлежать [3 : 40].";
         public const string errordиз = "Ошибочное значение параметра dиз.";
         public const string errorqГ = "Ошибочное значение параметра qГ.";
