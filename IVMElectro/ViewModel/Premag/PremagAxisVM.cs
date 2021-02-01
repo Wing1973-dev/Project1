@@ -334,7 +334,7 @@ namespace IVMElectro.ViewModel.Premag {
                         sw.WriteLine("</div>");
                     }
 
-                sw.WriteLine("<h3>Сумма верхних электромагнитов</h3>");
+                sw.WriteLine("<h3>Суммарное значение F<sub>тм</sub> для верхних электромагнитов</h3>");
 
                 sw.WriteLine("<table class='table table-striped table-fit'>");
                 sw.WriteLine("<tr>");
@@ -353,7 +353,7 @@ namespace IVMElectro.ViewModel.Premag {
                 sw.WriteLine("</tr>");
                 sw.WriteLine("</table>");
 
-                sw.WriteLine("<h3>Сумма нижних электромагнитов</h3>");
+                sw.WriteLine("<h3>Суммарное значение F<sub>тм</sub> для нижних электромагнитов</h3>");
 
                 sw.WriteLine("<table class='table table-striped table-fit'>");
                 sw.WriteLine("<tr>");
