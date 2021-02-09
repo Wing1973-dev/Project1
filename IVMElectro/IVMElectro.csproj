@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <Authors>Belokrylov Petr</Authors>
     <Company>OKBM Afrikantov</Company>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

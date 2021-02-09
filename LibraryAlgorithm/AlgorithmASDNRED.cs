@@ -270,7 +270,7 @@ namespace LibraryAlgorithms {
             CalculationResistance(x1, xʹ2, ref rʹʹ2, ref xʹʹ2, ref rʹk, ref xʹk, ref Zʹoo, ref RM, ref ZM);
             rʹʹ2н = rʹʹ2; xʹʹ2н = xʹʹ2; rʹ2н = rʹ2; xʹ2н = xʹ2; xʹ1н = xʹ1; //сбор данных для номинального режима
             Zʹk = Math.Sqrt(rʹk * rʹk + xʹk * xʹk);
-            RH = 1.5 * U1 * U1 / Pʹ2 - rʹk + Math.Sqrt((1.5 * U1 * U1 / Pʹ2 - rʹk) * (1.5 * U1 * U1 / Pʹ2 - rʹk) - Zʹk * Zʹk);
+            RH = 1.5 * U1 * U1 / Pʹ2 - rʹk + Math.Sqrt((1.5 * U1 * U1 / Pʹ2 - rʹk) * (1.5 * U1 * U1 / Pʹ2 - rʹk) - Zʹk * Zʹk); //error
             if (double.IsNaN(RH)) {
                 Logging.Add($"Type: {GetType()}  message: Ошибка расчета сопротивления схемы замещения -> double.IsNaN(RH)");
                 return;

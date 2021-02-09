@@ -269,7 +269,6 @@ namespace IVMElectro.ViewModel
         public string ΔГ1 { get => Model.Common.ΔГ1.ToString(); set { Model.Common.ΔГ1 = StringToDouble(value); OnPropertyChanged("ΔГ1"); } }
         public string Z1 { get => Model.Common.Z1.ToString(); set { Model.Common.Z1 = StringToInt(value); OnPropertyChanged("Z1"); } }
         public string Da { get => Model.Common.Da.ToString(); set { Model.Common.Da = StringToDouble(value); OnPropertyChanged("Da"); } }
-        //рекомендуемые границы
         public string DaBounds { get => $"[{Math.Round(Get_DaBounds(Model.Common.Di).left, 2)} : {Math.Round(Get_DaBounds(Model.Common.Di).right, 2)})"; } //label
         public string a1 { get => Model.Common.a1.ToString(); set { Model.Common.a1 = StringToInt(value); OnPropertyChanged("a1"); } }
         public string a2 { get => Model.Common.a2.ToString(); set { Model.Common.a2 = StringToInt(value); OnPropertyChanged("a2"); } }
@@ -280,7 +279,7 @@ namespace IVMElectro.ViewModel
         public string h8 { get => Model.Common.h8.ToString(); set { Model.Common.h8 = StringToDouble(value); OnPropertyChanged("h8"); } }
         public string h7 { get => Model.Common.h7.ToString(); set { Model.Common.h7 = StringToDouble(value); OnPropertyChanged("h7"); } }
         public string h6 { get => Model.Common.h6.ToString(); set { Model.Common.h6 = StringToDouble(value); OnPropertyChanged("h6"); } }
-        public string bП1 { get => bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label
+        public string bП1 { get => bП1CalcRED(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label
         public string h5 { get => Model.Common.h5.ToString(); set { Model.Common.h5 = StringToDouble(value); OnPropertyChanged("h5"); } }
         public string h3 { get => Model.Common.h3.ToString(); set { Model.Common.h3 = StringToDouble(value); OnPropertyChanged("h3"); } }
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
@@ -307,6 +306,7 @@ namespace IVMElectro.ViewModel
         public string B { get => Model.Common.B.ToString(); set { Model.Common.B = StringToDouble(value); OnPropertyChanged("B"); } }
         public string PЗ { get => Model.AsdnSingle.P3.ToString(); set { Model.AsdnSingle.P3 = StringToInt(value); OnPropertyChanged("PЗ"); } } 
         public string p10_50 { get => Model.Common.p10_50.ToString(); set {  Model.Common.p10_50 = StringToDouble(value); OnPropertyChanged("p10_50"); } }
+        public string PR { get => Model.Common.PR; set { Model.Common.PR = value; OnPropertyChanged("PR"); } }
         #endregion
         #region rotor parameters
         public string ΔГ2 { get => Model.Common.ΔГ2.ToString(); set { Model.Common.ΔГ2 = StringToDouble(value); OnPropertyChanged("ΔГ2"); } }
@@ -354,6 +354,7 @@ namespace IVMElectro.ViewModel
         public List<SteelProperties> MarkSteelRotorDirectory { get; set; } //γ collection
         public List<SteelProperties> MarkSteelPartitionlDirectory { get; set; } //ρРУБ collection
         public List<SteelProperties> MarkSteelStatorDirectory { get; set; } //p10_50 collection
+        public List<string> Get_collectionPR => new List<string> { "трапецеидальный", "круглый" }; //признак формы паза статора
         #endregion
         #region commands
         AlgorithmASDN algorithm;

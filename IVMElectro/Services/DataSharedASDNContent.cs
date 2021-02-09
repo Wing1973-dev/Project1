@@ -58,8 +58,17 @@ namespace IVMElectro.Services {
         public const string erroraкRED = "Ошибочное значение параметра aк.";
         public const string errorbкRED = "Ошибочное значение параметра bк.";
         public const string errory1 = "Ошибочное значение параметра y1. Ошибочные значения диапазона.";
+        public const string errord1RED = "Ошибочное значение параметра d1.";
+        public const string errordiapason = "Ошибочное значение диапазона.";
         #endregion
-        public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) => Math.Round((Math.PI * (Di + 2 * (h8 + h7 + h6)) - bz1) / Z1, 3);
+        public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) => 
+            Math.Round(Math.PI * (Di + 2 * (h8 + h7 + h6)) / Z1 - bz1 , 3);
+        public static double bП1CalcRED(double Di, double h8, double h7, double h6, double bz1, double Z1) {
+            double R = 0.5 * Di + h8 + h7 + h6;
+            double α = Math.Asin(0.5 * bz1 / R);
+            return 2 * R * Math.Sin(0.5 * Math.PI / Z1 - α);
+        }
+
         public static List<string> p_Collection => new List<string> { "1", "2", "3", "4", "5", "6", "7", "8" };
         public static List<string> Z1Collection(double Di, int p) {
             int start = Convert.ToInt32(Math.Round(Math.PI * Di / 20 )),

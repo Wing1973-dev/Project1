@@ -20,6 +20,7 @@ namespace IVMElectro.View {
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => UpdateBinding();
 
         void UpdateBinding() {
+            //bound and value related (lbPмехBounds, tbxPmex) 
             BindingOperations.GetBindingExpression(lbPмехBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbxPmex, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbDaBounds, ContentProperty).UpdateTarget();
@@ -44,19 +45,21 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbx_dв, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_bкBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_bк, TextBox.TextProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(tbx_dкп, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_dкпBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_bZH, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_bZHBounds, ContentProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(tbx_aкн, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_aкнBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_aк, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_aкBounds, ContentProperty).UpdateTarget();
+            
+            //required when blocking an interface
+            BindingOperations.GetBindingExpression(tbx_dкп, TextBox.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_bП2, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_hр2, TextBox.TextProperty).UpdateTarget();
-
-            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_bкн, TextBox.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_aкн, TextBox.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_d1, TextBox.TextProperty).UpdateTarget();
         }
-
         private void btnMenu_Click(object sender, RoutedEventArgs e) {
             switch (((Button)sender).Name) {
                 case "btnWires": {
@@ -197,7 +200,6 @@ namespace IVMElectro.View {
                     break;
             }
         }
-
         private void OpenFile(object sender, ExecutedRoutedEventArgs e) {
             bool isFormat = true;
             string namefile = string.Empty;
@@ -280,6 +282,9 @@ namespace IVMElectro.View {
                 else
                     isFormat = false;
                 if (inputData.Element("tbx_K2") != null) ((AsdnRedSingleViewModel)DataContext).K2 = inputData.Element("tbx_K2").Value.Trim();
+                else
+                    isFormat = false;
+                if (inputData.Element("cbx_PR") != null) ((AsdnRedSingleViewModel)DataContext).PR = inputData.Element("cbx_PR").Value.Trim();
                 else
                     isFormat = false;
                 if (inputData.Element("tbx_d1") != null) ((AsdnRedSingleViewModel)DataContext).d1 = inputData.Element("tbx_d1").Value.Trim();
@@ -366,7 +371,6 @@ namespace IVMElectro.View {
             ((AsdnRedSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Открыт файл {namefile}";
             UpdateBinding();
         }
-
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
             XElement inputData = new XElement("inputData",
                         new XElement("tbxP12", ((AsdnRedSingleViewModel)DataContext).P12),
@@ -396,6 +400,7 @@ namespace IVMElectro.View {
                         new XElement("tbxKзап", ((AsdnRedSingleViewModel)DataContext).Kзап),
                         new XElement("tbx_y1", ((AsdnRedSingleViewModel)DataContext).y1),
                         new XElement("tbx_K2", ((AsdnRedSingleViewModel)DataContext).K2),
+                        new XElement("cbx_PR", ((AsdnRedSingleViewModel)DataContext).PR),
                         new XElement("tbx_d1", ((AsdnRedSingleViewModel)DataContext).d1),
                         new XElement("tbx_Kfe1", ((AsdnRedSingleViewModel)DataContext).Kfe1),
                         new XElement("tbx_ρ1x", ((AsdnRedSingleViewModel)DataContext).ρ1x),
@@ -428,7 +433,6 @@ namespace IVMElectro.View {
             ((AsdnRedSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Сохранен файл {namefile}";
             //UpdateBinding();
         }
-
         private void cbxPAS_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             EnableStateRotorElements();
             switch (cbxPAS.SelectedItem.ToString()) {
@@ -483,5 +487,38 @@ namespace IVMElectro.View {
             ((AsdnRedSingleViewModel)DataContext).hр2 = "0"; ((AsdnRedSingleViewModel)DataContext).bкн = "0"; 
             ((AsdnRedSingleViewModel)DataContext).aкн = "0";
         }
+        private void lbox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            switch ((sender as ListBox).Name) {
+                case "lboxZ1":
+                    ((AsdnRedSingleViewModel)DataContext).Z1 = (sender as ListBox).SelectedItem.ToString();
+                    break;
+                case "lbox_a1":
+                    ((AsdnRedSingleViewModel)DataContext).a1 = (sender as ListBox).SelectedItem.ToString();
+                    break;
+            }
+        }
+        private void cbxPR_SelectionChanged(object sender, SelectionChangedEventArgs e) {
+            EnableStatePR();
+            switch (cbx_PR.SelectedItem.ToString()) {
+                case "трапецеидальный":
+                    TrapezoidStatePR();
+                    break;
+                case "круглый":
+                    RoundStatePR();
+                    break;
+            }
+            UpdateBinding();
+        }
+        void EnableStatePR() {
+            tbx_d1.IsEnabled = true; lb_d1Bounds.Visibility = Visibility.Visible;
+        }
+        void TrapezoidStatePR() {
+            tbx_d1.IsEnabled = false; lb_d1Bounds.Visibility = Visibility.Hidden;
+            ((AsdnRedSingleViewModel)DataContext).d1 = "0";
+        }
+        void RoundStatePR() {
+            EnableStatePR(); UpdateBinding();
+        }
+
     }
 }

@@ -277,7 +277,10 @@ namespace IVMElectro.ViewModel {
                         break;
                     case "aк":
                         if (PAS == "двойная клетка") {
-                            if (!((bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left <= Model.AsdnRedSingle.aк) &&
+                            if (bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left ==
+                                bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).right)
+                                error = errordiapason;
+                            else if (!((bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left <= Model.AsdnRedSingle.aк) &&
                             (Model.AsdnRedSingle.aк <= bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).right)))
                                 error = $"Значение параметра {columnName} должно принадлежать {aкBounds}.";
                         }
@@ -332,7 +335,7 @@ namespace IVMElectro.ViewModel {
         public string h8 { get => Model.Common.h8.ToString(); set { Model.Common.h8 = StringToDouble(value); OnPropertyChanged("h8"); } }
         public string h7 { get => Model.Common.h7.ToString(); set { Model.Common.h7 = StringToDouble(value); OnPropertyChanged("h7"); } }
         public string h6 { get => Model.Common.h6.ToString(); set { Model.Common.h6 = StringToDouble(value); OnPropertyChanged("h6"); } }
-        public string bП1 { get => bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label
+        public string bП1 { get => bП1CalcRED(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label
         public string h5 { get => Model.Common.h5.ToString(); set { Model.Common.h5 = StringToDouble(value); OnPropertyChanged("h5"); } }
         public string h3 { get => Model.Common.h3.ToString(); set { Model.Common.h3 = StringToDouble(value); OnPropertyChanged("h3"); } }
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
@@ -358,6 +361,7 @@ namespace IVMElectro.ViewModel {
         public string ρ1ГBounds { get => $"[{Math.Round(Model.Common.ρ1x, 4)} : 0.1235]"; } //label
         public string B { get => Model.Common.B.ToString(); set { Model.Common.B = StringToDouble(value); OnPropertyChanged("B"); } }
         public string p10_50 { get => Model.Common.p10_50.ToString(); set { Model.Common.p10_50 = StringToDouble(value); OnPropertyChanged("p10_50"); } }
+        public string PR { get => Model.Common.PR; set { Model.Common.PR = value; OnPropertyChanged("PR"); } }
         #endregion
         #region rotor parameters
         public string ΔГ2 { get => Model.Common.ΔГ2.ToString(); set { Model.Common.ΔГ2 = StringToDouble(value); OnPropertyChanged("ΔГ2"); } }
@@ -409,6 +413,7 @@ namespace IVMElectro.ViewModel {
         public List<SteelProperties> MarkSteelPartitionlDirectory { get; set; } //ρРУБ collection
         public List<SteelProperties> MarkSteelStatorDirectory { get; set; } //p10_50 collection
         public List<string> Get_collectionPAS => new List<string> { "круглый", "прямоугольный", "грушевидный", "двойная клетка" };
+        public List<string> Get_collectionPR => new List<string> { "трапецеидальный", "круглый" }; //признак формы паза статора
         /// <summary>
         /// Тип паза ротора
         /// </summary>

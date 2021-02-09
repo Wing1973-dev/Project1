@@ -17,7 +17,7 @@
                         <Style.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
                                 <Setter Property="Control.Foreground" Value="Black" />
-                                <Setter Property="Control.FontSize" Value="15" />
+                                <Setter Property="Control.FontSize" Value="14" />
                             </Trigger>
                             <Trigger Property="IsSelected" Value="True">
                                 <Setter Property="Control.Foreground" Value="Black" />

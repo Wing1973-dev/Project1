@@ -305,7 +305,7 @@ namespace IVMElectro.Services {
         /// Вывод сообщения об ошибке
         /// </summary>
         /// <param name="message">сообщения об ошибке</param>
-        public static void ErrorReport(string message) => MessageBox.Show(message, "Ошибка данных.", MessageBoxButton.OK, MessageBoxImage.Error);
+        public static void ErrorReport(string message) => MessageBox.Show(message, "Ошибка.", MessageBoxButton.OK, MessageBoxImage.Error);
         /// <summary>
         /// Вывод сервисного сообщения
         /// </summary>

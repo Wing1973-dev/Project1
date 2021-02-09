@@ -20,7 +20,7 @@ namespace IVMElectro.Models {
         #endregion
         public AsdnRedSingleModel() {
             hш = bш = dкп = hp2 = aкн = aк = bкн = bZH = bП2 = bк = 0;
-            dв = 0.19; PAS = "круглый";
+            dв = 0.19; PAS = "круглый"; 
         }
         public override void CreationDataset() => 
             Dataset = new Dictionary<string, double> { { "dв", dв }, { "hш", hш }, { "bш", bш }, { "dкп", dкп }, { "hр2", hp2 },  { "aкн", aкн }, { "aк", aк }, 
@@ -43,8 +43,7 @@ namespace IVMElectro.Models {
                     new ValidationResult(
                         $"Значение параметра bZH должно принадлежать {Get_bZHBounds(bounds_bZH(paramsModelValid.Dpст, paramsModelValid.hp, paramsModelValid.Z2))}."));
 
-
-            //parameters depending on the type of rotor
+            #region parameters depending on the type of rotor
             if (PAS == "двойная клетка") {
                 if (!((bounds_aк(dкп, hш, hp2).left <= aк) && (aк <= bounds_aк(dкп, hш, hp2).right)))
                     errors.Add(new ValidationResult($"Значение параметра aк должно принадлежать {Get_aкBounds(bounds_aк(dкп, hш, hp2))}."));
@@ -62,23 +61,24 @@ namespace IVMElectro.Models {
                     (dкп <= Get_dкпBounds(paramsModelValid.Dpст, paramsModelValid.Z2).right)))
                     errors.Add(
                         new ValidationResult($"Значение параметра dкп должно принадлежать {dкпBoundsString(Get_dкпBounds(paramsModelValid.Dpст, paramsModelValid.Z2))}."));
-            
+
             if (PAS == "двойная клетка") {
                 if (!((3 <= hp2) && (hp2 <= 10))) errors.Add(new ValidationResult(errorhp2RED));
                 if (!((5 <= bкн) && (bкн <= 35))) errors.Add(new ValidationResult(errorbкн));
                 if (!((bounds_aкн(_dпн, _dпв, _hp1).left <= aкн) && (aкн <= 1.2 * bounds_aкн(_dпн, _dпв, _hp1).right)))
                     errors.Add(new ValidationResult($"Значение параметра aкн должно принадлежать {Get_aкнBounds(bounds_aкн(_dпн, _dпв, _hp1))}."));
-            } 
-            
+            }
+
             if (PAS == "прямоугольный" || PAS == "двойная клетка")
                 if (double.IsNaN(bП2) || bП2 <= 0) errors.Add(new ValidationResult(errorbП2RED));
+            #endregion
 
             return errors;
         }
 
         private (double Dpст, double Z2, double hp, double Da) paramsModelValid;
         public void SetParametersForModelValidation(double Dpст, double Z2, double hp, double Da) {
-            paramsModelValid.Dpст = Dpст; paramsModelValid.Z2 = Z2; paramsModelValid.hp = hp; paramsModelValid.Da = Da; 
+            paramsModelValid.Dpст = Dpст; paramsModelValid.Z2 = Z2; paramsModelValid.hp = hp; paramsModelValid.Da = Da;
         }
     }
 }

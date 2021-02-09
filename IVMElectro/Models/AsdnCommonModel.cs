@@ -41,8 +41,7 @@ namespace IVMElectro.Models {
         public double ac { get; set; }
         public double bПН => Math.Round(ac * 2 * h8 * Math.Tan(Math.PI / 12), 3);
         public double h1 => h8 + h7 + h6 + h5 + h4 + 2 *h3 + h2;  //interface output only 
-        public double h2 => Get_h2(Math.Tan(Math.PI / Convert.ToDouble(Z1)), bП1 + 2 * (h5 + h4 + h3) * Math.Tan(Math.PI / Convert.ToDouble(Z1)),
-            (bП1 + h5 * Math.Tan(Math.PI / Convert.ToDouble(Z1)) + (h5 + h4) * Math.Tan(Math.PI / Convert.ToDouble(Z1))) * h4);  //algorithm output only 
+        public double h2 => Get_h2(Math.Tan(Math.PI / Convert.ToDouble(Z1)), bП1 + 2 * (h5 + h4 + h3) * Math.Tan(Math.PI / Convert.ToDouble(Z1)), Sсл);  
         public double li { get; set; }
         public double cз { get; set; }
         public double bП => 2 * (h2 + 2 * h3 + h4 + h5) * Math.Tan(Math.PI / Z1);  //interface output only 
@@ -57,7 +56,8 @@ namespace IVMElectro.Models {
         public double ρ1Г { get; set; }
         public double B { get; set; }
         public double p10_50 { get; set; }
-        public double Sсл => 0.5 * (bгрс + bП1 + 2 * h5 * Math.Sin(Math.PI / Convert.ToDouble(Z1))) * h4;
+        public double Sсл => (bП1 + h5 * Math.Tan(Math.PI / Convert.ToDouble(Z1)) + (h5 + h4) * Math.Tan(Math.PI / Convert.ToDouble(Z1))) * h4;
+        public string PR { get; set; } //признак формы паза статора
         #endregion
         #region rotor parameters
         public double ΔГ2 { get; set; }
@@ -74,7 +74,7 @@ namespace IVMElectro.Models {
             a2 = a1 = Z2 = Z1 = 0;
             f1 = 50; h7 = 1; h5 = 1.9; h3 = 0.7; cз = 100; Kзап = 0.72; Kfe1 = 0.93; ρ1x = 0.0175; ρ1Г = 0.0247; B = 10; ρ2Г = 0.0224; p = 1;
             
-            bСК = "прямые"; p = 1;
+            bСК = "прямые"; p = 1; PR = "трапецеидальный";
         }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "P12", P12 }, { "U1", U1 }, { "f1", f1 }, { "p", p }, { "Pмех", Pмех }, 
@@ -126,8 +126,10 @@ namespace IVMElectro.Models {
                 errors.Add(new ValidationResult($"Значение параметра расчета y1 должно принадлежать [1 : {0.5 * Z1 / Convert.ToDouble(p)}]."));
             if (!((0.5 <= β) && (β <= 0.95))) errors.Add(new ValidationResult(errorβ));
             if ((K2 < 0) || double.IsNaN(K2)) errors.Add(new ValidationResult(errorK2));
+            if (string.IsNullOrEmpty(PR)) errors.Add(new ValidationResult("Error PR.")); //such a state is unattainable. This is used for  Validator.TryValidateObject(..., true)
             if (!((0 <= d1) && (d1 <= bП1Calc(Di, h8, h7, h6, bz1, Z1))))
-                errors.Add(new ValidationResult($"Значение параметра расчета d1 должно принадлежать [0 : {Math.Round(bП1Calc(Di, h8, h7, h6, bz1, Z1), 2)}]."));
+                errors.Add(
+                    new ValidationResult($"Значение параметра расчета d1 должно принадлежать [0 : {Math.Round(bП1Calc(Di, h8, h7, h6, bz1, Z1), 2)}].")); 
             if (!((0.9 <= Kfe1) && (Kfe1 <= 1))) errors.Add(new ValidationResult(errorKfe1));
             if (!((0.002 <= ρ1x) && (ρ1x <= 0.05))) errors.Add(new ValidationResult(errorρ1x));
             if ((ρРУБ < 0) || double.IsNaN(ρРУБ)) errors.Add(new ValidationResult(errorρРУБ));
