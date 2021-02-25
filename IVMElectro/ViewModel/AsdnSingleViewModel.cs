@@ -76,8 +76,7 @@ namespace IVMElectro.ViewModel
                             error = errorbП;
                         break;
                     case "bП1":
-                        if (bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1) < 0 || 
-                            double.IsNaN(bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1))) 
+                        if (Model.Common.bП1 < 0 || double.IsNaN(Model.Common.bП1))
                             error = errorbП1;
                         break;
                     case "β":
@@ -99,6 +98,10 @@ namespace IVMElectro.ViewModel
                     case "h1":
                         if (Model.Common.h1 < 0 || double.IsNaN(Model.Common.h1)) 
                             error = errorh1;
+                        break;
+                    case "h2":
+                        if (Model.Common.h2 < 0 || double.IsNaN(Model.Common.h2))
+                            error = errorh2;
                         break;
                     case "h3":
                         if (!((0 <= Model.Common.h3) && (Model.Common.h3 <= 5))) 
@@ -125,8 +128,13 @@ namespace IVMElectro.ViewModel
                             error = errorh8;
                         break;
                     case "li":
-                        if (!((0.5 <= Model.Common.li) && (Model.Common.li >= 3))) 
-                            error = errorli;
+                        if (double.IsNaN(Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left) ||
+                            double.IsNaN(Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right))
+                            error = errordiapason;
+                        else if (!((Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left <= Model.Common.li) && 
+                            (Model.Common.li <= Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right))) 
+                            error = $"Значение параметра li должно принадлежать [{Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left} : " +
+                                $"{Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right}].";
                         break;
                     case "ρ1x":
                         if (!((0.002 <= Model.Common.ρ1x) && (Model.Common.ρ1x <= 0.05))) 
@@ -182,10 +190,18 @@ namespace IVMElectro.ViewModel
                         if (!((3.5 <= Model.Common.bz1) && (Model.Common.bz1 <= 15))) 
                             error = errorbz1;
                         break;
-                    case "Kзап":
-                        if (!((0.36 <= Model.Common.Kзап) && (Model.Common.Kзап <= 0.76))) 
-                            error = errorKзап;
+                    case "W1":
+                        if ((Model.Common.W1 < 0) || !int.TryParse(W1, out _))
+                            error = errorW1;
                         break;
+                    case "Wc":
+                        if ((Model.Common.Wc < 0) || !int.TryParse(Wc, out _))
+                            error = errorWc;
+                        break;
+                    //case "Kзап":
+                    //    if (!((0.36 <= Model.Common.Kзап) && (Model.Common.Kзап <= 0.76))) 
+                    //        error = errorKзап;
+                    //    break;
                     case "hp":
                         if (!((0.125 * Get_Dp(Model.Common.Dpст, Model.Common.ΔГ2) <= Model.Common.hp) && (Model.Common.hp <= 0.375 * Get_Dp(Model.Common.Dpст, Model.Common.ΔГ2)))) 
                             error = $"Значение параметра {columnName} должно принадлежать {hpBounds}.";
@@ -268,6 +284,7 @@ namespace IVMElectro.ViewModel
         public string Di { get => Model.Common.Di.ToString(); set { Model.Common.Di = StringToDouble(value); OnPropertyChanged("Di"); } }
         public string ΔГ1 { get => Model.Common.ΔГ1.ToString(); set { Model.Common.ΔГ1 = StringToDouble(value); OnPropertyChanged("ΔГ1"); } }
         public string Z1 { get => Model.Common.Z1.ToString(); set { Model.Common.Z1 = StringToInt(value); OnPropertyChanged("Z1"); } }
+        public string q1 { get => Math.Round(Model.Common.q1, 3).ToString(); } //label
         public string Da { get => Model.Common.Da.ToString(); set { Model.Common.Da = StringToDouble(value); OnPropertyChanged("Da"); } }
         public string DaBounds { get => $"[{Math.Round(Get_DaBounds(Model.Common.Di).left, 2)} : {Math.Round(Get_DaBounds(Model.Common.Di).right, 2)})"; } //label
         public string a1 { get => Model.Common.a1.ToString(); set { Model.Common.a1 = StringToInt(value); OnPropertyChanged("a1"); } }
@@ -279,19 +296,28 @@ namespace IVMElectro.ViewModel
         public string h8 { get => Model.Common.h8.ToString(); set { Model.Common.h8 = StringToDouble(value); OnPropertyChanged("h8"); } }
         public string h7 { get => Model.Common.h7.ToString(); set { Model.Common.h7 = StringToDouble(value); OnPropertyChanged("h7"); } }
         public string h6 { get => Model.Common.h6.ToString(); set { Model.Common.h6 = StringToDouble(value); OnPropertyChanged("h6"); } }
-        public string bП1 { get => bП1CalcRED(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label
+        public string bП1 { get => Model.Common.bП1.ToString(); set { Model.Common.bП1 = StringToDouble(value); OnPropertyChanged("bП1"); } }
+        public string bП1_calc { get => Math.Round(Model.Common.bП1_calc, 3).ToString(); } //label
         public string h5 { get => Model.Common.h5.ToString(); set { Model.Common.h5 = StringToDouble(value); OnPropertyChanged("h5"); } }
         public string h3 { get => Model.Common.h3.ToString(); set { Model.Common.h3 = StringToDouble(value); OnPropertyChanged("h3"); } }
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
         public string ac { get => Model.Common.ac.ToString(); set { Model.Common.ac = StringToDouble(value); OnPropertyChanged("ac"); } }
         public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
         public string bПН { get => Model.Common.bПН.ToString(); } //label
-        public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
+        public string h1 { get => Model.Common.h1.ToString(); set { Model.Common.h1 = StringToDouble(value); OnPropertyChanged("h1"); } } //dep 51
+        public string h1_calc { get => Math.Round(Model.Common.h1_calc, 3).ToString(); } //label
+        public string h2 { get => Model.Common.h2.ToString(); set { Model.Common.h2 = StringToDouble(value); OnPropertyChanged("h2"); } } //dep 51
+        public string h2_calc { get => Math.Round(Model.Common.h2_calc, 3).ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
-        public string liBounds { get => Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
+        public string liBounds { get => Get_liBounds_string(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
         public string cз { get => Model.Common.cз.ToString(); set { Model.Common.cз = StringToDouble(value); OnPropertyChanged("cз"); } }
-        public string bП { get => Math.Round(Model.Common.bП, 3).ToString(); } //label
-        public string Kзап { get => Model.Common.Kзап.ToString(); set { Model.Common.Kзап = StringToDouble(value); OnPropertyChanged("Kзап"); } }
+        public string bП { get => Model.Common.bП.ToString(); set { Model.Common.bП = StringToDouble(value); OnPropertyChanged("bП"); } }
+        public string bП_calc { get => Math.Round(Model.Common.bП_calc, 3).ToString(); } //label
+        public string W1 { get => Model.Common.W1.ToString(); set { Model.Common.W1 = StringToInt(value); OnPropertyChanged("W1"); } }
+        public string Wc { get => Model.Common.Wc.ToString(); set { Model.Common.Wc = StringToInt(value); OnPropertyChanged("Wc"); } }
+        public string Wc_calc { get => Math.Round(Model.Common.Wc_calc, 3).ToString(); } //label
+        //public string Kзап { get => Model.Common.Kзап.ToString(); set { Model.Common.Kзап = StringToDouble(value); OnPropertyChanged("Kзап"); } }
+        public string Kзап { get => Math.Round(Model.Common.Wc_calc, 3).ToString(); } //label
         public string y1 { get => Model.Common.y1.ToString(); set { Model.Common.y1 = StringToDouble(value); OnPropertyChanged("y1"); } }
         public string y1Bounds { get => $"[1 : {Math.Round(0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p), 3)}]"; } //label
         public string β { get => Math.Round(Model.Common.β, 3).ToString(); } //label
@@ -369,16 +395,24 @@ namespace IVMElectro.ViewModel
         void Calculation() {
             Model.Common.CreationDataset(); Model.AsdnSingle.CreationDataset();
             Dictionary<string, double> _inputAlgorithm = Model.Common.GetDataset.Union(Model.AsdnSingle.GetDataset).ToDictionary(i => i.Key, i => i.Value);
-            _inputAlgorithm.Add("bП1", bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1));
-            _inputAlgorithm.Add("h1", Model.Common.h1); _inputAlgorithm.Add("h2", Model.Common.h2); _inputAlgorithm.Add("bП", Model.Common.bП);
-            _inputAlgorithm.Add("P3", Model.AsdnSingle.P3); _inputAlgorithm.Add("bСК", Model.Common.bСК == "скошенные" ? 1 : 0);
-            _inputAlgorithm.Add("β", Model.Common.β); _inputAlgorithm.Add("Sсл", Model.Common.Sсл);
+            //_inputAlgorithm.Add("bП1", bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1));
+            //_inputAlgorithm.Add("h1", Model.Common.h1); _inputAlgorithm.Add("h2", Model.Common.h2); _inputAlgorithm.Add("bП", Model.Common.bП);
+            //_inputAlgorithm.Add("P3", Model.AsdnSingle.P3); 
+            _inputAlgorithm.Add("bСК", Model.Common.bСК == "скошенные" ? 1 : 0);
+            //_inputAlgorithm.Add("β", Model.Common.β); _inputAlgorithm.Add("Sсл", Model.Common.Sсл);
+
+            //double param1 = Math.Tan(Math.PI / Convert.ToDouble(Z1));
+            //double param2 = Convert.ToDouble(bП1) + 2 * (Convert.ToDouble(h5) + Convert.ToDouble(h4) + Convert.ToDouble(h3)) * Math.Tan(Math.PI / Convert.ToDouble(Z1));
+            //double param3 = (Convert.ToDouble(bП1) + Convert.ToDouble(h5) * Math.Tan(Math.PI / Convert.ToDouble(Z1)) +
+            //    (Convert.ToDouble(h5) + Convert.ToDouble(h4)) * Math.Tan(Math.PI / Convert.ToDouble(Z1))) * Convert.ToDouble(h4);
+
+            //double h2 = Model.Common.h2;
+
             algorithm = new AlgorithmASDN(_inputAlgorithm); algorithm.Run();
             foreach (string item in algorithm.Logging) 
                 Logger.Error(item);
             
             Diagnostic = algorithm.SolutionIsDone ? "Расчет завершен успешно" : @"Расчет прерван. Смотри содержимое файла logs\*.log";
-            //OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
             Model.AsdnSingle.SetParametersForModelValidation(Model.Common.Dpст, Model.Common.ΔГ2, Model.Common.hp);
@@ -400,7 +434,7 @@ namespace IVMElectro.ViewModel
         void ViewResult()
         {
 
-            string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(IVMElectro.Services.ServiceIO.FileName) + ".html";
+            string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(Services.ServiceIO.FileName) + ".html";
 
             // Создаем поток для записи в файл
             StreamWriter sw = new StreamWriter(file_name);

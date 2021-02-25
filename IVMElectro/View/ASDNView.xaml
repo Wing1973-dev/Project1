@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Height="900" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Height="1600" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" MouseLeftButtonDown="Window_MouseLeftButtonDown">
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenFile"/>
         <CommandBinding Command="Save" Executed="SaveFile"/>
@@ -152,7 +152,7 @@
                                     <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", В:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbxU" Margin="20 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}">
+                                    <TextBox Name="tbxU" Margin="20 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}">
                                         <TextBox.Text>
                                             <Binding Path="U1" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -223,6 +223,7 @@
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -241,7 +242,7 @@
                                     <Run Text="i" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", мм:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbxDi" Margin="35 0 0 0" MaxLength="7" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbxDi" Margin="10 0 0 0" MaxLength="7" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="Di" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -279,7 +280,7 @@
                                     <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", шт.:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbxZ1" Margin="43 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                    <TextBox Name="tbxZ1" Margin="70 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                         <TextBox.Text>
                                             <Binding Path="Z1" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -296,6 +297,19 @@
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="4" Orientation="Vertical" Margin="15">
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="Число пазов на" Style="{DynamicResource MaterialDesignTextBlock}"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                        <Run Text="полюс и фазу q"/>
+                                        <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", мм:          "/>
+                                        </TextBlock>
+                                        <TextBlock Name="tbl_q1" Text="{Binding Path=q1}" Margin="15 0" Style="{DynamicResource MaterialDesignTextBlock}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Column="5" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
                                     <Run Text="Диаметр наружный D"/>
@@ -318,7 +332,7 @@
                                     <Label Name="lbDaBounds" Content="{Binding Path=DaBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="5" Orientation="Vertical" Margin="15" >
+                            <StackPanel Grid.Column="6" Orientation="Vertical" Margin="15" >
                                 <TextBlock Text="Число параллельных" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -327,7 +341,7 @@
                                     <Run Text=", шт.:"/>
                                     </TextBlock>
                                     <!--for items that depend on third-party data - TB_GotFocus-->
-                                    <TextBox Name="tbx_a1" Margin="10 0 0 0" MaxLength="2" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                    <TextBox Name="tbx_a1" Margin="40 0 0 0" MaxLength="2" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                         <TextBox.Text>
                                             <Binding Path="a1" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -343,7 +357,7 @@
                                              SelectionChanged="lbox_SelectionChanged"/>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Column="6" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Число параллельных" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -351,7 +365,7 @@
                                     <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", шт.:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbx_a2" Margin="10 0 0 0" MaxLength="2" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbx_a2" Margin="25 0 0 0" MaxLength="2" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="a2" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -363,7 +377,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 30]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="1" Grid.Column="2" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Суммарная толщина крайнего" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -372,7 +386,7 @@
                                     <Run Text="кр" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", мм:"/>
                                         </TextBlock>
-                                        <TextBox Name="tbxΔкр" Margin="17 0 0 0" MaxLength="2" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox Name="tbxΔкр" Margin="25 0 0 0" MaxLength="2" Style="{DynamicResource validationTextBox}" >
                                             <TextBox.Text>
                                                 <Binding Path="Δкр" UpdateSourceTrigger="LostFocus" >
                                                     <Binding.ValidationRules>
@@ -385,7 +399,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [3 : 40]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <GroupBox Grid.Row="1" Grid.Column="2" Margin="15" Header="Размеры провода" Style="{DynamicResource MaterialDesignHeaderedContentControl}">
+                            <GroupBox Grid.Row="1" Grid.Column="3" Margin="15" Header="Размеры провода" Style="{DynamicResource MaterialDesignHeaderedContentControl}">
                                 <StackPanel Orientation="Vertical"  >
                                     <StackPanel Orientation="Vertical" Margin="0,5,0,5">
                                         <TextBlock Text="Диаметр изолированного" Style="{DynamicResource MaterialDesignTextBlock}"/>
@@ -429,7 +443,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </GroupBox>
-                            <StackPanel Grid.Row="1" Grid.Column="3" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Ширина зубца" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -449,7 +463,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [3,5 : 15]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="4" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="1" Grid.Column="5" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Высота силового" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -471,7 +485,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 20]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="5" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Высота щели между" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -480,7 +494,7 @@
                                         <Run Text="7" FontSize="9" BaselineAlignment="Subscript" />
                                         <Run Text=", мм:"/>
                                         </TextBlock>
-                                        <TextBox Name="tbx_h7" Margin="20 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox Name="tbx_h7" Margin="45 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
                                             <TextBox.Text>
                                                 <Binding Path="h7" UpdateSourceTrigger="LostFocus" >
                                                     <Binding.ValidationRules>
@@ -493,7 +507,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 2]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="1" Grid.Column="6" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Высота нажимного" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -502,7 +516,7 @@
                                         <Run Text="6" FontSize="9" BaselineAlignment="Subscript" />
                                         <Run Text=", мм:"/>
                                         </TextBlock>
-                                        <TextBox Name="tbx_h6" Margin="15 0 0 0" MaxLength="5" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox Name="tbx_h6" Margin="30 0 0 0" MaxLength="5" Style="{DynamicResource validationTextBox}" >
                                             <TextBox.Text>
                                                 <Binding Path="h6" UpdateSourceTrigger="LostFocus" >
                                                     <Binding.ValidationRules>
@@ -515,15 +529,29 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 20]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="15">
-                                <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
-                                    <Run Text="Ширина паза у клина b"/>
-                                    <Run Text="П1" FontSize="9" BaselineAlignment="Subscript" />
-                                    <Run Text=", мм:   "/>
-                                </TextBlock>
-                                <TextBlock Name="tbl_bП1" Text="{Binding Path=bП1}" Style="{DynamicResource MaterialDesignTextBlock}"/>
-                            </StackPanel>
                             <StackPanel Grid.Row="2" Grid.Column="2" Orientation="Vertical" Margin="15">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                        <Run Text="Ширина паза у клина b"/>
+                                        <Run Text="П1" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", мм:   "/>
+                                    </TextBlock>
+                                    <TextBox Name="tbx_bП1" Margin="10 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox.Text>
+                                            <Binding Path="bП1" UpdateSourceTrigger="LostFocus" >
+                                                <Binding.ValidationRules>
+                                                    <DataErrorValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Расчетное значение: " Style="{DynamicResource LabelForDiapason}"/>
+                                    <TextBlock Name="tbl_bП1" Text="{Binding Path=bП1_calc}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Высота изоляции от" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -545,7 +573,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0,1 : 5]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="3" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Толщина изоляции между" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -567,7 +595,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 5]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="4" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="2" Grid.Column="5" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Высота верхнего" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -589,7 +617,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [5 : 50]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="5" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="2" Grid.Column="6" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Ширина открытия" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -598,7 +626,7 @@
                                     <Run Text=", мм:"/>
                                     </TextBlock>
                                     <!--for items that depend on third-party data - TB_GotFocus-->
-                                    <TextBox Name="tbx_ac" Margin="85 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                    <TextBox Name="tbx_ac" Margin="110 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                         <TextBox.Text>
                                             <Binding Path="ac" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -613,7 +641,7 @@
                                     <Label Name="lb_acBounds" Content="{Binding Path=acBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="2" Grid.Column="6" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Ширина силового" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -622,19 +650,56 @@
                                         <Run Text="ПН" FontSize="9" BaselineAlignment="Subscript" />
                                         <Run Text=", мм:          "/>
                                         </TextBlock>
-                                        <TextBlock Name="tbl_bПН" Text="{Binding Path=bПН}" Style="{DynamicResource MaterialDesignTextBlock}" />
+                                        <TextBlock Name="tbl_bПН" Text="{Binding Path=bПН}" Margin="15 0" Style="{DynamicResource MaterialDesignTextBlock}" />
                                     </StackPanel>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="3" Grid.Column="1" Orientation="Horizontal" Margin="15">
-                                <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
-                                    <Run Text="Высота зубца статора h"/>
-                                    <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
-                                    <Run Text=", мм:   "/>
-                                </TextBlock>
-                                <TextBlock Name="tbl_h1" Text="{Binding Path=h1}" Style="{DynamicResource MaterialDesignTextBlock}"/>
-                            </StackPanel>
                             <StackPanel Grid.Row="3" Grid.Column="2" Orientation="Vertical" Margin="15">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                        <Run Text="Высота зубца статора h"/>
+                                        <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", мм:   "/>
+                                    </TextBlock>
+                                    <TextBox Name="tbx_h1" Margin="15 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox.Text>
+                                            <Binding Path="h1" UpdateSourceTrigger="LostFocus" >
+                                                <Binding.ValidationRules>
+                                                    <DataErrorValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Расчетное значение: " Style="{DynamicResource LabelForDiapason}"/>
+                                    <TextBlock Name="tbl_h1" Text="{Binding Path=h1_calc}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Vertical" Margin="15">
+                                <TextBlock Text="Высота нижнего" Style="{DynamicResource MaterialDesignTextBlock}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                        <Run Text="слоя обмотки h"/>
+                                        <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", мм:   "/>
+                                    </TextBlock>
+                                    <TextBox Name="tbx_h2" Margin="55 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox.Text>
+                                            <Binding Path="h2" UpdateSourceTrigger="LostFocus" >
+                                                <Binding.ValidationRules>
+                                                    <DataErrorValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Расчетное значение: " Style="{DynamicResource LabelForDiapason}"/>
+                                    <TextBlock Name="tbl_h2" Text="{Binding Path=h2_calc}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
                                     <Run Text="Длина пакета l"/>
@@ -642,7 +707,7 @@
                                     <Run Text=", мм:"/>
                                     </TextBlock>
                                     <!--for items that depend on third-party data - TB_GotFocus-->
-                                    <TextBox Name="tbx_li" Margin="75 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                    <TextBox Name="tbx_li" Margin="50 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                         <TextBox.Text>
                                             <Binding Path="li" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -657,7 +722,7 @@
                                     <Label Name="lb_liBounds" Content="{Binding Path=liBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="3" Grid.Column="3" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="3" Grid.Column="5" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Суммарная длина" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -666,7 +731,7 @@
                                         <Run Text="з" FontSize="9" BaselineAlignment="Subscript" />
                                         <Run Text=", мм:"/>
                                         </TextBlock>
-                                        <TextBox Name="tbx_cз" Margin="10 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox Name="tbx_cз" Margin="22 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" >
                                             <TextBox.Text>
                                                 <Binding Path="cз" UpdateSourceTrigger="LostFocus" >
                                                     <Binding.ValidationRules>
@@ -679,24 +744,16 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 200]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="3" Grid.Column="4" Orientation="Horizontal" Margin="15">
-                                <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
-                                    <Run Text="Ширина паза у дна b"/>
-                                    <Run Text="П" FontSize="9" BaselineAlignment="Subscript" />
-                                    <Run Text=", мм:   "/>
-                                </TextBlock>
-                                <TextBlock Name="tbl_bП" Text="{Binding Path=bП}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,0,0,0"/>
-                            </StackPanel>
-                            <StackPanel Grid.Row="3" Grid.Column="5" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="3" Grid.Column="6" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
-                                    <Run Text="Коэффициент K"/>
-                                    <Run Text="зап" FontSize="9" BaselineAlignment="Subscript" />
-                                    <Run Text=":"/>
+                                        <Run Text="Ширина паза у дна b"/>
+                                        <Run Text="П" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", мм:   "/>
                                     </TextBlock>
-                                    <TextBox Name="tbxKзап" Margin="45 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbx_bП" Margin="10 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
-                                            <Binding Path="Kзап" UpdateSourceTrigger="LostFocus" >
+                                            <Binding Path="bП" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
                                                     <DataErrorValidationRule />
                                                 </Binding.ValidationRules>
@@ -704,9 +761,75 @@
                                         </TextBox.Text>
                                     </TextBox>
                                 </StackPanel>
-                                <Label Content="Диапазон значений: [0,36 : 0,76]" Style="{DynamicResource LabelForDiapason}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Расчетное значение: " Style="{DynamicResource LabelForDiapason}"/>
+                                    <TextBlock Name="tbl_bП" Text="{Binding Path=bП_calc}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,3,0,0"/>
+                                </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="3" Grid.Column="6" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Vertical" Margin="15" >
+                                <TextBlock Text="Число витков в" Style="{DynamicResource MaterialDesignTextBlock}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                        <Run Text="фазе обмотки W"/>
+                                        <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", шт.:"/>
+                                    </TextBlock>
+                                    <TextBox Name="tbx_W1" Margin="30 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox.Text>
+                                            <Binding Path="W1" UpdateSourceTrigger="LostFocus" >
+                                                <Binding.ValidationRules>
+                                                    <DataErrorValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Vertical" Margin="15" >
+                                <TextBlock Text="Число эффективных" Style="{DynamicResource MaterialDesignTextBlock}"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                        <Run Text="проводников в секции W"/>
+                                        <Run Text="c" FontSize="9" BaselineAlignment="Subscript" />
+                                        <Run Text=", шт.:"/>
+                                    </TextBlock>
+                                    <TextBox Name="tbx_Wc" Margin="15 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox.Text>
+                                            <Binding Path="Wc" UpdateSourceTrigger="LostFocus" >
+                                                <Binding.ValidationRules>
+                                                    <DataErrorValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Расчетное значение: " Style="{DynamicResource LabelForDiapason}"/>
+                                    <TextBlock Name="tbl_Wc" Text="{Binding Path=Wc_calc}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,3,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Vertical" Margin="15">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
+                                    <Run Text="Коэффициент K"/>
+                                    <Run Text="зап" FontSize="9" BaselineAlignment="Subscript" />
+                                    <Run Text=":"/>
+                                    </TextBlock>
+                                    <TextBlock Name="tbl_Kзап" Text="{Binding Path=Kзап}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="85,3,0,0"/>
+                                    <!--<TextBox Name="tbxKзап" Margin="45 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox.Text>
+                                            <Binding Path="Kзап" UpdateSourceTrigger="LostFocus" >
+                                                <Binding.ValidationRules>
+                                                    <DataErrorValidationRule />
+                                                </Binding.ValidationRules>
+                                            </Binding>
+                                        </TextBox.Text>
+                                    </TextBox>-->
+                                </StackPanel>
+                                <!--<Label Content="Диапазон значений: [0,36 : 0,76]" Style="{DynamicResource LabelForDiapason}"/>-->
+                            </StackPanel>
+                            <StackPanel Grid.Row="4" Grid.Column="4" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Шаг обмотки" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -715,7 +838,7 @@
                                     <Run Text=", мм:"/>
                                     </TextBlock>
                                     <!--for items that depend on third-party data - TB_GotFocus-->
-                                    <TextBox Name="tbx_y1" Margin="50 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                    <TextBox Name="tbx_y1" Margin="70 0 0 0" MaxLength="3" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                         <TextBox.Text>
                                             <Binding Path="y1" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -730,11 +853,11 @@
                                     <Label Name="lb_y1Bounds" Content="{Binding Path=y1Bounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="15">
+                            <StackPanel Grid.Row="4" Grid.Column="5" Orientation="Horizontal" Margin="15">
                                 <TextBlock Text="Коэффициент β:   " Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <TextBlock Name="tbl_β" Text="{Binding Path=β}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="80,0,0,0"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="4" Grid.Column="2" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="4" Grid.Column="6" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Коэффициент длины" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -742,7 +865,7 @@
                                     <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=":"/>
                                     </TextBlock>
-                                    <TextBox Name="tbx_K2" Margin="30 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbx_K2" Margin="20 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="K2" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -753,7 +876,7 @@
                                     </TextBox>
                                 </StackPanel>
                             </StackPanel>
-                            <GroupBox Grid.Row="4" Grid.Column="3" Margin="15" Header="Паз статора" Style="{DynamicResource MaterialDesignHeaderedContentControl}">
+                            <GroupBox Grid.Row="5" Grid.Column="1" Margin="15" Header="Паз статора" Style="{DynamicResource MaterialDesignHeaderedContentControl}">
                                 <StackPanel Orientation="Vertical">
                                     <StackPanel Orientation="Horizontal" Margin="0 10 0 10">
                                         <TextBlock Text="Форма паза:" Style="{DynamicResource MaterialDesignTextBlock}"/>
@@ -769,7 +892,7 @@
                                     <Run Text=", мм:"/>
                                             </TextBlock>
                                             <!--for items that depend on third-party data - TB_GotFocus-->
-                                            <TextBox Name="tbx_d1" Margin="40 0 0 0" MaxLength="5" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                            <TextBox Name="tbx_d1" Margin="30 0 0 0" MaxLength="5" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                                 <TextBox.Text>
                                                     <Binding Path="d1" UpdateSourceTrigger="LostFocus" >
                                                         <Binding.ValidationRules>
@@ -786,7 +909,7 @@
                                     </StackPanel>
                                 </StackPanel>
                             </GroupBox>
-                            <StackPanel Grid.Row="4" Grid.Column="4" Orientation="Vertical" Margin="15" >
+                            <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Vertical" Margin="15" >
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Коэффициент заполнения" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
@@ -795,7 +918,7 @@
                                         <Run Text="Fe1" FontSize="9" BaselineAlignment="Subscript" />
                                         <Run Text=":"/>
                                         </TextBlock>
-                                        <TextBox Name="tbx_Kfe1" Margin="60 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox Name="tbx_Kfe1" Margin="85 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
                                             <TextBox.Text>
                                                 <Binding Path="Kfe1" UpdateSourceTrigger="LostFocus" >
                                                     <Binding.ValidationRules>
@@ -808,7 +931,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0,9 : 1]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="4" Grid.Column="5" Orientation="Vertical" Margin="15" >
+                            <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Vertical" Margin="15" >
                                 <TextBlock Text="Удельное сопротивление" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <TextBlock Text="материала обмотки в" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <TextBlock Text="холодном состоянии" Style="{DynamicResource MaterialDesignTextBlock}"/>
@@ -820,7 +943,7 @@
                                         <Run Text="2" FontSize="9" BaselineAlignment="TextTop" />
                                         <Run Text="/м:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbx_ρ1x" Margin="60 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbx_ρ1x" Margin="100 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="ρ1x" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -832,7 +955,7 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0,002 : 0,05]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="4" Grid.Column="6" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="5" Grid.Column="4" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Удельное сопротивление" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <TextBlock Text="материала перегородки" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
@@ -843,7 +966,7 @@
                                     <Run Text="2" FontSize="9" BaselineAlignment="TextTop" />
                                     <Run Text="/м:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbx_ρРУБ" Margin="50 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbx_ρРУБ" Margin="70 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="ρРУБ" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -854,7 +977,7 @@
                                     </TextBox>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="5" Grid.Column="1" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="5" Grid.Column="5" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Удельное сопротивление" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <TextBlock Text="материала обмотки в" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <TextBlock Text="рабочем состоянии" Style="{DynamicResource MaterialDesignTextBlock}"/>
@@ -867,7 +990,7 @@
                                     <Run Text="/м:"/>
                                     </TextBlock>
                                     <!--for items that depend on third-party data - TB_GotFocus-->
-                                    <TextBox Name="tbx_ρ1Г" Margin="80 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
+                                    <TextBox Name="tbx_ρ1Г" Margin="85 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" GotFocus="TxtBx_GotFocus" >
                                         <TextBox.Text>
                                             <Binding Path="ρ1Г" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -882,12 +1005,12 @@
                                     <Label Name="lb_ρ1ГBounds" Content="{Binding Path=ρ1ГBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="5" Grid.Column="2" Orientation="Vertical" Margin="15" >
+                            <StackPanel Grid.Row="5" Grid.Column="6" Orientation="Vertical" Margin="15" >
                                 <StackPanel Orientation="Vertical">
                                     <TextBlock Text="Прямой участок лобовой" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="части обмотки B, мм:" Style="{DynamicResource MaterialDesignTextBlock}"/>
-                                        <TextBox Name="tbxB" Margin="70 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                        <TextBox Name="tbxB" Margin="65 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
                                             <TextBox.Text>
                                                 <Binding Path="B" UpdateSourceTrigger="LostFocus" >
                                                     <Binding.ValidationRules>
@@ -900,15 +1023,15 @@
                                 </StackPanel>
                                 <Label Content="Диапазон значений: [0 : 20]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
-                            <StackPanel Grid.Row="5" Grid.Column="3" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="6" Grid.Column="1" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
                                     <Run Text="Тип обмотки PЗ:"/>
                                     </TextBlock>
-                                    <ComboBox Name="cbxPЗ" ItemsSource="{Binding Path=Get_collectionPЗ}" SelectedValue="{Binding PЗ}" Margin="75 0 0 0" Padding="3" FontWeight="Normal"/>
+                                    <ComboBox Name="cbxPЗ" ItemsSource="{Binding Path=Get_collectionPЗ}" SelectedValue="{Binding PЗ}" Margin="65 0 0 0" Padding="3" FontWeight="Normal"/>
                                 </StackPanel>
                             </StackPanel>
-                            <StackPanel Grid.Row="5" Grid.Column="4" Orientation="Vertical" Margin="15">
+                            <StackPanel Grid.Row="6" Grid.Column="2" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Удельные потери стали" Style="{DynamicResource MaterialDesignTextBlock}"/>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -916,7 +1039,7 @@
                                     <Run Text="10/50" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", Вт/кг:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbx_p10_50" Margin="105 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
+                                    <TextBox Name="tbx_p10_50" Margin="125 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
                                         <TextBox.Text>
                                             <Binding Path="p10_50" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>

@@ -124,8 +124,13 @@ namespace IVMElectro.ViewModel {
                             error = errorh1;
                         break;
                     case "li":
-                        if (!((0.5 <= Model.Common.li) && (Model.Common.li >= 3)))
-                            error = errorli;
+                        if (double.IsNaN(Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left) ||
+                            double.IsNaN(Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right))
+                            error = errordiapason;
+                        else if (!((Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left <= Model.Common.li) &&
+                            (Model.Common.li <= Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right)))
+                            error = $"Значение параметра li должно принадлежать [{Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left} : " +
+                                $"{Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right}].";
                         break;
                     case "cз":
                         if (!((0 <= Model.Common.cз) && (Model.Common.cз <= 200)))
@@ -134,6 +139,10 @@ namespace IVMElectro.ViewModel {
                     case "bП":
                         if (Model.Common.bП < 0 || double.IsNaN(Model.Common.bП))
                             error = errorbП;
+                        break;
+                    case "bП1":
+                        if (Model.Common.bП1 < 0 || double.IsNaN(Model.Common.bП1))
+                            error = errorbП1;
                         break;
                     case "Kзап":
                         if (!((0.36 <= Model.Common.Kзап) && (Model.Common.Kзап <= 0.76))) 
@@ -306,6 +315,9 @@ namespace IVMElectro.ViewModel {
                 new SteelProperties {Id = 3, Name = "ПТ-7М", Value = 1.08 } };
             MarkSteelStatorDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "1412", Value = 1.94 }, new SteelProperties { Id = 2, Name = "2412", Value = 1.38 },
                 new SteelProperties {Id = 3, Name = "2411", Value =  1.7 }, new SteelProperties {Id = 4, Name = "1521", Value = 19.6 } };
+
+            //test dep 51
+
         }
         #region properties 
         public AsdnCompositeModel Model { get; set; }
@@ -335,19 +347,24 @@ namespace IVMElectro.ViewModel {
         public string h8 { get => Model.Common.h8.ToString(); set { Model.Common.h8 = StringToDouble(value); OnPropertyChanged("h8"); } }
         public string h7 { get => Model.Common.h7.ToString(); set { Model.Common.h7 = StringToDouble(value); OnPropertyChanged("h7"); } }
         public string h6 { get => Model.Common.h6.ToString(); set { Model.Common.h6 = StringToDouble(value); OnPropertyChanged("h6"); } }
-        public string bП1 { get => bП1CalcRED(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label
+        //public string bП1 { get => bП1CalcRED(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label dep 51
+        public string bП1 { get => Model.Common.bП1.ToString(); set { Model.Common.bП1 = StringToDouble(value); OnPropertyChanged("bП1"); } }
+        public string bП1_calc { get => Math.Round(Model.Common.bП1_calc, 3).ToString(); } //label
         public string h5 { get => Model.Common.h5.ToString(); set { Model.Common.h5 = StringToDouble(value); OnPropertyChanged("h5"); } }
         public string h3 { get => Model.Common.h3.ToString(); set { Model.Common.h3 = StringToDouble(value); OnPropertyChanged("h3"); } }
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
         public string ac { get => Model.Common.ac.ToString(); set { Model.Common.ac = StringToDouble(value); OnPropertyChanged("ac"); } }
         public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
         public string bПН { get => Model.Common.bПН.ToString(); } //label
-        public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
+        //public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
+        public string h1 { get => Model.Common.h1.ToString(); set { Model.Common.h1 = StringToDouble(value); OnPropertyChanged("h1"); } } //dep 51
+        public string h1_calc { get => Math.Round(Model.Common.h1_calc, 3).ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
-        public string liBounds { get => Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
+        public string liBounds { get => Get_liBounds_string(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
         public string cз { get => Model.Common.cз.ToString(); set { Model.Common.cз = StringToDouble(value); OnPropertyChanged("cз"); } }
-        public string bП { get => Math.Round(Model.Common.bП, 3).ToString(); } //label
-        public string Kзап { get => Model.Common.Kзап.ToString(); set { Model.Common.Kзап = StringToDouble(value); OnPropertyChanged("Kзап"); } }
+        public string bП { get => Model.Common.bП.ToString(); set { Model.Common.bП = StringToDouble(value); OnPropertyChanged("bП"); } } 
+        public string bП_calc { get => Math.Round(Model.Common.bП_calc, 3).ToString(); } //label
+        //public string Kзап { get => Model.Common.Kзап.ToString(); set { Model.Common.Kзап = StringToDouble(value); OnPropertyChanged("Kзап"); } }
         public string y1 { get => Model.Common.y1.ToString(); set { Model.Common.y1 = StringToDouble(value); OnPropertyChanged("y1"); } }
         public string y1Bounds { get => $"[1 : {Math.Round(0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p), 3)}]"; } //label
         public string β { get => Math.Round(Model.Common.β, 3).ToString(); } //label

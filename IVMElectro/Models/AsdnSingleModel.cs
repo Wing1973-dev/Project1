@@ -20,11 +20,11 @@ namespace IVMElectro.Models {
             dв = aк = γ = bП2 = bк = 0; P3 = 0;
         }
         public override void CreationDataset() => 
-            Dataset = new Dictionary<string, double> { { "dв", dв }, { "aк", aк }, { "bП2", bП2 }, { "γ", γ }, { "bк", bк } };
+            Dataset = new Dictionary<string, double> { { "dв", dв }, { "aк", aк }, { "bП2", bП2 }, { "γ", γ }, { "bк", bк }, { "P3", P3 } };
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext) {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            if (!(P3 == 0 || P3 == 1)) errors.Add(new ValidationResult("Error P3")); //such a state is unattainable. This is used for  Validator.TryValidateObject(..., true)
+            //if (!(P3 == 0 || P3 == 1)) errors.Add(new ValidationResult("Error P3")); //such a state is unattainable. This is used for  Validator.TryValidateObject(..., true)
             if (!((0 <= dв) && (dв <= 0.5 * (0.5 * Get_Dp(parametersForModelValidation.Dpст, parametersForModelValidation.ΔГ2) - parametersForModelValidation.hp))))
                 errors.Add(new ValidationResult($"Значение параметра dв должно принадлежать " +
                     $"{Get_dвBounds(parametersForModelValidation.Dpст, parametersForModelValidation.ΔГ2, parametersForModelValidation.hp)}."));

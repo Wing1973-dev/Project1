@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using static IVMElectro.Services.DataSharedPremagContent;
+using static LibraryAlgorithms.Services.ServiceDT;
 
 namespace IVMElectro.Models.Premag {
     public class PremagAxisMainDataModel : DatasetFromModels, IValidatableObject, ICloneable {
@@ -24,16 +25,16 @@ namespace IVMElectro.Models.Premag {
         }
         public PremagAxisMainDataModel(XElement input) {
             if (input.Element("ID_slot") != null) ID_slot = Convert.ToInt32(input.Element("ID_slot").Value.Trim());
-            if (input.Element("Bδ") != null) Bδ = Convert.ToDouble(input.Element("Bδ").Value.Trim());
-            if (input.Element("ρx") != null) ρx = Convert.ToDouble(input.Element("ρx").Value.Trim());
-            if (input.Element("ρГ") != null) ρГ = Convert.ToDouble(input.Element("ρГ").Value.Trim());
-            if (input.Element("hяр") != null) hяр = Convert.ToDouble(input.Element("hяр").Value.Trim());
-            if (input.Element("hяк") != null) hяк = Convert.ToDouble(input.Element("hяк").Value.Trim());
-            if (input.Element("R0") != null) R0 = Convert.ToDouble(input.Element("R0").Value.Trim());
-            if (input.Element("R10") != null) R10 = Convert.ToDouble(input.Element("R10").Value.Trim());
-            if (input.Element("dпз1") != null) dпз1 = Convert.ToDouble(input.Element("dпз1").Value.Trim());
-            if (input.Element("dвст") != null) dвст = Convert.ToDouble(input.Element("dвст").Value.Trim());
-            if (input.Element("Δk1") != null) Δk1 = Convert.ToDouble(input.Element("Δk1").Value.Trim());
+            if (input.Element("Bδ") != null) Bδ = StringToDouble(input.Element("Bδ").Value.Trim());
+            if (input.Element("ρx") != null) ρx = StringToDouble(input.Element("ρx").Value.Trim());
+            if (input.Element("ρГ") != null) ρГ = StringToDouble(input.Element("ρГ").Value.Trim());
+            if (input.Element("hяр") != null) hяр = StringToDouble(input.Element("hяр").Value.Trim());
+            if (input.Element("hяк") != null) hяк = StringToDouble(input.Element("hяк").Value.Trim());
+            if (input.Element("R0") != null) R0 = StringToDouble(input.Element("R0").Value.Trim());
+            if (input.Element("R10") != null) R10 = StringToDouble(input.Element("R10").Value.Trim());
+            if (input.Element("dпз1") != null) dпз1 = StringToDouble(input.Element("dпз1").Value.Trim());
+            if (input.Element("dвст") != null) dвст = StringToDouble(input.Element("dвст").Value.Trim());
+            if (input.Element("Δk1") != null) Δk1 = StringToDouble(input.Element("Δk1").Value.Trim());
         }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "Bδ", Bδ } , { "ρx", ρx }, { "ρГ", ρГ }, { "hяр", hяр }, { "hяк", hяк }, { "R0", R0 }, { "R10", R10 }, { "dпз1", dпз1 }, { "dвст", dвст }, { "Δk1", Δk1 } };

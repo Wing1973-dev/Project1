@@ -20,20 +20,21 @@ namespace IVMElectro.View {
         private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) => UpdateBinding();
 
         void UpdateBinding() {
-            //bound and value related (lbPмехBounds, tbxPmex) 
+            //If range bounds are calculated, then bound and value are related (lbPмехBounds, tbxPmex) 
             BindingOperations.GetBindingExpression(lbPмехBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbxPmex, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbDaBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbxDa, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lboxZ1, ItemsControl.ItemsSourceProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbox_a1, ItemsControl.ItemsSourceProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(tbl_bП1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_bПН, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_acBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_ac, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_h1, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_li, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_liBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_bП, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_bП1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_y1Bounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_β, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_d1Bounds, ContentProperty).UpdateTarget();
@@ -269,15 +270,24 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_ac") != null) ((AsdnRedSingleViewModel)DataContext).ac = inputData.Element("tbx_ac").Value.Trim();
                 else
                     isFormat = false;
+                if (inputData.Element("tbx_h1") != null) ((AsdnRedSingleViewModel)DataContext).h1 = inputData.Element("tbx_h1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_li") != null) ((AsdnRedSingleViewModel)DataContext).li = inputData.Element("tbx_li").Value.Trim();
                 else
                     isFormat = false;
                 if (inputData.Element("tbx_cз") != null) ((AsdnRedSingleViewModel)DataContext).cз = inputData.Element("tbx_cз").Value.Trim();
                 else
                     isFormat = false;
-                if (inputData.Element("tbxKзап") != null) ((AsdnRedSingleViewModel)DataContext).Kзап = inputData.Element("tbxKзап").Value.Trim();
+                if (inputData.Element("tbx_bП") != null) ((AsdnRedSingleViewModel)DataContext).bП = inputData.Element("tbx_bП").Value.Trim(); //dep 51
                 else
                     isFormat = false;
+                if (inputData.Element("tbx_bП1") != null) ((AsdnRedSingleViewModel)DataContext).bП1 = inputData.Element("tbx_bП1").Value.Trim(); //dep 51
+                else
+                    isFormat = false;
+                //if (inputData.Element("tbxKзап") != null) ((AsdnRedSingleViewModel)DataContext).Kзап = inputData.Element("tbxKзап").Value.Trim();
+                //else
+                //    isFormat = false;
                 if (inputData.Element("tbx_y1") != null) ((AsdnRedSingleViewModel)DataContext).y1 = inputData.Element("tbx_y1").Value.Trim();
                 else
                     isFormat = false;
@@ -395,9 +405,12 @@ namespace IVMElectro.View {
                         new XElement("tbx_h3", ((AsdnRedSingleViewModel)DataContext).h3),
                         new XElement("tbx_h4", ((AsdnRedSingleViewModel)DataContext).h4),
                         new XElement("tbx_ac", ((AsdnRedSingleViewModel)DataContext).ac),
+                        new XElement("tbx_h1", ((AsdnRedSingleViewModel)DataContext).h1),
                         new XElement("tbx_li", ((AsdnRedSingleViewModel)DataContext).li),
                         new XElement("tbx_cз", ((AsdnRedSingleViewModel)DataContext).cз),
-                        new XElement("tbxKзап", ((AsdnRedSingleViewModel)DataContext).Kзап),
+                        new XElement("tbx_bП", ((AsdnRedSingleViewModel)DataContext).bП), //dep 51
+                        new XElement("tbx_bП1", ((AsdnRedSingleViewModel)DataContext).bП1), //dep 51
+                        //new XElement("tbxKзап", ((AsdnRedSingleViewModel)DataContext).Kзап),
                         new XElement("tbx_y1", ((AsdnRedSingleViewModel)DataContext).y1),
                         new XElement("tbx_K2", ((AsdnRedSingleViewModel)DataContext).K2),
                         new XElement("cbx_PR", ((AsdnRedSingleViewModel)DataContext).PR),

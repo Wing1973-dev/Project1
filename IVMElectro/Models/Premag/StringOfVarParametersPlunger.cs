@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using static IVMElectro.Services.DataSharedPremagContent;
+using static LibraryAlgorithms.Services.ServiceDT;
 
 namespace IVMElectro.Models.Premag {
     public class StringOfVarParametersPlunger: StringOfVarParameters, IValidatableObject, ICloneable {
@@ -18,7 +19,7 @@ namespace IVMElectro.Models.Premag {
         #endregion
         public StringOfVarParametersPlunger() { }
         public StringOfVarParametersPlunger(XElement input) : base(input) {
-            if (input.Element("α") != null) α = Convert.ToDouble(input.Element("α").Value.Trim());
+            if (input.Element("α") != null) α = StringToDouble(input.Element("α").Value.Trim());
         }
         public override void CreationDataset() {
             base.CreationDataset(); Dataset.Add("α", α);

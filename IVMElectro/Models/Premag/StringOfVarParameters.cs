@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Xml.Linq;
 using static IVMElectro.Services.DataSharedPremagContent;
+using static LibraryAlgorithms.Services.ServiceDT;
 
 namespace IVMElectro.Models.Premag {
     public class StringOfVarParameters: DatasetFromModels, IValidatableObject, ICloneable {
@@ -27,15 +28,15 @@ namespace IVMElectro.Models.Premag {
         public StringOfVarParameters() { }
         public StringOfVarParameters(XElement input) {
             if (input.Element("ID_culc") != null) ID_culc = Convert.ToInt32(input.Element("ID_culc").Value.Trim());
-            if (input.Element("U") != null) U = Convert.ToDouble(input.Element("U").Value.Trim());
-            if (input.Element("δ") != null) δ = Convert.ToDouble(input.Element("δ").Value.Trim());
-            if (input.Element("q") != null) q = Convert.ToDouble(input.Element("q").Value.Trim());
-            if (input.Element("h") != null) h = Convert.ToDouble(input.Element("h").Value.Trim());
-            if (input.Element("R1") != null) R1 = Convert.ToDouble(input.Element("R1").Value.Trim());
-            if (input.Element("R2") != null) R2 = Convert.ToDouble(input.Element("R2").Value.Trim());
-            if (input.Element("R3") != null) R3 = Convert.ToDouble(input.Element("R3").Value.Trim());
-            if (input.Element("qm") != null) qm = Convert.ToDouble(input.Element("qm").Value.Trim());
-            if (input.Element("Ws") != null) Ws = Convert.ToDouble(input.Element("Ws").Value.Trim());
+            if (input.Element("U") != null) U = StringToDouble(input.Element("U").Value.Trim());
+            if (input.Element("δ") != null) δ = StringToDouble(input.Element("δ").Value.Trim());
+            if (input.Element("q") != null) q = StringToDouble(input.Element("q").Value.Trim());
+            if (input.Element("h") != null) h = StringToDouble(input.Element("h").Value.Trim());
+            if (input.Element("R1") != null) R1 = StringToDouble(input.Element("R1").Value.Trim());
+            if (input.Element("R2") != null) R2 = StringToDouble(input.Element("R2").Value.Trim());
+            if (input.Element("R3") != null) R3 = StringToDouble(input.Element("R3").Value.Trim());
+            if (input.Element("qm") != null) qm = StringToDouble(input.Element("qm").Value.Trim());
+            if (input.Element("Ws") != null) Ws = StringToDouble(input.Element("Ws").Value.Trim());
         }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "U", U }, { "δ", δ }, { "q" , q}, { "h", h }, { "R1", R1 }, { "R2", R2 }, { "R3", R3 }, { "qm", qm }, { "Ws", Ws } };

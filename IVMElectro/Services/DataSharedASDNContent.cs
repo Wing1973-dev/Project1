@@ -33,9 +33,12 @@ namespace IVMElectro.Services {
         public const string errorh3 = "Значение параметра h3 должено принадлежать [0 : 5].";
         public const string errorh4 = "Значение параметра h4 должено принадлежать [5 : 50].";
         public const string errorh1 = "Ошибочное значение параметра h1.";
-        public const string errorli = "Значение параметра li должно принадлежать [0,5 : 3].";
+        public const string errorh2 = "Ошибочное значение параметра h2.";
+        //public const string errorli = "Значение параметра li должно принадлежать [0,5 : 3].";
         public const string errorcз = "Значение параметра cз должно принадлежать [0 : 200].";
         public const string errorbП = "Ошибочное значение параметра bП.";
+        public const string errorW1 = "Ошибочное значение параметра W1.";
+        public const string errorWc = "Ошибочное значение параметра Wc.";
         public const string errorKзап = "Значение параметра Kзап должно принадлежать [0,36 : 0,76].";
         public const string errorβ = "Значение параметра β должно принадлежать [0,5 : 0,95].";
         public const string errorK2 = "Ошибочное значение параметра K2.";
@@ -61,12 +64,12 @@ namespace IVMElectro.Services {
         public const string errord1RED = "Ошибочное значение параметра d1.";
         public const string errordiapason = "Ошибочное значение диапазона.";
         #endregion
-        public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) => 
-            Math.Round(Math.PI * (Di + 2 * (h8 + h7 + h6)) / Z1 - bz1 , 3);
+        public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) =>
+            Math.Round(Math.PI * (Di + 2 * (h8 + h7 + h6)) / Z1 - bz1, 3);
         public static double bП1CalcRED(double Di, double h8, double h7, double h6, double bz1, double Z1) {
             double R = 0.5 * Di + h8 + h7 + h6;
             double α = Math.Asin(0.5 * bz1 / R);
-            return 2 * R * Math.Sin(0.5 * Math.PI / Z1 - α);
+            return Math.Round(2 * R * Math.Sin(0.5 * Math.PI / Z1 - α), 3);
         }
 
         public static List<string> p_Collection => new List<string> { "1", "2", "3", "4", "5", "6", "7", "8" };
@@ -103,9 +106,12 @@ namespace IVMElectro.Services {
             return sequence;
         }
         public static double PмехBoundRight(double P12) => Math.Round(0.5 * P12, 2);
-        public static string Get_liBounds(double U1, double I1, double Di)
+        public static string Get_liBounds_string(double U1, double I1, double Di)
             => $"[{Math.Round(3 * U1 * I1 * 30 * 1e3 / 0.75 / 4e4 / Math.PI / Di, 3)} : " +
             $"{Math.Round(3 * U1 * I1 * 30 * 1e3 / 0.5 / 1.5e3 / Math.PI / Di, 3)}]"; //label
+        public static (double left, double right) Get_liBounds(double U1, double I1, double Di) => (
+            left: Math.Round(3 * U1 * I1 * 30 * 1e3 / 0.75 / 4e4 / Math.PI / Di, 3),
+            right: Math.Round(3 * U1 * I1 * 30 * 1e3 / 0.5 / 1.5e3 / Math.PI / Di, 3));
         public static DataTable K2Table {
             get {
                 DataTable table = new DataTable();

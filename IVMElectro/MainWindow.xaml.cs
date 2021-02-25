@@ -21,10 +21,10 @@ namespace IVMElectro {
 
             List<SubItem> subItemsEngine = new List<SubItem> { 
                 new SubItemASDN("Асинхронный двигатель насосов", logger, director.MakeModelEMotors(new AsdnSingleBuilder())),
-                new SubItemASDNRED("Асинхронный двигатель насосов\r\nс шихтованным ротором", logger, director.MakeModelEMotors(new AsdnRedSingleBuilder())) };
+                new SubItemASDNRED("Асинхронный двигатель насосов\r\n с шихтованным ротором", logger, director.MakeModelEMotors(new AsdnRedSingleBuilder())) };
             List<SubItem> subItemsMagnet = new List<SubItem> {
-                new SubItemPremagFlat("Электромагнит постоянного тока\r\nс плоским якорем", logger, director.MakeModelEMagnet(new PremagFlatArmBuilder())),
-                new SubItemPremagPlunger("Электромагнит постоянного тока\r\nс плунжером", logger, director.MakeModelEMagnet(new PremagPlungerBuilder())),
+                new SubItemPremagFlat("Электромагнит постоянного тока\r\n с плоским якорем", logger, director.MakeModelEMagnet(new PremagFlatArmBuilder())),
+                new SubItemPremagPlunger("Электромагнит постоянного тока\r\n с плунжером", logger, director.MakeModelEMagnet(new PremagPlungerBuilder())),
                 new SubItemPremagAxis("Электромагнит осевого\r\n электромагнитного подшипника", logger)
             };
 

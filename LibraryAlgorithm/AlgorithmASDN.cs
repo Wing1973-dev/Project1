@@ -28,7 +28,7 @@ namespace LibraryAlgorithms {
         #region output data
         #region геометрические размеры и параметры машины
         private double lp, hʹj2, bZ2MIN, bZ2MAX, qс, qк, rʹ2, xʹ2; //параметры ротора
-        private double hj1, Kз, bZ1MAX, bZ1MIN, bZ1СР, m1, L, lB, r1x, lc; //параметры статора
+        private double hj1, Kзап, bZ1MAX, bZ1MIN, bZ1СР, m1, L, lB, r1x, lc; //параметры статора
         private double qИЗ, Sп, Sʹп, q1, Wc, np, nэл, β, k1; //характеристики обмотки
         #endregion
         #region расчет магнитной цепи
@@ -141,7 +141,7 @@ namespace LibraryAlgorithms {
             qИЗ = nэл * dиз * dиз;
             Sп = d1 == 0 ? 0.5 * (bП + bП1) * (h2 + 2 * h3 + h4 + h5) : 0.5 * (bП + d1) * (h2 + 2 * h3 + h4 + h5);
             Sʹп = d1 == 0 ? Sп - (2 * h3 * (bП + h2 + h3 + h4) + h5 * bП1) : Sп - (2 * h3 * (bП + h2 + h3 + h4) + h5 * d1);
-            Kз = qИЗ / Sʹп;
+            Kзап = qИЗ / Sʹп;
             Kʹβ = β <= 2 / 3 ? 0.25 * (6 * β - 1) : 0.25 * (1 + 3 * β);
             if ( P3 ) {
                 β = β > 1 ? 2 - β : β; //β меняется!!!!!!!!!!!!
@@ -600,7 +600,7 @@ namespace LibraryAlgorithms {
                         { "статор", new Dictionary<string, double>() {
                                 { "hj1", Math.Round(hj1, 5) },
                                 { "hZ1", Math.Round(h2 + 2 * h3 + h4 + h5 + h6 + h7 + h8, 5) },
-                                { "Kз", Math.Round(Kз, 5) },
+                                { "Kз", Math.Round(Kзап, 5) },
                                 { "bZ1MAX", Math.Round(bZ1MAX, 5) },
                                 { "bZ1MIN", Math.Round(bZ1MIN, 5) },
                                 { "bZ1СР", Math.Round(bZ1СР, 5) },

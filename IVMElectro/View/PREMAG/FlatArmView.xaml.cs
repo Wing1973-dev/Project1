@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Xml.Linq;
 using IVMElectro.Models.Premag;
 using IVMElectro.ViewModel.Premag;
 using static IVMElectro.Services.ServiceIO;
+using static LibraryAlgorithms.Services.ServiceDT;
 
 namespace IVMElectro.View.PREMAG {
     /// <summary>
@@ -63,7 +62,6 @@ namespace IVMElectro.View.PREMAG {
             }
             
             ((PremagFlatArmVM)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Открыт файл {namefile}";
-            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
 
         private void SaveFile(object sender, ExecutedRoutedEventArgs e) {
@@ -87,7 +85,6 @@ namespace IVMElectro.View.PREMAG {
             string namefile = SaveObjectToXMLFile(inputData);
             
             ((PremagFlatArmVM)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Сохранен файл {namefile}";
-            //BindingOperations.GetBindingExpression(tblDiagnostic, TextBlock.TextProperty).UpdateTarget();
         }
 
         private void btnTable_Click(object sender, RoutedEventArgs e) {
@@ -100,8 +97,8 @@ namespace IVMElectro.View.PREMAG {
                         0;
                     stringOfVar = new StringOfVarParameters { ID_culc = ++maxid }; //new item
                     //for validation
-                    stringOfVar.SetParametersForModelValidation(Convert.ToDouble(((PremagFlatArmVM)DataContext).R0), Convert.ToDouble(((PremagFlatArmVM)DataContext).R10),
-                        Convert.ToDouble(((PremagFlatArmVM)DataContext).dпз1), Convert.ToDouble(((PremagFlatArmVM)DataContext).dвст));
+                    stringOfVar.SetParametersForModelValidation(StringToDouble(((PremagFlatArmVM)DataContext).R0), StringToDouble(((PremagFlatArmVM)DataContext).R10),
+                        StringToDouble(((PremagFlatArmVM)DataContext).dпз1), StringToDouble(((PremagFlatArmVM)DataContext).dвст));
                     varParamsVM = new StringOfVarParamsVM(stringOfVar);
                     view = new StringOfVarParametersView {
                         DataContext = varParamsVM,
@@ -117,8 +114,8 @@ namespace IVMElectro.View.PREMAG {
                             i => i.ID_culc == ((StringOfVarParameters)dtgrdVarParams.SelectedItem).ID_culc).FirstOrDefault();
                         stringOfVar = (StringOfVarParameters)selectedStringOfVar.Clone();
                         //for validation
-                        stringOfVar.SetParametersForModelValidation(Convert.ToDouble(((PremagFlatArmVM)DataContext).R0), Convert.ToDouble(((PremagFlatArmVM)DataContext).R10),
-                        Convert.ToDouble(((PremagFlatArmVM)DataContext).dпз1), Convert.ToDouble(((PremagFlatArmVM)DataContext).dвст));
+                        stringOfVar.SetParametersForModelValidation(StringToDouble(((PremagFlatArmVM)DataContext).R0), StringToDouble(((PremagFlatArmVM)DataContext).R10),
+                        StringToDouble(((PremagFlatArmVM)DataContext).dпз1), StringToDouble(((PremagFlatArmVM)DataContext).dвст));
                         varParamsVM = new StringOfVarParamsVM(stringOfVar);
                         view = new StringOfVarParametersView {
                             DataContext = varParamsVM,
