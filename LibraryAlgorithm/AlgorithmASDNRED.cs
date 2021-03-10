@@ -50,6 +50,7 @@ namespace LibraryAlgorithms {
         private readonly double Kfe2;
         private readonly double U1;
         private readonly double S = 0.1;
+       // private readonly double S = 0.02; //DEBUG ONLY
         private double αδ = 0.65;
         private readonly double dв;
         private readonly double p10_50;
@@ -62,7 +63,7 @@ namespace LibraryAlgorithms {
         private readonly double dкп;
         private readonly double dпв;
         private readonly double dпн;
-        private readonly double hр1;
+        private readonly double hp1;
         private readonly double hр2;
         private readonly double hш;
         private readonly double bш;
@@ -139,6 +140,7 @@ namespace LibraryAlgorithms {
             h4 = input["h4"]; ac = input["ac"]; bпн = input["bПН"]; li = input["li"]; cз = input["cз"]; y1 = input["y1"]; K2 = input["K2"];
             d1 = input["d1"]; Kfe1 = input["Kfe1"]; ρ1x = input["ρ1x"]; ρРУБ = input["ρРУБ"]; ρ1Г = input["ρ1Г"]; B = input["B"];
             p10_50 = input["p10_50"]; β = input["β"];
+            W1 = input["W1"]; Wc = input["Wc"];
 
             ΔГ2 = input["ΔГ2"]; bСК = input["bСК"] == 1 ? Math.PI * Di / Z1 : 0; bп2 = input["bП2"]; Z2 = input["Z2"]; dв = input["dв"];
             bк = input["bк"]; aк = input["aк"]; ρ2Г = input["ρ2Г"]; Kfe2 = input["Kfe2"];
@@ -149,12 +151,12 @@ namespace LibraryAlgorithms {
             else if (p10_50 == 1.7) mrkStlStr = MarkSteelStator.Сталь2411;
             else if (p10_50 == 19.6) mrkStlStr = MarkSteelStator.Сталь1521;
             //prepare for W1
-            double Wk = 4 * input["Sсл"] * input["Kзап"] / Math.PI / dиз / dиз / a2;
-            W1 = Z1 * Wk / 3.0 / a1;
+            //double Wk = 4 * input["Sсл"] * input["Kзап"] / Math.PI / dиз / dиз / a2;
+            //W1 = Z1 * Wk / 3.0 / a1;
 
             //red
             hш = input["hш"]; bш = input["bш"]; dкп = input["dкп"]; hр2 = input["hр2"]; bкн = input["bкн"]; aкн = input["aкн"];
-            dпн = input["dпн"]; hр1 = input["hр1"]; dпв = input["dпв"];
+            dпн = input["dпн"]; hp1 = input["hp1"]; dпв = input["dпв"];
 
             switch (input["PAS"]) {
                 case 1: PAS = TypeOfRotorSlot.Round; break;
@@ -179,7 +181,7 @@ namespace LibraryAlgorithms {
             q1 = 0.5 * Z1 / p / m1;
             nэл = W1 * a1 * a2 / p / q1;
             np = W1 * a1 / p / q1;
-            Wc = 0.5 * np;
+            //Wc = 0.5 * np;
             t1 = Math.PI * Di / Z1;
             t2 = Math.PI * Dp / Z2;
             nc = 60 * f1 / p;
@@ -208,6 +210,7 @@ namespace LibraryAlgorithms {
             lʹs = 0.5 * (L - 2 * li);
             r1x = ρ1x * L * W1 * 0.001 / a1 / a2 / qГ;
             r1Г = r1x * ρ1Г / ρ1x;
+            //red here
             γ2 = 2 * Math.Sin(Math.PI * p / Z2);
             qИЗ = nэл * dиз * dиз;
             Sп = d1 == 0 ? 0.5 * (bп + bп1) * (h2 + 2 * h3 + h4 + h5) : 0.5 * (bп + d1) * (h2 + 2 * h3 + h4 + h5);
@@ -559,11 +562,11 @@ namespace LibraryAlgorithms {
             out double hz2, out double λлоб2, out double bz2ср, out double λСК) {
             double Σλ2, Σλʹ2, Lp, Hj2, HZ2;
             bZ2MAX = Math.PI * (Dp - 2 * hш) / Z2 - bп2;
-            bZ2MIN = Math.PI * (Dp - 2 * (hш + hр1 + ΔГ2)) / Z2 - bп2; //добавил ΔГ2
+            bZ2MIN = Math.PI * (Dp - 2 * (hш + hp1 + ΔГ2)) / Z2 - bп2; //добавил ΔГ2
             bz2ср = (bZ2MAX + 2 * bZ2MIN) / 3;
             Bz2 = BδM * t2 * li / bz2ср / lp / Kfe2;
             HZ2 = functionMagnetizationToothing(markSteel, Bz2);
-            hz2 = hр1 + hш;
+            hz2 = hp1 + hш;
             Fz2 = 0.2 * (hz2 + ΔГ2) * HZ2; //добавил ΔГ2
             Rotor_rectangularSlot_part(is_nominal, S, γ2, fСК, out _, out double Dк, out double λn2);
             λлоб2 = Dк * Math.Log(2.35 * Dк / (aк + bк)) / Z2 / lp / γ2 / γ2; //не зависит от is_nominal
@@ -588,11 +591,11 @@ namespace LibraryAlgorithms {
             out double hz2, out double λлоб2, out double bz2ср, out double λСК) {
             double HZ2, Hj2, Lp, Σλ2, Σλʹ2;
             bZ2MIN = Math.PI * (Dp - 2 * hш - dпв) / Z2 - dпв;
-            bZ2MAX = Math.PI * (Dp - dпв - 2 * (hш + hр1 + ΔГ2)) / Z2 - dпн; //добавил ΔГ2
+            bZ2MAX = Math.PI * (Dp - dпв - 2 * (hш + hp1 + ΔГ2)) / Z2 - dпн; //добавил ΔГ2
             bz2ср = (bZ2MIN + 2 * bZ2MAX) / 3;
             Bz2 = BδM * t2 * li / bz2ср / lp / Kfe2;
             HZ2 = functionMagnetizationToothing(markSteel, Bz2);
-            hz2 = hр1 + hш + 0.4 * dпн + 0.5 * dпв;
+            hz2 = hp1 + hш + 0.4 * dпн + 0.5 * dпв;
             Fz2 = 0.2 * (hz2 + ΔГ2) * HZ2; //добавил ΔГ2
             Rotor_pyriformSlot_part(is_nominal, S, γ2, fСК, out _, out double Dк, out double λn2);
             λлоб2 = Dк * Math.Log(2.35 * Dк / (aк + bк)) / Z2 / lp / γ2 / γ2; //не зависит от is_nominal
@@ -621,13 +624,13 @@ namespace LibraryAlgorithms {
             Bz2 = BδM * t2 * li / bz2ср / lp / Kfe2;
             HZ2 = functionMagnetizationToothing(markSteel, Bz2);
             Fz2в = 0.2 * (0.9 * dкп + hш) * HZ2;
-            bZ2MAX = bZ2MAXн = Math.PI * (Dp - dпв - 2 * (hш + hр1 + hр2 + dкп + ΔГ2)) / Z2 - dпн; //добавил ΔГ2
+            bZ2MAX = bZ2MAXн = Math.PI * (Dp - dпв - 2 * (hш + hp1 + hр2 + dкп + ΔГ2)) / Z2 - dпн; //добавил ΔГ2
             bZ2MIN = bZ2MINн = Math.PI * (Dp - 2 * (hш + hр2 + dкп) - dпв) / Z2 - dпв;
             bz2срн = (bZ2MAXн + 2 * bZ2MINн) / 3;
             Bz2н= BδM * t2 * li / bz2срн / lp / Kfe2;
             HZ2н= functionMagnetizationToothing(markSteel, Bz2н);
-            Fz2 = 0.2 * (hр1 + 0.4 * (dпв + dпн) + ΔГ2) * HZ2н + Fz2в; //добавил ΔГ2
-            hz2 = hр2 + hр1 + hш + dкп + 0.4 * dпн + 0.5 * dпв;
+            Fz2 = 0.2 * (hp1 + 0.4 * (dпв + dпн) + ΔГ2) * HZ2н + Fz2в; //добавил ΔГ2
+            hz2 = hр2 + hp1 + hш + dкп + 0.4 * dпн + 0.5 * dпв;
 
             Rotor_doubleDeck_part1(is_nominal, S, γ2, fСК, out qстн, out qств, out double Kgн, out double Kgв, out double Dкн, out double Dкв,
                 out double rʹво, out double rʹн, out double rʹв, out qкв, out qкн);
@@ -665,8 +668,8 @@ namespace LibraryAlgorithms {
         /// </summary>
         void Rotor_rectangularSlot_part(bool is_nominal, double S, double γ2, double fСК, out double Kg, out double Dк, out double λn2) {
             double Kr, r2cт, r2к, ν, ξ;
-            qст = 0.9 * hр1 * bп2;
-            ξ = 0.628 * hр1 * Math.Sqrt(S * f1 * 9e-6 / ρ2Г);
+            qст = 0.9 * hp1 * bп2;
+            ξ = 0.628 * hp1 * Math.Sqrt(S * f1 * 9e-6 / ρ2Г);
             Kr = is_nominal ? 1 : ξ * (Math.Sinh(2 * ξ) + Math.Sin(2 * ξ)) / (Math.Cosh(2 * ξ) - Math.Cos(2 * ξ)); //is_nominal
             r2cт = ρ2Г * lp * 1e-3 * Kr / qст; //is_nominal (rcт asdn)
 
@@ -677,21 +680,21 @@ namespace LibraryAlgorithms {
             rʹ2 = (r2cт + r2к) * ν; //is_nominal
             Kg = is_nominal ? 1 : 1.5 * (Math.Sinh(2 * ξ) - Math.Sin(2 * ξ)) / (Math.Cosh(2 * ξ) - Math.Cos(2 * ξ)) / ξ; //is_nominal
 
-            λn2 = hр1 * Kg / 3 / bп2 + hш / bш; //is_nominal
+            λn2 = hp1 * Kg / 3 / bп2 + hш / bш; //is_nominal
         }
         /// <summary>
         /// Грушевидный паз. Определяет rʹ2, Kg, λn2, (Dк - не зависит от режима)
         /// </summary>
         void Rotor_pyriformSlot_part(bool is_nominal, double S, double γ2, double fСК, out double Kg, out double Dк, out double λn2) {
             double hст, ξ, hr, φ, br, qr, Kr, r2cт, r2к, ν;
-            qст = 0.318 * (dпв * dпв + dпн * dпн) + 0.9 * (dпн + dпв) * hр1 / 2;
-            hст = 0.45 * (dпн + dпв) + hр1;
+            qст = 0.318 * (dпв * dпв + dпн * dпн) + 0.9 * (dпн + dпв) * hp1 / 2;
+            hст = 0.45 * (dпн + dпв) + hp1;
             ξ = 0.628 * hст * Math.Sqrt(S * f1 * 9e-6 / ρ2Г);
             φ = ξ * (Math.Sinh(2 * ξ) + Math.Sin(2 * ξ)) / (Math.Cosh(2 * ξ) - Math.Cos(2 * ξ)) - 1;
             hr = hст / (1 + φ);
-            br = 0.9 * dпв - 0.9 * (dпв - dпн) * (hr - 0.45 * dпв) / hр1;
+            br = 0.9 * dпв - 0.9 * (dпв - dпн) * (hr - 0.45 * dпв) / hp1;
             qr = 0.318 * dпв * dпв + 0.5 * (0.9 * dпв + br) * (hr - 0.45 * dпв);
-            Kr = is_nominal || hr > hр1 + 0.45 * dпв ? 1 : qст / qr; //is_nominal
+            Kr = is_nominal || hr > hp1 + 0.45 * dпв ? 1 : qст / qr; //is_nominal
             r2cт = ρ2Г * lp * 1e-3 * Kr / qст; //is_nominal (rcт asdn)
 
             Dк = Dp - aк - 2 * ΔГ2; //добавил ΔГ2
@@ -701,7 +704,7 @@ namespace LibraryAlgorithms {
             rʹ2 = (r2cт + r2к) * ν; //is_nominal
             Kg = is_nominal ? 1 : 1.5 * (Math.Sinh(2 * ξ) - Math.Sin(2 * ξ)) / (Math.Cosh(2 * ξ) - Math.Cos(2 * ξ)) / ξ; //is_nominal
 
-            λn2 = ((hр1 + 0.4 * dпн) * (1 - 0.393 * dпв * dпв / qст) * (1 - 0.393 * dпв * dпв / qст) / 3 / dпв + 0.66 - 0.5 * bш / dпв) * Kg + hш / bш; //is_nominal
+            λn2 = ((hp1 + 0.4 * dпн) * (1 - 0.393 * dпв * dпв / qст) * (1 - 0.393 * dпв * dпв / qст) / 3 / dпв + 0.66 - 0.5 * bш / dпв) * Kg + hш / bш; //is_nominal
         }
         /// <summary>
         /// Параметры ротора двойная клетка. Расчет по 4.1.112 - 4.1.129 
@@ -720,14 +723,14 @@ namespace LibraryAlgorithms {
             Kgв = is_nominal ? 1 : (Math.Sinh(ξв) + Math.Sin(ξв)) / (Math.Cosh(ξв) + Math.Cos(ξв)) / ξв; //is_nominal 
             #endregion
             #region для нижнего паза к.з. клетки ротора
-            qстн = 0.318 * (dпв * dпв + dпн * dпн) + 0.9 * (dпн + dпв) * hр1 / 2;
-            hст = 0.45 * (dпн + dпв) + hр1;
+            qстн = 0.318 * (dпв * dпв + dпн * dпн) + 0.9 * (dпн + dпв) * hp1 / 2;
+            hст = 0.45 * (dпн + dпв) + hp1;
             ξн = 0.628 * hст * Math.Sqrt(S * f1 * 9e-6 / ρ2Г);
             φ = ξн * (Math.Sinh(2 * ξн) + Math.Sin(2 * ξн)) / (Math.Cosh(2 * ξн) - Math.Cos(2 * ξн)) - 1;
             hr = hст / (1 + φ);
-            br = 0.9 * dпв - 0.9 * (dпв - dпн) * (hr - 0.45 * dпв) / hр1;
+            br = 0.9 * dпв - 0.9 * (dпв - dпн) * (hr - 0.45 * dпв) / hp1;
             qr = 0.318 * dпв * dпв + 0.5 * (0.9 * dпв + br) * (hr - 0.45 * dпв);
-            Krн = is_nominal || hr > hр1 + 0.45 * dпв ? 1 : qст / qr; //is_nominal
+            Krн = is_nominal || hr > hp1 + 0.45 * dпв ? 1 : qст / qr; //is_nominal
             r2cтн = ρ2Г * lp * 1e-3 * Krн / qст; //is_nominal (rcт asdn) 
             #endregion
             rcтн = r2cтн + rвн; rcтв = r2cтв - rвн;
@@ -748,7 +751,7 @@ namespace LibraryAlgorithms {
         /// </summary>
         void Rotor_doubleDeck_part2(double qстн, double Kgн, double Kgв, double Dкн, double Dкв, double γ2, double Σλ1, double λq2,
             double rʹво, double rʹн, double rʹв, bool is_nominal) {
-            double λn2н = ((hр1 + 0.4 * dпн) * (1 - 0.393 * dпв * dпв / qстн) * (1 - 0.393 * dпв * dпв / qстн) / 3 / dпв + 0.66 - 0.5 * bп2 / dпв) * Kgн +
+            double λn2н = ((hp1 + 0.4 * dпн) * (1 - 0.393 * dпв * dпв / qстн) * (1 - 0.393 * dпв * dпв / qстн) / 3 / dпв + 0.66 - 0.5 * bп2 / dпв) * Kgн +
                 (0.785 - 0.5 * bп2 / dкп) * Kgв + hр2 / bп2;
             double λнв = (0.785 - 0.5 * bш / dкп) * Kgв + hш / bш;
             double λsн = Dкн / Z2 / lp / γ2 / γ2 * Math.Log(4.7 * Dкн / 2 / (aкн + bкн));
@@ -1041,10 +1044,11 @@ namespace LibraryAlgorithms {
                         { "KП", Math.Round(KП, 5) },
                         { "KI", Math.Round(KI, 5) }
                     } : null;
+        //тепловой расчет
+
         #endregion
         //готовность данных к выводу в интерфейс
         public bool SolutionIsDone { get; private set; }
         public List<string> Logging { get; private set; }
-
     }
 }

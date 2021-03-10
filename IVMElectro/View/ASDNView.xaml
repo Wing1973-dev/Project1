@@ -45,7 +45,19 @@
                         <Button Margin="5" Command="{Binding Path=CommandViewResult}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="FileDocumentOutline" Width="25" Height="25" />
-                                <TextBlock Margin="5">Результат расчета</TextBlock>
+                                <TextBlock Margin="5">Общий результат расчета</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Command="{Binding Path=CommandViewHeatResult}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Thermometer" Width="25" Height="25" />
+                                <TextBlock Margin="5">Результат для теплового расчета</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Command="{Binding Path=CommandViewStatorRotorResult}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Rotate3dVariant" Width="25" Height="25" />
+                                <TextBlock Margin="5">Результат расчета для статора и ротора</TextBlock>
                             </StackPanel>
                         </Button>
                     </ToolBar>
@@ -152,7 +164,7 @@
                                     <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
                                     <Run Text=", В:"/>
                                     </TextBlock>
-                                    <TextBox Name="tbxU" Margin="20 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}">
+                                    <TextBox Name="tbxU" Margin="20 0 0 0" MaxLength="10" Style="{DynamicResource validationTextBox}">
                                         <TextBox.Text>
                                             <Binding Path="U1" UpdateSourceTrigger="LostFocus" >
                                                 <Binding.ValidationRules>
@@ -252,7 +264,7 @@
                                         </TextBox.Text>
                                     </TextBox>
                                 </StackPanel>
-                                <Label Content="Диапазон значений: (50 : 1100]" Style="{DynamicResource LabelForDiapason}"/>
+                                <Label Content="Диапазон значений: (50 : 800]" Style="{DynamicResource LabelForDiapason}"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Horizontal">
@@ -637,7 +649,7 @@
                                     </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
+                                    <Label Content="Расчетный диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
                                     <Label Name="lb_acBounds" Content="{Binding Path=acBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
@@ -808,7 +820,6 @@
                                     <TextBlock Name="tbl_Wc" Text="{Binding Path=Wc_calc}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="5,3,0,0"/>
                                 </StackPanel>
                             </StackPanel>
-
                             <StackPanel Grid.Row="4" Grid.Column="3" Orientation="Vertical" Margin="15">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
@@ -817,17 +828,7 @@
                                     <Run Text=":"/>
                                     </TextBlock>
                                     <TextBlock Name="tbl_Kзап" Text="{Binding Path=Kзап}" Style="{DynamicResource MaterialDesignTextBlock}" Margin="85,3,0,0"/>
-                                    <!--<TextBox Name="tbxKзап" Margin="45 0 0 0" MaxLength="4" Style="{DynamicResource validationTextBox}" >
-                                        <TextBox.Text>
-                                            <Binding Path="Kзап" UpdateSourceTrigger="LostFocus" >
-                                                <Binding.ValidationRules>
-                                                    <DataErrorValidationRule />
-                                                </Binding.ValidationRules>
-                                            </Binding>
-                                        </TextBox.Text>
-                                    </TextBox>-->
                                 </StackPanel>
-                                <!--<Label Content="Диапазон значений: [0,36 : 0,76]" Style="{DynamicResource LabelForDiapason}"/>-->
                             </StackPanel>
                             <StackPanel Grid.Row="4" Grid.Column="4" Orientation="Vertical" Margin="15">
                                 <TextBlock Text="Шаг обмотки" Style="{DynamicResource MaterialDesignTextBlock}"/>
@@ -1112,7 +1113,7 @@
                                     </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
+                                    <Label Content="Расчетный диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
                                     <Label Name="lbDpстBounds" Content="{Binding Path=DpстBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
@@ -1183,7 +1184,7 @@
                                     </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
+                                    <Label Content="Расчетный диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
                                     <Label Name="lb_hpBounds" Content="{Binding Path=hpBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
@@ -1207,7 +1208,7 @@
                                     </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
+                                    <Label Content="Рекомендуемый диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
                                     <Label Name="lb_dвBounds" Content="{Binding Path=dвBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
@@ -1231,7 +1232,7 @@
                                     </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
+                                    <Label Content="Расчетный диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
                                     <Label Name="lb_bкBounds" Content="{Binding Path=bкBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>
@@ -1255,7 +1256,7 @@
                                     </TextBox>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <Label Content="Диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
+                                    <Label Content="Расчетный диапазон значений:" Style="{DynamicResource LabelForDiapason}"/>
                                     <Label Name="lb_aкBounds" Content="{Binding Path=aкBounds}" Style="{DynamicResource LabelForDiapason}" />
                                 </StackPanel>
                             </StackPanel>

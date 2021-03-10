@@ -60,8 +60,8 @@ namespace LibraryAlgorithms {
             dиз = input["dиз"]; qГ = input["qГ"]; h8 = input["h8"]; h7 = input["h7"]; h6 = input["h6"]; h5 = input["h5"]; h3 = input["h3"];
             h4 = input["h4"]; ac = input["ac"]; bПН = input["bПН"]; li = input["li"]; cз = input["cз"]; y1 = input["y1"]; K2 = input["K2"];
             d1 = input["d1"]; Kfe1 = input["Kfe1"]; ρ1x = input["ρ1x"]; ρРУБ = input["ρРУБ"]; ρ1Г = input["ρ1Г"]; B = input["B"]; 
-            P3 = input["P3"] != 0; p10_50 = input["p10_50"];
-            β = input["β"];
+            P3 = input["P3"] != 0; p10_50 = input["p10_50"]; β = input["β"];
+            W1 = input["W1"]; Wc = input["Wc"];
 
             ΔГ2 = input["ΔГ2"]; bСК = input["bСК"] == 1 ? Math.PI * Di / Z1 : 0; bП2 = input["bП2"]; Z2 = input["Z2"]; hp = input["hp"]; dв = input["dв"];
             bк = input["bк"]; aк = input["aк"]; γ = input["γ"]; ρ2Г = input["ρ2Г"]; Kfe2 = input["Kfe2"];
@@ -75,11 +75,8 @@ namespace LibraryAlgorithms {
             else if (p10_50 == 19.6) mrkStlStr = MarkSteelStator.Сталь1521;
 
             //prepare for W1
-            double Wk = 4 * input["Sсл"] * input["Kзап"] / Math.PI / dиз / dиз / a2;
-            W1 = Z1 * Wk / 3.0 / a1;
-
-
-            //W1 = 208; //debug
+            //double Wk = 4 * input["Sсл"] * input["Kзап"] / Math.PI / dиз / dиз / a2;
+            //W1 = Z1 * Wk / 3.0 / a1;
 
             SolutionIsDone = false; Logging = new List<string>();
         }
@@ -98,7 +95,7 @@ namespace LibraryAlgorithms {
             q1 = 0.5 * Z1 / p / m1; 
             nэл = W1 * a1 * a2 / p / q1;
             np = W1 * a1 / p / q1;
-            Wc = 0.5 * np;
+            //Wc = 0.5 * np;
             t1 = Math.PI * Di / Z1;
             t2 = Math.PI * Dp / Z2;
             nc = 60 * f1 / p;
@@ -167,7 +164,7 @@ namespace LibraryAlgorithms {
             I2c = Ki * 2 * m1 * I1 * W1 * k1 / Z2;
             Ф10 = U1 * 1e8 / 4.44 / W1 / k1 / f1;
             SН = RatingLoop(S, Ф10, τi, t1, t2, bz2ср, δ, I2c, λлоб2, λq2, ν, Gz1, Gz2, Gj1, nc, rs, rруб, 
-                out double PFe, out double PFe_round, out double I2Н, out double ZM, out double RM, out double ρ1, out double xʹk, out double Σλ2, out double Zʹoo, out double Sp, out double λСК);
+                out double PFe, out double PFe_round, out double I2Н, out double ZM, out double RM, out double ρ1, out double xʹk, out double Σλ2, out _, out double Sp, out double λСК);
             if ( double.IsNaN(SН) ) {
                 Logging.Add($"Type: {GetType()}  message: Ошибка расчета номинального режима -> double.IsNaN(SН)");
                 return;
@@ -175,7 +172,7 @@ namespace LibraryAlgorithms {
             while ( Math.Abs(S - SН) >= S * 5e-3 ) {
                 S = 0.5 * (S + SН);
                 SН = RatingLoop(S, Ф10, τi, t1, t2, bz2ср, δ, I2c, λлоб2, λq2, ν, Gz1, Gz2, Gj1, nc, rs, rруб, 
-                    out PFe, out PFe_round, out I2Н, out ZM, out RM, out ρ1, out xʹk, out Σλ2, out Zʹoo, out Sp, out λСК);
+                    out PFe, out PFe_round, out I2Н, out ZM, out RM, out ρ1, out xʹk, out Σλ2, out _, out Sp, out λСК);
                 if ( double.IsNaN(SН) ) {
                     Logging.Add($"Type: {GetType()}  message: Ошибка расчета номинального режима -> double.IsNaN(SН)");
                     return;
@@ -769,6 +766,76 @@ namespace LibraryAlgorithms {
                         { "KI", Math.Round(KI, 5) },
                         { "E1П", Math.Round(E1П, 5) }
                     } : null;
+        //тепловой расчет
+        public Dictionary<string, double> Get_HeatCalculation => SolutionIsDone ?
+            new Dictionary<string, double>() {
+                        { "P1 окр", Math.Round(P1_round*0.001, 5) },
+                        { "Pʹ2", Math.Round(Pʹ2*0.001, 5) },
+                        { "Pмех", Math.Round(Pмех, 5) },
+                        { "Pʹ2-Pмех", Math.Round(Pʹ2-Pмех, 5) },
+                        { "U1", Math.Round(U1, 5) },
+                        { "f1", Math.Round(f1, 5) },
+                        { "I1Н окр", Math.Round(I1Н_round, 5) },
+                        { "n", Math.Round(nН, 5) },
+                { "PЭ1 окр", Math.Round(PЭ1_round*0.001, 5) },
+                { "Pj1 окр", Math.Round(Pj1_round*0.001, 5) },
+                { "Зубцы железа", Math.Round(Pz1_round + Pпов1_round + Pпул1_round * 0.001, 5) }, 
+                { "PГ окр", Math.Round(PГ_round * 0.001, 5) },
+                { "Ротор", Math.Round(PЭ2_round + PFe2_round + Pпов2_round + Pпул2_round * 0.001, 5) },
+                { "Суммарные электрические потери",
+                Math.Round(PЭ1_round*0.001, 5) + Math.Round(Pj1_round*0.001, 5) + Math.Round(Pz1_round + Pпов1_round + Pпул1_round * 0.001, 5) +
+                    Math.Round(PГ_round * 0.001, 5) + Math.Round(PЭ2_round + PFe2_round + Pпов2_round + Pпул2_round * 0.001, 5) },
+                { "Dp", Dp  },
+                { "Di", Di  },
+                { "Da", Da  },
+                { "li", li  },
+                { "2 * Δкр", 2 * Δкр  }, 
+                { "Z1", Z1  },
+                { "ΔГ1", ΔГ1  }
+            } : null;
+        public Dictionary<string, string> Get_HeatCalculationStringData => SolutionIsDone ?
+            new Dictionary<string, string>() {
+                { "Материал железа статора", mrkStlStr.ToString()  }
+            } : null;
+        public Dictionary<string, double> Get_StatorRotorCalculation => SolutionIsDone ?
+            new Dictionary<string, double>() {
+                { "Da", Da  },
+                { "Di", Di  },
+                { "Dp", Dp  },
+                { "D'p", Dp +  ΔГ2 },
+                { "li", li  },
+                { "Kл", Δкр  },
+                { "F", lB  },
+                { "B", B  },
+                { "ΔГ1", ΔГ1  },
+                { "ΔГ2", ΔГ2  },
+                { "hz2", hp  },
+                { "aк", aк  },
+                { "bк", bк  },
+                { "dв", dв  },
+                { "bП2", bП2  },
+                { "Z1", Z1  },
+                { "Z2", Z2  },
+                { "hZ1", Math.Round(h2 + 2 * h3 + h4 + h5 + h6 + h7 + h8, 5)  },
+                { "bП", bП  },
+                { "bП1", bП1  },
+                { "bПН", bПН  },
+                { "h2", h2  },
+                { "h3", h3  },
+                { "h4", h4  },
+                { "h5", h5  },
+                { "h6", h6  },
+                { "h7", h7  },
+                { "h8", h8  },
+                { "ΔИЗ", h3  },
+                { "ac", ac  },
+                { "Провод обмоточный", Math.Round(qГ/dиз, 5)  },
+                { "Pʹ2", Math.Round(Pʹ2, 5) },
+                { "P1", P1 },
+                { "I1Н", Math.Round(I1Н, 5) },
+                { "nН", Math.Round(nН, 5) },
+                { "I1П", Math.Round(I1П, 5) }
+            } : null;
         #endregion
         //solution is done
         public bool SolutionIsDone { get; private set; }

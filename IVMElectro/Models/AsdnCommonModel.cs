@@ -52,7 +52,7 @@ namespace IVMElectro.Models {
         public double bП_calc => 2 * (h2 + 2 * h3 + h4 + h5) * Math.Tan(Math.PI / Z1);  //interface output only 
         public int W1 { get; set; }
         public int Wc { get; set; }
-        public double Wc_calc => 2 * W1 * a1 / Convert.ToDouble(p * q1);
+        public double Wc_calc => 0.5 * W1 * a1 / Convert.ToDouble(p * q1);
         //public double Kзап { get; set; }
         public double Kзап => KзапCalculation();
         public double y1 { get; set; }
@@ -85,14 +85,12 @@ namespace IVMElectro.Models {
             f1 = 50; h7 = 1; h5 = 1.9; h3 = 0.7; cз = 100;  Kfe1 = 0.93; ρ1x = 0.0175; ρ1Г = 0.0247; B = 10; ρ2Г = 0.0224; 
             
             bСК = "прямые"; p = 1; PR = "трапецеидальный";
-
-            //Kзап = 0.72;
         }
         public override void CreationDataset() => Dataset = new Dictionary<string, double> {
             { "P12", P12 }, { "U1", U1 }, { "f1", f1 }, { "p", p }, { "Pмех", Pмех }, 
             { "Di", Di }, { "ΔГ1", ΔГ1 }, { "Da", Da }, { "a2", a2 }, { "a1", a1 }, { "Δкр", Δкр }, { "bz1", bz1 }, { "h8", h8 }, { "h7", h7 }, { "h6", h6 },
             { "bП1", bП1 }, { "h1", h1 }, { "h2", h2 }, { "bП", bП }, { "β", β }, { "Sсл", Sсл },
-            { "h5", h5 }, { "h3", h3 }, { "h4", h4 }, { "ac", ac }, { "bПН", bПН }, { "li", li }, { "cз", cз }, { "Kзап", Kзап}, { "y1", y1 }, { "d1", d1 }, 
+            { "h5", h5 }, { "h3", h3 }, { "h4", h4 }, { "ac", ac }, { "bПН", bПН }, { "li", li }, { "cз", cз }, { "W1", W1}, { "Wc", Wc}, { "y1", y1 }, { "d1", d1 }, 
             { "Kfe1", Kfe1 }, { "ρ1x", ρ1x }, { "ρ1Г", ρ1Г }, { "B", B }, 
             { "ΔГ2", ΔГ2 },  { "Dpст", Dpст},  { "ρ2Г", ρ2Г }, { "Kfe2", Kfe2 }, { "hp", hp }, { "Z2", Z2 }, { "Z1", Z1 }, 
             { "ρРУБ", ρРУБ }, { "K2", K2 }, { "qГ", qГ }, { "dиз", dиз }, { "p10_50", p10_50 } };
@@ -109,7 +107,7 @@ namespace IVMElectro.Models {
                 errors.Add(new ValidationResult($"Значение параметра Pмех должно принадлежать [0 : {PмехBoundRight(P12)}]."));
             #endregion
             #region stator parameters
-            if (!((50 < Di) && (Di <= 1100))) errors.Add(new ValidationResult(errorDi));
+            if (!((50 < Di) && (Di <= 800))) errors.Add(new ValidationResult(errorDi));
             if ((!(0 <= ΔГ1) && (ΔГ1 <= 0))) errors.Add(new ValidationResult(errorΔГ1));
             if ((Z1 < 0) || !int.TryParse(Z1.ToString(), out _)) errors.Add(new ValidationResult(errorZ1));
             if (!((Get_DaBounds(Di).left <= Da) && (Da < Get_DaBounds(Di).right)))
@@ -118,6 +116,7 @@ namespace IVMElectro.Models {
             if (!int.TryParse(a2.ToString(), out _)) errors.Add(new ValidationResult(errora2));
             if (!((0 <= a2) && (a2 <= 30))) errors.Add(new ValidationResult(errora2));
             if ((W1 < 0) || !int.TryParse(W1.ToString(), out _)) errors.Add(new ValidationResult(errorW1));
+            if(W1%2!=0) errors.Add(new ValidationResult(errorW1parity));
             if ((Wc < 0) || !int.TryParse(Wc.ToString(), out _)) errors.Add(new ValidationResult(errorWc));
             if (!((3 <= Δкр) && (Δкр <= 40))) errors.Add(new ValidationResult(errorΔкр));
             if ((dиз < 0) || double.IsNaN(dиз)) errors.Add(new ValidationResult(errordиз));
@@ -129,7 +128,8 @@ namespace IVMElectro.Models {
             if (!((0.1 <= h5) && (h5 <= 5))) errors.Add(new ValidationResult(errorh5));
             if (!((0 <= h3) && (h3 <= 5))) errors.Add(new ValidationResult(errorh3));
             if (!((5 <= h4) && (h4 <= 50))) errors.Add(new ValidationResult(errorh4));
-            if (!((dиз < ac) && (ac < 2 * dиз))) errors.Add(new ValidationResult($"Значение параметра расчета ac должно принадлежать ({dиз} : {2 * dиз})."));
+            //if (!((dиз < ac) && (ac < 2 * dиз))) errors.Add(new ValidationResult($"Значение параметра расчета ac должно принадлежать ({dиз} : {2 * dиз})."));
+            if (!(dиз < ac)) errors.Add(new ValidationResult($"Значение параметра ac должно быть > {dиз}."));
             if (!((0 <= bПН) && (bПН <= bП1Calc(Di, h8, h7, h6, bz1, Z1)))) 
                 errors.Add(new ValidationResult($"Значение параметра bПН должно принадлежать [0 : {Math.Round(bП1Calc(Di, h8, h7, h6, bz1, Z1), 2)}]."));
             if (h1 < 0 || double.IsNaN(h1)) errors.Add(new ValidationResult(errorh1));
@@ -159,17 +159,21 @@ namespace IVMElectro.Models {
             #endregion
             #region rotor parameters
             if (!((0 <= ΔГ2) && (ΔГ2 <= 5))) errors.Add(new ValidationResult(errorΔГ2));
-            if (!((DpстBoundCalculation - 5 <= Dpст) && (Dpст < DpстBoundCalculation - 0.1))) 
-                errors.Add(new ValidationResult($"Значение параметра Dp.ст должно принадлежать [{ Math.Round(DpстBoundCalculation - 5, 2) } : { Math.Round(DpстBoundCalculation - 0.1, 2)})."));
+            //if (!((DpстBoundCalculation - 5 <= Dpст) && (Dpст < DpстBoundCalculation - 0.1))) 
+            //    errors.Add(new ValidationResult($"Значение параметра Dp.ст должно принадлежать [{ Math.Round(DpстBoundCalculation - 5, 2) } : { Math.Round(DpстBoundCalculation - 0.1, 2)})."));
+            if (double.IsNaN(Dpст) || Dpст < 0)
+                errors.Add(new ValidationResult(errorDpст));
             //if (string.IsNullOrEmpty(bСК)) errors.Add(new ValidationResult("Error bСК.")); //such a state is unattainable. This is used for  Validator.TryValidateObject(..., true)
             if ((Z2 < 0) || !int.TryParse(Z2.ToString(), out _)) errors.Add(new ValidationResult(errorZ2));
             
             if (!((0.01 <= ρ2Г) && (ρ2Г <= 0.2))) errors.Add(new ValidationResult(errorρ2Г));
             if (!((0.9 <= Kfe2) && (Kfe2 <= 1))) errors.Add(new ValidationResult(errorKfe2));
-            if (!((0.125 * Get_Dp(Dpст, ΔГ2) <= hp) && (hp <= 0.375 * Get_Dp(Dpст, ΔГ2))))
-                errors.Add(new ValidationResult($"Значение параметра hp должно принадлежать {Get_hpBounds(Dpст, ΔГ2)}."));
+            //if (!((0.125 * Get_Dp(Dpст, ΔГ2) <= hp) && (hp <= 0.375 * Get_Dp(Dpст, ΔГ2))))
+            //    errors.Add(new ValidationResult($"Значение параметра hp должно принадлежать {Get_hpBounds(Dpст, ΔГ2)}."));
+            if (hp < 0 || double.IsNaN(hp))
+                errors.Add(new ValidationResult(errorhp));
             #endregion
-            
+
             return errors;
         }
         internal double DpстBoundCalculation => Di - 2 * (ΔГ1 - ΔГ2);

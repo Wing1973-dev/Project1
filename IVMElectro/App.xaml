@@ -31,7 +31,7 @@
                                                           ContentSource="Header"
                                                           Margin="10"/>
                                 </Border>
-                                <Rectangle x:Name="Strip" Height="3" Width="145" Margin="0,0,0,-6" VerticalAlignment="Bottom" HorizontalAlignment="Center"
+                                <Rectangle x:Name="Strip" Height="3" Width="295" Margin="0,0,0,-6" VerticalAlignment="Bottom" HorizontalAlignment="Center"
                                                    Fill="{StaticResource PrimaryHueLightBrush}"/>
                             </Grid>
 

@@ -38,11 +38,11 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbl_h1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_li, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_liBounds, ContentProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(tbl_bП, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_y1Bounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_β, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_d1Bounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_ρ1ГBounds, ContentProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbxDpст, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbDpстBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_hpBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_hp, TextBox.TextProperty).UpdateTarget();
@@ -268,6 +268,9 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_h1") != null) ((AsdnSingleViewModel)DataContext).h1 = inputData.Element("tbx_h1").Value.Trim();
                 else
                     isFormat = false;
+                if (inputData.Element("tbx_h2") != null) ((AsdnSingleViewModel)DataContext).h2 = inputData.Element("tbx_h2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_li") != null) ((AsdnSingleViewModel)DataContext).li = inputData.Element("tbx_li").Value.Trim();
                 else
                     isFormat = false;
@@ -286,9 +289,6 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_Wc") != null) ((AsdnSingleViewModel)DataContext).Wc = inputData.Element("tbx_Wc").Value.Trim(); //dep 51
                 else
                     isFormat = false;
-                //if (inputData.Element("tbxKзап") != null) ((AsdnSingleViewModel)DataContext).Kзап = inputData.Element("tbxKзап").Value.Trim();
-                //else
-                //    isFormat = false;
                 if (inputData.Element("tbx_y1") != null) ((AsdnSingleViewModel)DataContext).y1 = inputData.Element("tbx_y1").Value.Trim();
                 else
                     isFormat = false;
@@ -390,13 +390,13 @@ namespace IVMElectro.View {
                     new XElement("tbx_h4", ((AsdnSingleViewModel)DataContext).h4),
                     new XElement("tbx_ac", ((AsdnSingleViewModel)DataContext).ac),
                     new XElement("tbx_h1", ((AsdnSingleViewModel)DataContext).h1),
+                    new XElement("tbx_h2", ((AsdnSingleViewModel)DataContext).h2),
                     new XElement("tbx_li", ((AsdnSingleViewModel)DataContext).li),
                     new XElement("tbx_cз", ((AsdnSingleViewModel)DataContext).cз),
                     new XElement("tbx_bП", ((AsdnSingleViewModel)DataContext).bП), //dep 51
                     new XElement("tbx_bП1", ((AsdnSingleViewModel)DataContext).bП1), //dep 51
                     new XElement("tbx_W1", ((AsdnSingleViewModel)DataContext).W1), //dep 51
                     new XElement("tbx_Wc", ((AsdnSingleViewModel)DataContext).Wc), //dep 51
-                    //new XElement("tbxKзап", ((AsdnSingleViewModel)DataContext).Kзап),
                     new XElement("tbx_y1", ((AsdnSingleViewModel)DataContext).y1),
                     new XElement("tbx_K2", ((AsdnSingleViewModel)DataContext).K2),
                     new XElement("cbx_PR", ((AsdnSingleViewModel)DataContext).PR),

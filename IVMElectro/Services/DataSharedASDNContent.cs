@@ -17,7 +17,7 @@ namespace IVMElectro.Services {
         public const string errora1 = "Ошибочное значение параметра a1.";
         public const string errora2 = "Значение параметра a2 должно принадлежать [0 : 30].";
         public const string errorac = "Ошибочное значение параметра ac. Ошибочные значения диапазона.";
-        public const string errordв = "Ошибочное значение параметра dв. Ошибочные значения диапазона.";
+        public const string errordв = "Ошибочное значение параметра dв.";
         public const string errordкп = "Ошибочное значение параметра dкп. Ошибочные значения диапазона.";
         public const string errorbZH = "Ошибочное значение параметра bZH. Ошибочные значения диапазона.";
         public const string errorΔкр = "Значение параметра Δкр должено принадлежать [3 : 40].";
@@ -38,6 +38,7 @@ namespace IVMElectro.Services {
         public const string errorcз = "Значение параметра cз должно принадлежать [0 : 200].";
         public const string errorbП = "Ошибочное значение параметра bП.";
         public const string errorW1 = "Ошибочное значение параметра W1.";
+        public const string errorW1parity = "Значение параметра W1 должно быть четным.";
         public const string errorWc = "Ошибочное значение параметра Wc.";
         public const string errorKзап = "Значение параметра Kзап должно принадлежать [0,36 : 0,76].";
         public const string errorβ = "Значение параметра β должно принадлежать [0,5 : 0,95].";
@@ -49,12 +50,16 @@ namespace IVMElectro.Services {
         public const string errorp10_50 = "Ошибочное значение параметра p10_50.";
         public const string errorΔГ2 = "Значение параметра ΔГ2 должно принадлежать [0 : 5].";
         public const string errorbП2ASDN = "Значение параметра bП2 должно принадлежать [2 : 6].";
+        public const string errorDpст= "Ошибочное значение параметра Dpст.";
         public const string errorZ2 = "Ошибочное значение параметра Z2.";
         public const string errorρ2Г = "Значение параметра ρ2Г должено принадлежать [0,01 : 0,2].";
         public const string errorKfe2 = "Значение параметра Kfe2 должено принадлежать [0,9 : 1].";
         public const string errorγ = "Ошибочное значение параметра γ.";
         public const string errorhш = "Значение параметра hш должно принадлежать [0,5 : 1].";
         public const string errorbш = "Значение параметра bш должно принадлежать [1 : 2,5].";
+        public const string errorbк = "Ошибочное значение параметра bк.";
+        public const string erroraк = "Ошибочное значение параметра aк.";
+        public const string errorhp = "Ошибочное значение параметра hp.";
         public const string errorhp2RED = "Значение параметра hp2 должно принадлежать [3 : 10]."; //для двойной клетки
         public const string errorhp2 = "Ошибочное значение параметра hp2.";
         public const string errorbкн = "Значение параметра bкн должно принадлежать [5 : 35].";
@@ -62,6 +67,9 @@ namespace IVMElectro.Services {
         public const string errorbкRED = "Ошибочное значение параметра bк.";
         public const string errory1 = "Ошибочное значение параметра y1. Ошибочные значения диапазона.";
         public const string errord1RED = "Ошибочное значение параметра d1.";
+        public const string errordпн = "Ошибочное значение параметра dпн.";
+        public const string errordпв = "Ошибочное значение параметра dпв.";
+        public const string errorhp1 = "Ошибочное значение параметра hp1.";
         public const string errordiapason = "Ошибочное значение диапазона.";
         #endregion
         public static double bП1Calc(double Di, double h8, double h7, double h6, double bz1, double Z1) =>
@@ -115,9 +123,9 @@ namespace IVMElectro.Services {
         public static DataTable K2Table {
             get {
                 DataTable table = new DataTable();
-                DataColumn p = new DataColumn("Число пар полюсов", typeof(string)), NoneInsulating = new DataColumn("β ≥ 0,8\r\nЛобовые части секции\r\nне изолированы", typeof(string)),
-                    Insulating = new DataColumn("β ≥ 0,8\r\nЛобовые части секции\r\nизолированы", typeof(string)),
-                    β = new DataColumn("0,5 ≤ β < 0,8", typeof(string));
+                DataColumn p = new DataColumn("Число пар полюсов", typeof(string)), NoneInsulating = new DataColumn("β ≥ 0,7\r\nЛобовые части секции\r\nне изолированы", typeof(string)),
+                    Insulating = new DataColumn("β ≥ 0,7\r\nЛобовые части секции\r\nизолированы", typeof(string)),
+                    β = new DataColumn("0,5 ≤ β < 0,7", typeof(string));
                 table.Columns.AddRange(new DataColumn[] { p, NoneInsulating, Insulating, β });
                 DataRow row = table.NewRow();
                 row.ItemArray = new object[] { "2", "1,2", "1,45", "1,55" };

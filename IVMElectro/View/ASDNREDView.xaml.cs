@@ -26,19 +26,23 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(lbDaBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbxDa, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lboxZ1, ItemsControl.ItemsSourceProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_q1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbox_a1, ItemsControl.ItemsSourceProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_bП, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_bП1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_bПН, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_Wc, TextBlock.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbl_Kзап, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_acBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_ac, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_h1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_li, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_liBounds, ContentProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(tbl_bП, TextBlock.TextProperty).UpdateTarget();
-            BindingOperations.GetBindingExpression(tbl_bП1, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_y1Bounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbl_β, TextBlock.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_d1Bounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_ρ1ГBounds, ContentProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbxDpст, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lbDpстBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(lb_hpBounds, ContentProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_hp, TextBox.TextProperty).UpdateTarget();
@@ -60,6 +64,13 @@ namespace IVMElectro.View {
             BindingOperations.GetBindingExpression(tbx_bкн, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_aкн, TextBox.TextProperty).UpdateTarget();
             BindingOperations.GetBindingExpression(tbx_d1, TextBox.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_dпн, TextBox.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_dпв, TextBox.TextProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(tbx_hp1, TextBox.TextProperty).UpdateTarget();
+
+            BindingOperations.GetBindingExpression(lb_dпнСalc, ContentProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(lb_dпвнСalc, ContentProperty).UpdateTarget();
+            BindingOperations.GetBindingExpression(lb_hp1Сalc, ContentProperty).UpdateTarget();
         }
         private void btnMenu_Click(object sender, RoutedEventArgs e) {
             switch (((Button)sender).Name) {
@@ -273,6 +284,9 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_h1") != null) ((AsdnRedSingleViewModel)DataContext).h1 = inputData.Element("tbx_h1").Value.Trim();
                 else
                     isFormat = false;
+                if (inputData.Element("tbx_h2") != null) ((AsdnRedSingleViewModel)DataContext).h2 = inputData.Element("tbx_h2").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_li") != null) ((AsdnRedSingleViewModel)DataContext).li = inputData.Element("tbx_li").Value.Trim();
                 else
                     isFormat = false;
@@ -285,9 +299,12 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_bП1") != null) ((AsdnRedSingleViewModel)DataContext).bП1 = inputData.Element("tbx_bП1").Value.Trim(); //dep 51
                 else
                     isFormat = false;
-                //if (inputData.Element("tbxKзап") != null) ((AsdnRedSingleViewModel)DataContext).Kзап = inputData.Element("tbxKзап").Value.Trim();
-                //else
-                //    isFormat = false;
+                if (inputData.Element("tbx_W1") != null) ((AsdnRedSingleViewModel)DataContext).W1 = inputData.Element("tbx_W1").Value.Trim(); //dep 51
+                else
+                    isFormat = false;
+                if (inputData.Element("tbx_Wc") != null) ((AsdnRedSingleViewModel)DataContext).Wc = inputData.Element("tbx_Wc").Value.Trim(); //dep 51
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_y1") != null) ((AsdnRedSingleViewModel)DataContext).y1 = inputData.Element("tbx_y1").Value.Trim();
                 else
                     isFormat = false;
@@ -363,6 +380,15 @@ namespace IVMElectro.View {
                 if (inputData.Element("tbx_bZH") != null) ((AsdnRedSingleViewModel)DataContext).bZH = inputData.Element("tbx_bZH").Value.Trim();
                 else
                     isFormat = false;
+                if (inputData.Element("tbx_dпн") != null) ((AsdnRedSingleViewModel)DataContext).dпн = inputData.Element("tbx_dпн").Value.Trim();
+                else
+                    isFormat = false;
+                if (inputData.Element("tbx_dпв") != null) ((AsdnRedSingleViewModel)DataContext).dпв = inputData.Element("tbx_dпв").Value.Trim();
+                else
+                    isFormat = false;
+                if (inputData.Element("tbx_hр1") != null) ((AsdnRedSingleViewModel)DataContext).hp1 = inputData.Element("tbx_hр1").Value.Trim();
+                else
+                    isFormat = false;
                 if (inputData.Element("tbx_hр2") != null) ((AsdnRedSingleViewModel)DataContext).hр2 = inputData.Element("tbx_hр2").Value.Trim();
                 else
                     isFormat = false;
@@ -406,11 +432,13 @@ namespace IVMElectro.View {
                         new XElement("tbx_h4", ((AsdnRedSingleViewModel)DataContext).h4),
                         new XElement("tbx_ac", ((AsdnRedSingleViewModel)DataContext).ac),
                         new XElement("tbx_h1", ((AsdnRedSingleViewModel)DataContext).h1),
+                        new XElement("tbx_h2", ((AsdnRedSingleViewModel)DataContext).h2),
                         new XElement("tbx_li", ((AsdnRedSingleViewModel)DataContext).li),
                         new XElement("tbx_cз", ((AsdnRedSingleViewModel)DataContext).cз),
                         new XElement("tbx_bП", ((AsdnRedSingleViewModel)DataContext).bП), //dep 51
                         new XElement("tbx_bП1", ((AsdnRedSingleViewModel)DataContext).bП1), //dep 51
-                        //new XElement("tbxKзап", ((AsdnRedSingleViewModel)DataContext).Kзап),
+                        new XElement("tbx_W1", ((AsdnRedSingleViewModel)DataContext).W1), //dep 51
+                        new XElement("tbx_Wc", ((AsdnRedSingleViewModel)DataContext).Wc), //dep 51
                         new XElement("tbx_y1", ((AsdnRedSingleViewModel)DataContext).y1),
                         new XElement("tbx_K2", ((AsdnRedSingleViewModel)DataContext).K2),
                         new XElement("cbx_PR", ((AsdnRedSingleViewModel)DataContext).PR),
@@ -437,6 +465,9 @@ namespace IVMElectro.View {
                         new XElement("tbx_bш", ((AsdnRedSingleViewModel)DataContext).bш),
                         new XElement("tbx_dкп", ((AsdnRedSingleViewModel)DataContext).dкп),
                         new XElement("tbx_bZH", ((AsdnRedSingleViewModel)DataContext).bZH),
+                        new XElement("tbx_dпн", ((AsdnRedSingleViewModel)DataContext).dпн),
+                        new XElement("tbx_dпв", ((AsdnRedSingleViewModel)DataContext).dпв),
+                        new XElement("tbx_hр1", ((AsdnRedSingleViewModel)DataContext).hp1),
                         new XElement("tbx_hр2", ((AsdnRedSingleViewModel)DataContext).hр2),
                         new XElement("tbx_bкн", ((AsdnRedSingleViewModel)DataContext).bкн),
                         new XElement("tbx_aкн", ((AsdnRedSingleViewModel)DataContext).aкн)
@@ -444,10 +475,9 @@ namespace IVMElectro.View {
             string namefile = SaveObjectToXMLFile(inputData);
             
             ((AsdnRedSingleViewModel)DataContext).Diagnostic = string.IsNullOrEmpty(namefile) ? string.Empty : $"Сохранен файл {namefile}";
-            //UpdateBinding();
         }
         private void cbxPAS_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-            EnableStateRotorElements();
+            //EnableStateRotorElements();
             switch (cbxPAS.SelectedItem.ToString()) {
                 case "круглый":
                     RoundStateRotorElements();
@@ -466,6 +496,8 @@ namespace IVMElectro.View {
         }
         private void EnableStateRotorElements() {
             tbx_dкп.IsEnabled = true; tbx_bП2.IsEnabled = true; tbx_hр2.IsEnabled = true; tbx_bкн.IsEnabled = true; tbx_aкн.IsEnabled = true;
+            tbx_dпн.IsEnabled = true; tbx_dпв.IsEnabled = true; tbx_hp1.IsEnabled = true;
+            lb_dпнСalc.Visibility = Visibility.Visible; lb_dпвнСalc.Visibility = Visibility.Visible; lb_hp1Сalc.Visibility = Visibility.Visible;
             lb_dкпBounds.Visibility = Visibility.Visible; lb_hр2.Visibility = Visibility.Visible; 
             lb_bкн.Visibility = Visibility.Visible; lb_bкBounds.Visibility = Visibility.Visible;
             lb_aкнBounds.Visibility = Visibility.Visible; lb_aкBounds.Visibility = Visibility.Visible;
@@ -473,24 +505,34 @@ namespace IVMElectro.View {
         private void RoundStateRotorElements() {
             tbx_dкп.IsEnabled = true; 
             tbx_bП2.IsEnabled = false; tbx_hр2.IsEnabled = false; tbx_bкн.IsEnabled = false; tbx_aкн.IsEnabled = false;
+            tbx_dпн.IsEnabled = false; tbx_dпв.IsEnabled = false; tbx_hp1.IsEnabled = false;
             lb_dкпBounds.Visibility = Visibility.Visible; lb_hр2.Visibility = Visibility.Hidden;
             lb_bкн.Visibility = Visibility.Hidden; lb_bкBounds.Visibility = Visibility.Hidden;
             lb_aкнBounds.Visibility = Visibility.Hidden; lb_aкBounds.Visibility = Visibility.Hidden;
+            lb_dпнСalc.Visibility = Visibility.Hidden; lb_dпвнСalc.Visibility = Visibility.Hidden; lb_hp1Сalc.Visibility = Visibility.Hidden;
 
             ((AsdnRedSingleViewModel)DataContext).bП2 = "0"; ((AsdnRedSingleViewModel)DataContext).hр2 = "0";
             ((AsdnRedSingleViewModel)DataContext).bкн = "0"; ((AsdnRedSingleViewModel)DataContext).aкн = "0";
+            ((AsdnRedSingleViewModel)DataContext).dпн = "0"; ((AsdnRedSingleViewModel)DataContext).dпв = "0";
+            ((AsdnRedSingleViewModel)DataContext).hp1 = "0";
         }
         private void RectangularStateRotorElements() {
-            tbx_bП2.IsEnabled = true;
+            tbx_bП2.IsEnabled = true; tbx_hp1.IsEnabled = true;
             tbx_dкп.IsEnabled = false;  tbx_hр2.IsEnabled = false; tbx_bкн.IsEnabled = false; tbx_aкн.IsEnabled = false;
-            lb_dкпBounds.Visibility = Visibility.Hidden; lb_hр2.Visibility = Visibility.Hidden;
-            lb_bкн.Visibility = Visibility.Hidden; lb_bкBounds.Visibility = Visibility.Visible;
+            tbx_dпн.IsEnabled = false; tbx_dпв.IsEnabled = false;
+            lb_dкпBounds.Visibility = Visibility.Hidden; lb_hр2.Visibility = Visibility.Hidden; lb_bкн.Visibility = Visibility.Hidden; 
             lb_aкнBounds.Visibility = Visibility.Hidden; lb_aкBounds.Visibility = Visibility.Hidden;
+            lb_dпнСalc.Visibility = Visibility.Hidden; lb_dпвнСalc.Visibility = Visibility.Hidden;
+            lb_bкBounds.Visibility = Visibility.Visible; lb_hp1Сalc.Visibility = Visibility.Visible;
+
 
             ((AsdnRedSingleViewModel)DataContext).dкп = "0"; ((AsdnRedSingleViewModel)DataContext).hр2 = "0";
             ((AsdnRedSingleViewModel)DataContext).bкн = "0"; ((AsdnRedSingleViewModel)DataContext).aкн = "0";
+            ((AsdnRedSingleViewModel)DataContext).dпн = "0"; ((AsdnRedSingleViewModel)DataContext).dпв = "0";
         }
         private void PearFormStateRotorElements() {
+            tbx_dпн.IsEnabled = true; tbx_dпв.IsEnabled = true; tbx_hp1.IsEnabled = true;
+            lb_dпнСalc.Visibility = Visibility.Visible; lb_dпвнСalc.Visibility = Visibility.Visible; lb_hp1Сalc.Visibility = Visibility.Visible;
             tbx_dкп.IsEnabled = false; tbx_bП2.IsEnabled = false; tbx_hр2.IsEnabled = false; tbx_bкн.IsEnabled = false; tbx_aкн.IsEnabled = false;
             lb_dкпBounds.Visibility = Visibility.Hidden; lb_hр2.Visibility = Visibility.Hidden;
             lb_bкн.Visibility = Visibility.Hidden; lb_bкBounds.Visibility = Visibility.Hidden;
@@ -500,6 +542,7 @@ namespace IVMElectro.View {
             ((AsdnRedSingleViewModel)DataContext).hр2 = "0"; ((AsdnRedSingleViewModel)DataContext).bкн = "0"; 
             ((AsdnRedSingleViewModel)DataContext).aкн = "0";
         }
+
         private void lbox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
             switch ((sender as ListBox).Name) {
                 case "lboxZ1":

@@ -22,35 +22,21 @@ namespace IVMElectro.ViewModel {
             get {
                 string error = string.Empty;
                 switch (columnName) {
-                    case "P12":
-                        if (!((50 <= Model.Common.P12) && (Model.Common.P12 <= 2e5))) {
-                            error = errorP12;
-                        }
-                        break;
-                    case "U1":
-                        if (!((48 <= Model.Common.U1) && (Model.Common.U1 <= 660)))
-                            error = errorU1;
-                        break;
-                    case "f1":
-                        if (!((10 <= Model.Common.f1) && (Model.Common.f1 <= 400)))
-                            error = errorf1;
-                        break;
-                    case "Pмех":
-                        if (!((0 <= Model.Common.Pмех) && (Model.Common.Pмех <= PмехBoundRight(Model.Common.P12))))
-                            error = $"Значение параметра {columnName} должно принадлежать {PмехBounds}.";
-                        break;
-                    case "Di":
-                        if (!((50 < Model.Common.Di) && (Model.Common.Di <= 1100)))
-                            error = errorDi;
-                        break;
                     case "ΔГ1":
                         if (Model.Common.ΔГ1 < 0 || double.IsNaN(Model.Common.ΔГ1))
                             error = errorΔГ1;
                         break;
-                    case "Z1":
-                        if ((Model.Common.Z1 <= 0) || !int.TryParse(Z1, out _)) {
-                            error = errorZ1;
-                        }
+                    case "ΔГ2":
+                        if (!((0 <= Model.Common.ΔГ2) && (Model.Common.ΔГ2 <= 5)))
+                            error = errorΔГ2;
+                        break;
+                    case "Di":
+                        if (!((50 < Model.Common.Di) && (Model.Common.Di <= 800)))
+                            error = errorDi;
+                        break;
+                    case "Dpст":
+                        if (Model.Common.Dpст < 0 || double.IsNaN(Model.Common.Dpст))
+                            error = errorDpст;
                         break;
                     case "Da":
                         //diapason problem
@@ -60,49 +46,60 @@ namespace IVMElectro.ViewModel {
                         else if (!((Get_DaBounds(Model.Common.Di).left <= Model.Common.Da) && (Model.Common.Da < Get_DaBounds(Model.Common.Di).right)))
                             error = $"Значение параметра {columnName} должно принадлежать {DaBounds}.";
                         break;
-                    case "a1":
-                        if ((Model.Common.a1 < 0) || !int.TryParse(a1, out _)) {
-                            error = errora1;
+                    case "Pмех":
+                        if (!((0 <= Model.Common.Pмех) && (Model.Common.Pмех <= PмехBoundRight(Model.Common.P12))))
+                            error = $"Значение параметра {columnName} должно принадлежать {PмехBounds}.";
+                        break;
+                    case "P12":
+                        if (!((50 <= Model.Common.P12) && (Model.Common.P12 <= 2e5))) {
+                            error = errorP12;
                         }
+                        break;
+                    case "f1":
+                        if (!((10 <= Model.Common.f1) && (Model.Common.f1 <= 400)))
+                            error = errorf1;
                         break;
                     case "a2":
                         if (!((0 <= Model.Common.a2) && (Model.Common.a2 <= 30)))
                             error = errora2;
                         break;
-                    case "Δкр":
-                        if (!((3 <= Model.Common.Δкр) && (Model.Common.Δкр <= 40)))
-                            error = errorΔкр;
+                    case "bП":
+                        if (Model.Common.bП < 0 || double.IsNaN(Model.Common.bП))
+                            error = errorbП;
                         break;
-                    case "qГ":
-                        if ((Model.Common.qГ < 0) || double.IsNaN(Model.Common.qГ)) {
-                            error = errorqГ;
+                    case "bП1":
+                        if (Model.Common.bП1 < 0 || double.IsNaN(Model.Common.bП1))
+                            error = errorbП1;
+                        break;
+                    case "β":
+                        if (!((0.5 <= Model.Common.β) && (Model.Common.β <= 0.95)))
+                            error = errorβ;
+                        break;
+                    case "bП2":
+                        if (PAS == "прямоугольный" || PAS == "двойная клетка")
+                            if ((Model.AsdnRedSingle.bП2 < 0) || double.IsNaN(Model.AsdnRedSingle.bП2))
+                                error = errorbП2RED;
+                        break;
+                    case "bк":
+                        if (PAS == "прямоугольный" || PAS == "двойная клетка") {
+                            if (!((Model.AsdnRedSingle.bП2 <= Model.AsdnRedSingle.bк) && (Model.AsdnRedSingle.bк <= 5 * Model.AsdnRedSingle.bП2)))
+                                error = $"Значение параметра {columnName} должно принадлежать {bкBounds}.";
                         }
+                        else if (Model.AsdnRedSingle.bк <= 0 || double.IsNaN(Model.AsdnRedSingle.bк))
+                            error = errorbкRED;
+                        //parameter is always needed
                         break;
-                    case "dиз":
-                        if ((Model.Common.dиз < 0) || double.IsNaN(Model.Common.dиз)) {
-                            error = errordиз;
-                        }
+                    case "U1":
+                        if (!((48 <= Model.Common.U1) && (Model.Common.U1 <= 660)))
+                            error = errorU1;
                         break;
-                    case "bz1":
-                        if (!((3.5 <= Model.Common.bz1) && (Model.Common.bz1 <= 15))) {
-                            error = errorbz1;
-                        }
+                    case "h1":
+                        if (Model.Common.h1 < 0 || double.IsNaN(Model.Common.h1))
+                            error = errorh1;
                         break;
-                    case "h8":
-                        if (!((0 <= Model.Common.h8) && (Model.Common.h8 <= 20)))
-                            error = errorh8;
-                        break;
-                    case "h7":
-                        if (!((0 <= Model.Common.h7) && (Model.Common.h7 <= 2)))
-                            error = errorh7;
-                        break;
-                    case "h6":
-                        if (!((0 <= Model.Common.h6) && (Model.Common.h6 <= 20)))
-                            error = errorh6;
-                        break;
-                    case "h5":
-                        if (!((0.1 <= Model.Common.h5) && (Model.Common.h5 <= 5)))
-                            error = errorh5;
+                    case "h2":
+                        if (Model.Common.h2 < 0 || double.IsNaN(Model.Common.h2))
+                            error = errorh2;
                         break;
                     case "h3":
                         if (!((0 <= Model.Common.h3) && (Model.Common.h3 <= 5)))
@@ -112,16 +109,21 @@ namespace IVMElectro.ViewModel {
                         if (!((5 <= Model.Common.h4) && (Model.Common.h4 <= 50)))
                             error = errorh4;
                         break;
-                    case "ac":
-                        //diapason problem
-                        if (Model.Common.dиз == 2 * Model.Common.dиз)
-                            error = errorac;
-                        else if (!((Model.Common.dиз < Model.Common.ac) && (Model.Common.ac < 2 * Model.Common.dиз)))
-                            error = $"Значение параметра расчета {columnName} должно принадлежать {acBounds}.";
+                    case "h5":
+                        if (!((0.1 <= Model.Common.h5) && (Model.Common.h5 <= 5)))
+                            error = errorh5;
                         break;
-                    case "h1":
-                        if (Model.Common.h1 < 0 || double.IsNaN(Model.Common.h1))
-                            error = errorh1;
+                    case "h6":
+                        if (!((0 <= Model.Common.h6) && (Model.Common.h6 <= 20)))
+                            error = errorh6;
+                        break;
+                    case "h7":
+                        if (!((0 <= Model.Common.h7) && (Model.Common.h7 <= 2)))
+                            error = errorh7;
+                        break;
+                    case "h8":
+                        if (!((0 <= Model.Common.h8) && (Model.Common.h8 <= 20)))
+                            error = errorh8;
                         break;
                     case "li":
                         if (double.IsNaN(Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left) ||
@@ -132,21 +134,37 @@ namespace IVMElectro.ViewModel {
                             error = $"Значение параметра li должно принадлежать [{Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).left} : " +
                                 $"{Get_liBounds(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di).right}].";
                         break;
-                    case "cз":
-                        if (!((0 <= Model.Common.cз) && (Model.Common.cз <= 200)))
-                            error = errorcз;
+                    case "ρ1x":
+                        if (!((0.002 <= Model.Common.ρ1x) && (Model.Common.ρ1x <= 0.05)))
+                            error = errorρ1x;
                         break;
-                    case "bП":
-                        if (Model.Common.bП < 0 || double.IsNaN(Model.Common.bП))
-                            error = errorbП;
+                    case "ρ1Г":
+                        if (!((Model.Common.ρ1x <= Model.Common.ρ1Г) && (Model.Common.ρ1Г <= 0.1235)))
+                            error = $"Значение параметра расчета {columnName} должно принадлежать {ρ1ГBounds}.";
                         break;
-                    case "bП1":
-                        if (Model.Common.bП1 < 0 || double.IsNaN(Model.Common.bП1))
-                            error = errorbП1;
+                    case "ρ2Г":
+                        if (!((0.01 <= Model.Common.ρ2Г) && (Model.Common.ρ2Г <= 0.2)))
+                            error = errorρ2Г;
                         break;
-                    case "Kзап":
-                        if (!((0.36 <= Model.Common.Kзап) && (Model.Common.Kзап <= 0.76))) 
-                            error = errorKзап;
+                    case "ac":
+                        if (!(Model.Common.dиз < Model.Common.ac))
+                            error = $"Значение параметра расчета {columnName} должно должно быть > {Model.Common.dиз}.";
+                        break;
+                    case "Kfe1":
+                        if (!((0.9 <= Model.Common.Kfe1) && (Model.Common.Kfe1 <= 1)))
+                            error = errorKfe1;
+                        break;
+                    case "Kfe2":
+                        if (!((0.9 <= Model.Common.Kfe2) && (Model.Common.Kfe2 <= 1)))
+                            error = errorKfe2;
+                        break;
+                    case "Δкр":
+                        if (!((3 <= Model.Common.Δкр) && (Model.Common.Δкр <= 40)))
+                            error = errorΔкр;
+                        break;
+                    case "d1":
+                        if (!((0 <= Model.Common.d1) && (Model.Common.d1 <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1))))
+                            error = $"Значение параметра расчета {columnName} должно принадлежать {d1Bounds}.";
                         break;
                     case "y1":
                         //diapason problem
@@ -155,79 +173,80 @@ namespace IVMElectro.ViewModel {
                         else if (!((1 <= Model.Common.y1) && (Model.Common.y1 <= 0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p))))
                             error = $"Значение параметра расчета {columnName} должно принадлежать {y1Bounds}.";
                         break;
-                    case "β":
-                        if (!((0.5 <= Model.Common.β) && (Model.Common.β <= 0.95)))
-                            error = errorβ;
+                    case "B":
+                        if (!((0 <= Model.Common.B) && (Model.Common.B <= 20)))
+                            error = errorB;
                         break;
-                    case "K2":
-                        if ((Model.Common.K2 < 0) || double.IsNaN(Model.Common.K2))
-                            error = errorK2;
+                    case "cз":
+                        if (!((0 <= Model.Common.cз) && (Model.Common.cз <= 200)))
+                            error = errorcз;
                         break;
-                    case "d1":
-                        if (!((0 <= Model.Common.d1) && (Model.Common.d1 <= bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1))))
-                            error = $"Значение параметра расчета {columnName} должно принадлежать {d1Bounds}.";
+                    case "bz1":
+                        if (!((3.5 <= Model.Common.bz1) && (Model.Common.bz1 <= 15))) 
+                            error = errorbz1;
                         break;
-                    case "Kfe1":
-                        if (!((0.9 <= Model.Common.Kfe1) && (Model.Common.Kfe1 <= 1)))
-                            error = errorKfe1;
+                    case "W1":
+                        if ((Model.Common.W1 < 0) || !int.TryParse(W1, out _))
+                            error = errorW1;
+                        else if (Model.Common.W1 % 2 != 0)
+                            error = errorW1parity;
                         break;
-                    case "ρ1x":
-                        if (!((0.002 <= Model.Common.ρ1x) && (Model.Common.ρ1x <= 0.05)))
-                            error = errorρ1x;
+                    case "Wc":
+                        if ((Model.Common.Wc < 0) || !int.TryParse(Wc, out _))
+                            error = errorWc;
+                        break;
+                    case "hp":
+                        if ((Model.Common.hp < 0) || double.IsNaN(Model.Common.hp))
+                            error = errorhp;
+                        break;
+                    case "dв":
+                        if ((Model.AsdnRedSingle.dв < 0) || double.IsNaN(Model.AsdnRedSingle.dв))
+                            error = errordв;
                         break;
                     case "ρРУБ":
                         if ((Model.Common.ρРУБ < 0) || double.IsNaN(Model.Common.ρРУБ))
                             error = errorρРУБ;
                         break;
-                    case "ρ1Г":
-                        if (!((Model.Common.ρ1x <= Model.Common.ρ1Г) && (Model.Common.ρ1Г <= 0.1235))) 
-                            error = $"Значение параметра расчета {columnName} должно принадлежать {ρ1ГBounds}.";
-                        break;
-                    case "B":
-                        if (!((0 <= Model.Common.B) && (Model.Common.B <= 20))) 
-                            error = errorB;
-                        break;
-                    case "p10_50":
-                        if ((Model.Common.p10_50 < 0) || double.IsNaN(Model.Common.p10_50)) 
-                            error = errorp10_50;
-                        break;
-                    case "ΔГ2":
-                        if (!((0 <= Model.Common.ΔГ2) && (Model.Common.ΔГ2 <= 5)))
-                            error = errorΔГ2;
-                        break;
-                    case "Dpст":
-                        //diapason problem
-                        if (Model.Common.DpстBoundCalculation - 5 <= 0 || Model.Common.DpстBoundCalculation - 0.1 <= 0)
-                            error = errorDрст;
-                        else if (!((Model.Common.DpстBoundCalculation - 5 <= Model.Common.Dpст) && (Model.Common.Dpст < Model.Common.DpстBoundCalculation - 0.1))) 
-                            error = $"Значение параметра Dp.ст должно принадлежать {DpстBounds}.";
-                        break;
-                    case "bП2":
-                       if (PAS == "прямоугольный" || PAS == "двойная клетка")
-                            if ((Model.AsdnRedSingle.bП2 < 0) || double.IsNaN(Model.AsdnRedSingle.bП2))
-                                error = errorbП2RED;
-                        break;
                     case "Z2":
-                        if ((Model.Common.Z2 < 0) || !int.TryParse(Model.Common.Z2.ToString(), out _))
+                        if ((Model.Common.Z2 < 0) || !int.TryParse(Z2, out _))
                             error = errorZ2;
                         break;
-                    case "hp":
-                        if (!((0.125 * Get_Dp(Model.Common.Dpст, Model.Common.ΔГ2) <= Model.Common.hp) && (Model.Common.hp <= 0.375 * Get_Dp(Model.Common.Dpст, Model.Common.ΔГ2))))
-                            error = $"Значение параметра {columnName} должно принадлежать {hpBounds}.";
+                    case "Z1":
+                        if ((Model.Common.Z1 <= 0) || !int.TryParse(Z1, out _)) 
+                            error = errorZ1;
                         break;
-                    case "dв":
-                        if (0.25 * Model.Common.Da <= 0.19)
-                            error = errordв;
-                        else if (!((0.19 <= Model.AsdnRedSingle.dв) && (Model.AsdnRedSingle.dв <= 0.25 * Model.Common.Da)))
-                            error = $"Значение параметра {columnName} должно принадлежать {dвBounds}.";
+                    case "K2":
+                        if ((Model.Common.K2 < 0) || double.IsNaN(Model.Common.K2))
+                            error = errorK2;
                         break;
-                    case "ρ2Г":
-                        if (!((0.01 <= Model.Common.ρ2Г) && (Model.Common.ρ2Г <= 0.2)))
-                            error = errorρ2Г;
+                    case "qГ":
+                        if ((Model.Common.qГ < 0) || double.IsNaN(Model.Common.qГ))
+                            error = errorqГ;
                         break;
-                    case "Kfe2":
-                        if (!((0.9 <= Model.Common.Kfe2) && (Model.Common.Kfe2 <= 1)))
-                            error = errorKfe2;
+                    case "dиз":
+                        if ((Model.Common.dиз < 0) || double.IsNaN(Model.Common.dиз))
+                            error = errordиз;
+                        break;
+                    case "a1":
+                        if ((Model.Common.a1 < 0) || !int.TryParse(a1, out _)) 
+                            error = errora1;
+                        break;
+                    case "aк":
+                        if (PAS == "двойная клетка") {
+                            if (bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left ==
+                                bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).right)
+                                error = errordiapason;
+                            else if (!((bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left <= Model.AsdnRedSingle.aк) &&
+                            (Model.AsdnRedSingle.aк <= bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).right)))
+                                error = $"Значение параметра {columnName} должно принадлежать {aкBounds}.";
+                        }
+                        else if (Model.AsdnRedSingle.aк <= 0 || double.IsNaN(Model.AsdnRedSingle.aк))
+                            error = erroraкRED;
+                        //parameter is always needed
+                        break;
+                    case "p10_50":
+                        if ((Model.Common.p10_50 < 0) || double.IsNaN(Model.Common.p10_50))
+                            error = errorp10_50;
                         break;
                     case "hш":
                         if (!((0.5 <= Model.AsdnRedSingle.hш) && (Model.AsdnRedSingle.hш <= 1)))
@@ -270,54 +289,45 @@ namespace IVMElectro.ViewModel {
                             if (!((5 <= Model.AsdnRedSingle.bкн) && (Model.AsdnRedSingle.bкн <= 35)))
                                 error = errorbкн;
                         break;
-                    case "bк":
-                        if (PAS == "прямоугольный" || PAS == "двойная клетка") {
-                            if (!((Model.AsdnRedSingle.bП2 <= Model.AsdnRedSingle.bк) && (Model.AsdnRedSingle.bк <= 5 * Model.AsdnRedSingle.bП2)))
-                                error = $"Значение параметра {columnName} должно принадлежать {bкBounds}.";
-                        }
-                        else if (Model.AsdnRedSingle.bк <= 0 || double.IsNaN(Model.AsdnRedSingle.bк))
-                            error = errorbкRED;
-                        //parameter is always needed
-                        break;
                     case "aкн":
                         if (PAS == "двойная клетка")
-                            if (!((bounds_aкн(dпн, dпв, hp1).left <= Model.AsdnRedSingle.aкн) && (Model.AsdnRedSingle.aкн <= 1.2 * bounds_aкн(dпн, dпв, hp1).right)))
+                            if (!((bounds_aкн(Model.AsdnRedSingle.dпн, Model.AsdnRedSingle.dпв, Model.AsdnRedSingle.hp1).left <= Model.AsdnRedSingle.aкн) && 
+                                (Model.AsdnRedSingle.aкн <= 1.2 * bounds_aкн(Model.AsdnRedSingle.dпн, Model.AsdnRedSingle.dпв, Model.AsdnRedSingle.hp1).right)))
                                 error = $"Значение параметра {columnName} должно принадлежать {aкнBounds}.";
                         break;
-                    case "aк":
-                        if (PAS == "двойная клетка") {
-                            if (bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left ==
-                                bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).right)
-                                error = errordiapason;
-                            else if (!((bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).left <= Model.AsdnRedSingle.aк) &&
-                            (Model.AsdnRedSingle.aк <= bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2).right)))
-                                error = $"Значение параметра {columnName} должно принадлежать {aкBounds}.";
-                        }
-                        else if (Model.AsdnRedSingle.aк <= 0 || double.IsNaN(Model.AsdnRedSingle.aк))
-                            error = erroraкRED;
-                        //parameter is always needed
+                    case "dпн":
+                        if (PAS == "двойная клетка" || PAS == "грушевидный")
+                            if (double.IsNaN(Model.AsdnRedSingle.dпн) || Model.AsdnRedSingle.dпн <= 0) error = errordпн;
+                        break;
+                    case "dпв":
+                        if (PAS == "двойная клетка" || PAS == "грушевидный")
+                            if (double.IsNaN(Model.AsdnRedSingle.dпв) || Model.AsdnRedSingle.dпв <= 0) error = errordпв;
+                        break;
+                    case "hp1":
+                        if (PAS == "прямоугольный")
+                            if (double.IsNaN(Model.AsdnRedSingle.hp1) || Model.AsdnRedSingle.hp1 <= 0) error = errorhp1;
                         break;
                 }
                 return error;
             }
         }
-        double dпн => dпн(Model.Common.Dpст, Model.Common.hp, Model.Common.Z2, Model.AsdnRedSingle.bZH);
-        double dпв => dпв(Model.Common.Z2, Model.Common.Dpст, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.bZH);
-        double hp1 => hp1(dпв, dпн, Model.Common.Z2);
+        //double dпн => dпн(Model.Common.Dpст, Model.Common.hp, Model.Common.Z2, Model.AsdnRedSingle.bZH);
+        //double dпв => dпв(Model.Common.Z2, Model.Common.Dpст, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.bZH);
+        //double hp1 => hp1(dпв, Model.AsdnRedSingle.dпн, Model.Common.Z2);
         
         public string Error { get; }
         public AsdnRedSingleViewModel(AsdnCompositeModel model, Logger logger) {
             Model = model; Logger = logger;
-            WireDirectory = new List<Wire> { new WireПНЭД_имид { Id = 1,NameWire = "ПНЭД_имид" }, new WireПСДК_Л { Id = 2, NameWire = "ПСДК_Л" },
-            new WireПСДКТ_Л{Id = 3, NameWire = "ПСДКТ_Л" }, new WireПЭЭИД2{ Id = 4, NameWire = "ПЭЭИД2" } };
+            WireDirectory = new List<Wire> { 
+                new WireПНЭТ_имид { Id = 1, NameWire = "ПНЭТ_имид – ТУ 16-505.489-78" }, 
+                new WireПСДК_Л { Id = 2, NameWire = "ПСДК_Л – ТУ 16.К71-129-91" },
+                new WireПСДКТ_Л{Id = 3, NameWire = "ПСДКТ_Л – ТУ 16.К71-129-91" }, 
+                new WireПЭЭИД2{ Id = 4, NameWire = "ПЭЭИД2 – ТУ 16.К71-250-95" } };
             WireDirectory.ForEach(i => i.CreateTable());
             MarkSteelPartitionlDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "ХН78Т", Value = 1.16 }, new SteelProperties {Id = 2, Name = "ВТ-1", Value =  0.47 },
                 new SteelProperties {Id = 3, Name = "ПТ-7М", Value = 1.08 } };
             MarkSteelStatorDirectory = new List<SteelProperties> { new SteelProperties { Id = 1, Name = "1412", Value = 1.94 }, new SteelProperties { Id = 2, Name = "2412", Value = 1.38 },
                 new SteelProperties {Id = 3, Name = "2411", Value =  1.7 }, new SteelProperties {Id = 4, Name = "1521", Value = 19.6 } };
-
-            //test dep 51
-
         }
         #region properties 
         public AsdnCompositeModel Model { get; set; }
@@ -336,6 +346,7 @@ namespace IVMElectro.ViewModel {
         public string Di { get => Model.Common.Di.ToString(); set { Model.Common.Di = StringToDouble(value); OnPropertyChanged("Di"); } }
         public string ΔГ1 { get => Model.Common.ΔГ1.ToString(); set { Model.Common.ΔГ1 = StringToDouble(value); OnPropertyChanged("ΔГ1"); } }
         public string Z1 { get => Model.Common.Z1.ToString(); set { Model.Common.Z1 = StringToInt(value); OnPropertyChanged("Z1"); } }
+        public string q1 { get => Math.Round(Model.Common.q1, 3).ToString(); } //label
         public string Da { get => Model.Common.Da.ToString(); set { Model.Common.Da = StringToDouble(value); OnPropertyChanged("Da"); } }
         public string DaBounds { get => $"[{Math.Round(Get_DaBounds(Model.Common.Di).left, 2)} : {Math.Round(Get_DaBounds(Model.Common.Di).right, 2)})"; } //label
         public string a1 { get => Model.Common.a1.ToString(); set { Model.Common.a1 = StringToInt(value); OnPropertyChanged("a1"); } }
@@ -347,24 +358,27 @@ namespace IVMElectro.ViewModel {
         public string h8 { get => Model.Common.h8.ToString(); set { Model.Common.h8 = StringToDouble(value); OnPropertyChanged("h8"); } }
         public string h7 { get => Model.Common.h7.ToString(); set { Model.Common.h7 = StringToDouble(value); OnPropertyChanged("h7"); } }
         public string h6 { get => Model.Common.h6.ToString(); set { Model.Common.h6 = StringToDouble(value); OnPropertyChanged("h6"); } }
-        //public string bП1 { get => bП1CalcRED(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1).ToString(); } //label dep 51
         public string bП1 { get => Model.Common.bП1.ToString(); set { Model.Common.bП1 = StringToDouble(value); OnPropertyChanged("bП1"); } }
         public string bП1_calc { get => Math.Round(Model.Common.bП1_calc, 3).ToString(); } //label
         public string h5 { get => Model.Common.h5.ToString(); set { Model.Common.h5 = StringToDouble(value); OnPropertyChanged("h5"); } }
         public string h3 { get => Model.Common.h3.ToString(); set { Model.Common.h3 = StringToDouble(value); OnPropertyChanged("h3"); } }
         public string h4 { get => Model.Common.h4.ToString(); set { Model.Common.h4 = StringToDouble(value); OnPropertyChanged("h4"); } }
         public string ac { get => Model.Common.ac.ToString(); set { Model.Common.ac = StringToDouble(value); OnPropertyChanged("ac"); } }
-        public string acBounds { get => $"({Model.Common.dиз} : {2 * Model.Common.dиз})"; } //label
+        public string acBounds { get => $"({Math.Round(Model.Common.dиз, 1)} : {Math.Round(2 * Model.Common.dиз, 1)})"; } //label
         public string bПН { get => Model.Common.bПН.ToString(); } //label
-        //public string h1 { get => Math.Round(Model.Common.h1, 3).ToString(); } //label
         public string h1 { get => Model.Common.h1.ToString(); set { Model.Common.h1 = StringToDouble(value); OnPropertyChanged("h1"); } } //dep 51
         public string h1_calc { get => Math.Round(Model.Common.h1_calc, 3).ToString(); } //label
+        public string h2 { get => Model.Common.h2.ToString(); set { Model.Common.h2 = StringToDouble(value); OnPropertyChanged("h2"); } } //dep 51
+        public string h2_calc { get => Math.Round(Model.Common.h2_calc, 3).ToString(); } //label
         public string li { get => Model.Common.li.ToString(); set { Model.Common.li = StringToDouble(value); OnPropertyChanged("li"); } }
         public string liBounds { get => Get_liBounds_string(Model.Common.U1, I1(Model.Common.P12, Model.Common.U1), Model.Common.Di); } //label
         public string cз { get => Model.Common.cз.ToString(); set { Model.Common.cз = StringToDouble(value); OnPropertyChanged("cз"); } }
         public string bП { get => Model.Common.bП.ToString(); set { Model.Common.bП = StringToDouble(value); OnPropertyChanged("bП"); } } 
         public string bП_calc { get => Math.Round(Model.Common.bП_calc, 3).ToString(); } //label
-        //public string Kзап { get => Model.Common.Kзап.ToString(); set { Model.Common.Kзап = StringToDouble(value); OnPropertyChanged("Kзап"); } }
+        public string W1 { get => Model.Common.W1.ToString(); set { Model.Common.W1 = StringToInt(value); OnPropertyChanged("W1"); } }
+        public string Wc { get => Model.Common.Wc.ToString(); set { Model.Common.Wc = StringToInt(value); OnPropertyChanged("Wc"); } }
+        public string Wc_calc { get => Math.Round(Model.Common.Wc_calc, 3).ToString(); } //label
+        public string Kзап { get => Math.Round(Model.Common.Kзап, 3).ToString(); } //label
         public string y1 { get => Model.Common.y1.ToString(); set { Model.Common.y1 = StringToDouble(value); OnPropertyChanged("y1"); } }
         public string y1Bounds { get => $"[1 : {Math.Round(0.5 * Model.Common.Z1 / Convert.ToDouble(Model.Common.p), 3)}]"; } //label
         public string β { get => Math.Round(Model.Common.β, 3).ToString(); } //label
@@ -405,9 +419,15 @@ namespace IVMElectro.ViewModel {
         public string hр2 { get => Model.AsdnRedSingle.hp2.ToString(); set { Model.AsdnRedSingle.hp2 = StringToDouble(value); OnPropertyChanged("hр2"); } }
         public string bкн { get => Model.AsdnRedSingle.bкн.ToString(); set { Model.AsdnRedSingle.bкн = StringToDouble(value); OnPropertyChanged("bкн"); } }
         public string aкн { get => Model.AsdnRedSingle.aкн.ToString(); set { Model.AsdnRedSingle.aкн = StringToDouble(value); OnPropertyChanged("aкн"); } }
-        public string aкнBounds => Get_aкнBounds(bounds_aкн(dпн, dпв, hp1));
+        public string aкнBounds => Get_aкнBounds(bounds_aкн(Model.AsdnRedSingle.dпн, Model.AsdnRedSingle.dпв, Model.AsdnRedSingle.hp1));
         public string aк { get => Model.AsdnRedSingle.aк.ToString(); set { Model.AsdnRedSingle.aк = StringToDouble(value); OnPropertyChanged("aк"); } }
         public string aкBounds => Get_aкBounds(bounds_aк(Model.AsdnRedSingle.dкп, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.hp2));
+        public string dпн { get => Model.AsdnRedSingle.dпн.ToString(); set { Model.AsdnRedSingle.dпн = StringToDouble(value); OnPropertyChanged("dпн"); } }
+        public string dпн_calc { get => Math.Round(dпн(Model.Common.Dpст, Model.Common.hp, Model.Common.Z2, Model.AsdnRedSingle.bZH), 3).ToString(); } //label
+        public string dпв { get => Model.AsdnRedSingle.dпв.ToString(); set { Model.AsdnRedSingle.dпв = StringToDouble(value); OnPropertyChanged("dпв"); } }
+        public string dпв_calc { get => Math.Round(dпв(Model.Common.Z2, Model.Common.Dpст, Model.AsdnRedSingle.hш, Model.AsdnRedSingle.bZH), 3).ToString(); } //label
+        public string hp1 { get => Model.AsdnRedSingle.hp1.ToString(); set { Model.AsdnRedSingle.hp1 = StringToDouble(value); OnPropertyChanged("hp1"); } }
+        public string hp1_calc { get => Math.Round(hp1(Model.AsdnRedSingle.dпв, Model.AsdnRedSingle.dпн, Model.Common.Z2), 3).ToString(); } //label
         #endregion
         #region collection
         /// <summary>
@@ -450,11 +470,10 @@ namespace IVMElectro.ViewModel {
         public void Calculation() {
             Model.Common.CreationDataset(); Model.AsdnRedSingle.CreationDataset();
             Dictionary<string, double> _inputAlgorithm = Model.Common.GetDataset.Union(Model.AsdnRedSingle.GetDataset).ToDictionary(i => i.Key, i => i.Value);
-            _inputAlgorithm.Add("bП1", bП1Calc(Model.Common.Di, Model.Common.h8, Model.Common.h7, Model.Common.h6, Model.Common.bz1, Model.Common.Z1));
-            _inputAlgorithm.Add("h1", Model.Common.h1); _inputAlgorithm.Add("h2", Model.Common.h2); _inputAlgorithm.Add("bП", Model.Common.bП);
             _inputAlgorithm.Add("bСК", Model.Common.bСК == "скошенные" ? 1 : 0);
-            _inputAlgorithm.Add("β", Model.Common.β); _inputAlgorithm.Add("Sсл", Model.Common.Sсл);
-            _inputAlgorithm.Add("dпн", dпн); _inputAlgorithm.Add("hр1", hp1); _inputAlgorithm.Add("dпв", dпв);
+            //_inputAlgorithm.Add("dпн", dпн); 
+            //_inputAlgorithm.Add("hр1", hp1); 
+            //_inputAlgorithm.Add("dпв", dпв);
 
             double _pas = 0;
             switch (PAS) {
@@ -469,7 +488,6 @@ namespace IVMElectro.ViewModel {
                 Logger.Error(item);
 
             Diagnostic = algorithm.SolutionIsDone ? "Расчет завершен успешно" : @"Расчет прерван. Смотри содержимое файла logs\*.log";
-            //OnPropertyChanged("Diagnostic");
         }
         public bool CanCalculation() {
             Model.AsdnRedSingle.SetParametersForModelValidation(Model.Common.Dpст, Model.Common.Z2, Model.Common.hp, Model.Common.Da);
@@ -485,7 +503,29 @@ namespace IVMElectro.ViewModel {
                 return ViewResultCommand;
             }
         }
-        void ViewResult() { }
+        void ViewResult() {
+            //initial data
+            Dictionary<string, double> machineData = new Dictionary<string, double> {
+                { "P'2", Model.Common.P12}, { "U1", Model.Common.U1}, { "f1", Model.Common.f1}, { "p", Model.Common.p}, { "Pмех", Model.Common.Pмех}
+            };
+            Dictionary<string, double> statorData = new Dictionary<string, double> {
+                {"Di", Model.Common.Di }, {"ΔГ1", Model.Common.ΔГ1 }, {"Z1", Model.Common.Z1 }, {"q1", Model.Common.q1 }, {"Da", Model.Common.Da },
+                {"a1", Model.Common.a1 }, {"a2", Model.Common.a2 }, {"Δкр", Model.Common.Δкр }, {"dиз", Model.Common.dиз }, {"qГ", Model.Common.qГ },
+                {"bz1", Model.Common.bz1 }, {"h8", Model.Common.h8 }, {"h7", Model.Common.h7 }, {"h6", Model.Common.h6 }, {"bП1", Model.Common.bП1 },
+                {"h5", Model.Common.h5 }, {"h3", Model.Common.h3 }, {"h4", Model.Common.h4 }, {"ac", Model.Common.ac },
+                {"bПН", Model.Common.bПН }, {"h1", Model.Common.h1 }, {"h2", Model.Common.h2 }, {"li", Model.Common.li }, {"cз", Model.Common.cз },
+                {"bП", Model.Common.bП }, {"W1", Model.Common.W1 }, {"Wc", Model.Common.Wc }, {"Kзап", Model.Common.Kзап }, {"y1", Model.Common.y1 },
+                {"β", Model.Common.β }, {"K2", Model.Common.K2 }, {"d1", Model.Common.d1 }, {"Kfe1", Model.Common.Kfe1 }, {"ρ1x", Model.Common.ρ1x },
+                {"ρРУБ", Model.Common.ρРУБ }, {"ρ1Г", Model.Common.ρ1Г }, {"B", Model.Common.B }, {"p10_50", Model.Common.p10_50 }
+            };
+            Dictionary<string, double> rotorData = new Dictionary<string, double> {
+                {"ΔГ2", Model.Common.ΔГ2 }, {"Dpст", Model.Common.Dpст }, {"bСК", Model.Common.bСК == "скошенные" ? 1 : 0 }, {"bП2", Model.AsdnRedSingle.bП2 },
+                {"hp", Model.Common.hp }, {"dв", Model.AsdnRedSingle.dв }, {"Z2", Model.Common.Z2 }, {"bк", Model.AsdnRedSingle.bк }, {"ρ2Г", Model.Common.ρ2Г },
+                {"Kfe2", Model.Common.Kfe2 }, {"hш", Model.AsdnRedSingle.hш }, {"bш", Model.AsdnRedSingle.bш }, {"dкп", Model.AsdnRedSingle.dкп },
+                {"bZH", Model.AsdnRedSingle.bZH }, {"hp2", Model.AsdnRedSingle.hp2 }, {"bкн", Model.AsdnRedSingle.bкн }, {"aкн", Model.AsdnRedSingle.aкн },
+                {"aк", Model.AsdnRedSingle.aк }
+            };
+        }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
     }
