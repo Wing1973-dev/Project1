@@ -457,7 +457,6 @@ namespace IVMElectro.ViewModel {
         public List<string> Get_collection_bСК => bСК_Collection;
         public ContentZ2 Get_collectionZ2 => Z2Object(Model.Common.p, Model.Common.Z1, Model.Common.bСК);
         #endregion
-        #endregion
         #region command
         AlgorithmASDNRED algorithm;
         UserCommand CalculationCommand { get; set; }
@@ -496,6 +495,7 @@ namespace IVMElectro.ViewModel {
             return Validator.TryValidateObject(Model.Common, contextCommon, resultsCommon) &&
                 Validator.TryValidateObject(Model.AsdnRedSingle, contextAsdnRed, resulstAsdnRed);
         }
+        #region CommonResult
         UserCommand ViewResultCommand { get; set; }
         public ICommand CommandViewResult {
             get {
@@ -527,6 +527,33 @@ namespace IVMElectro.ViewModel {
             };
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
+        #endregion
+        #region HeatResult
+        UserCommand ViewHeatResultCommand { get; set; }
+        public ICommand CommandViewHeatResult {
+            get {
+                if (ViewHeatResultCommand == null) ViewHeatResultCommand = new UserCommand(ViewHeatResult, CanViewHeatResult);
+                return ViewHeatResultCommand;
+            }
+        }
+        void ViewHeatResult() {
+            SteelProperties steelPartition = MarkSteelPartitionlDirectory.FirstOrDefault(s => s.Value == Model.Common.ρРУБ);
+
+        }
+        bool CanViewHeatResult() => algorithm != null && algorithm.SolutionIsDone;
+        #endregion
+        #region StatorRotorResult
+        UserCommand ViewStatorRotorResultCommand { get; set; }
+        public ICommand CommandViewStatorRotorResult {
+            get {
+                if (ViewResultCommand == null) ViewResultCommand = new UserCommand(ViewStatorRotorResult, CanViewStatorRotorResult);
+                return ViewResultCommand;
+            }
+        }
+        void ViewStatorRotorResult() { }
+        bool CanViewStatorRotorResult() => algorithm != null && algorithm.SolutionIsDone;
+        #endregion
+        #endregion
         #endregion
     }
 }

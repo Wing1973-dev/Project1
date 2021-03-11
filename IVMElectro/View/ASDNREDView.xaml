@@ -47,7 +47,19 @@
                         <Button Margin="5" Command="{Binding Path=CommandViewResult}">
                             <StackPanel Orientation="Horizontal">
                                 <materialDesign:PackIcon Kind="FileDocumentOutline" Width="25" Height="25" />
-                                <TextBlock Margin="5">Результат расчета</TextBlock>
+                                <TextBlock Margin="5">Общий результат расчета</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Command="{Binding Path=CommandViewHeatResult}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Thermometer" Width="25" Height="25" />
+                                <TextBlock Margin="5">Результат для теплового расчета</TextBlock>
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Command="{Binding Path=CommandViewStatorRotorResult}">
+                            <StackPanel Orientation="Horizontal">
+                                <materialDesign:PackIcon Kind="Rotate3dVariant" Width="25" Height="25" />
+                                <TextBlock Margin="5">Результат расчета для статора и ротора</TextBlock>
                             </StackPanel>
                         </Button>
                     </ToolBar>

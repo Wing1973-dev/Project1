@@ -216,11 +216,9 @@ namespace LibraryAlgorithms {
             E1П = 0.25 * U1; //предварительное ЭДС пускового режима
             Iʹʹ2П = 1.5* Iʹʹ2M; //предварительный ток ротора
             E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out _, out _, out double PFe2П, ref I2c);
-            //E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out double rʹk, out double ZʹkП, out double PFe2П, ref I2c); //old
             while ( Math.Abs(E1П_new - E1П) >= E1П * 5e-3 ) {
                 E1П = 0.5 * (E1П + E1П_new);
                 E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out _, out _, out PFe2П, ref I2c);
-                //E1П_new = StartingRegimLoop_E1П(E1П, Ф10, f2, hx, λq2, λлоб2, Σλ2, τi, r2ξ, t2, Sp, ρ1, λСК, out xʹk, out rʹk, out ZʹkП, out PFe2П, ref I2c); //old
             };
             MП = 0.975 * (m1 * Iʹʹ2П * Iʹʹ2П * rʹʹ2Э + PFe2П) / nc;
             KП = MП / MН;

@@ -1045,7 +1045,70 @@ namespace LibraryAlgorithms {
                         { "KI", Math.Round(KI, 5) }
                     } : null;
         //тепловой расчет
-
+        public Dictionary<string, double> Get_HeatCalculation => SolutionIsDone ?
+            new Dictionary<string, double>() {
+                        { "P1 окр", Math.Round(P1_round*0.001, 5) },
+                        { "Pʹ2", Math.Round(Pʹ2*0.001, 5) },
+                        { "Pмех", Math.Round(Pмех, 5) },
+                        { "Pʹ2-Pмех", Math.Round(Pʹ2-Pмех, 5) },
+                        { "U1", Math.Round(U1, 5) },
+                        { "f1", Math.Round(f1, 5) },
+                        { "I1Н окр", Math.Round(I1Н_round, 5) },
+                        { "n", Math.Round(nН, 5) },
+                { "PЭ1 окр", Math.Round(PЭ1_round*0.001, 5) },
+                { "Pj1 окр", Math.Round(Pj1_round*0.001, 5) },
+                { "Зубцы железа", Math.Round(Pz1_round + Pпов1_round + Pпул1_round * 0.001, 5) },
+                { "PГ окр", Math.Round(PГ_round * 0.001, 5) },
+                { "Ротор", Math.Round(PЭ2_round + Pпов2_round + Pпул2_round * 0.001, 5) },
+                { "Суммарные электрические потери",
+                Math.Round(PЭ1_round*0.001, 5) + Math.Round(Pj1_round*0.001, 5) + Math.Round(Pz1_round + Pпов1_round + Pпул1_round * 0.001, 5) +
+                    Math.Round(PГ_round * 0.001, 5) + Math.Round(PЭ2_round + Pпов2_round + Pпул2_round * 0.001, 5) },
+                { "Dp", Dp  },
+                { "Di", Di  },
+                { "Da", Da  },
+                { "li", li  },
+                { "2 * Δкр", 2 * Δкр  },
+                { "Z1", Z1  },
+                { "ΔГ1", ΔГ1  }
+            } : null;
+        public Dictionary<string, string> Get_HeatCalculationStringData => SolutionIsDone ?
+            new Dictionary<string, string>() {
+                { "Материал железа статора", mrkStlStr.ToString()  }
+            } : null;
+        public Dictionary<string, double> Get_StatorRotorCalculation => SolutionIsDone ?
+            new Dictionary<string, double>() {
+                { "Da", Da  },
+                { "Di", Di  },
+                { "Dp", Dp  },
+                { "D'p", Dp +  ΔГ2 },
+                { "li", li  },
+                { "Kл", Δкр  },
+                { "F", lB  },
+                { "B", B  },
+                { "ΔГ1", ΔГ1  },
+                { "ΔГ2", ΔГ2  },
+                { "aк", aк  },
+                { "bк", bк  },
+                { "dв", dв  },
+                { "Z1", Z1  },
+                { "Z2", Z2  },
+                { "hZ1", Math.Round(h2 + 2 * h3 + h4 + h5 + h6 + h7 + h8, 5)  },
+                { "h2", h2  },
+                { "h3", h3  },
+                { "h4", h4  },
+                { "h5", h5  },
+                { "h6", h6  },
+                { "h7", h7  },
+                { "h8", h8  },
+                { "ΔИЗ", h3  },
+                { "ac", ac  },
+                { "Провод обмоточный", Math.Round(qГ/dиз, 5)  },
+                { "Pʹ2", Math.Round(Pʹ2, 5) },
+                { "P1", P1 },
+                { "I1Н", Math.Round(I1Н, 5) },
+                { "nН", Math.Round(nН, 5) },
+                { "I1П", Math.Round(I1П, 5) }
+            } : null;
         #endregion
         //готовность данных к выводу в интерфейс
         public bool SolutionIsDone { get; private set; }
