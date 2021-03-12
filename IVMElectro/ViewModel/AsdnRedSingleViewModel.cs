@@ -13,6 +13,7 @@ using System.ComponentModel.DataAnnotations;
 using NLog;
 using System.Linq;
 using LibraryAlgorithms;
+using System.IO;
 
 namespace IVMElectro.ViewModel {
     class AsdnRedSingleViewModel : INotifyPropertyChanged, IDataErrorInfo {
@@ -525,6 +526,115 @@ namespace IVMElectro.ViewModel {
                 {"bZH", Model.AsdnRedSingle.bZH }, {"hp2", Model.AsdnRedSingle.hp2 }, {"bкн", Model.AsdnRedSingle.bкн }, {"aкн", Model.AsdnRedSingle.aкн },
                 {"aк", Model.AsdnRedSingle.aк }
             };
+
+
+            string file_name = Directory.GetCurrentDirectory() + "\\report_" + Path.GetFileNameWithoutExtension(Services.ServiceIO.FileName) + ".html";
+
+            // Создаем поток для записи в файл
+            StreamWriter sw = new StreamWriter(file_name);
+
+            sw.WriteLine("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>");
+            sw.WriteLine("<html>");
+            sw.WriteLine("<head>");
+            sw.WriteLine("<meta http-equiv='content-type' content='text/html; charset=UTF-8' />");
+
+            sw.WriteLine("<link href = 'css/bootstrap.min.css' rel='stylesheet'>");
+
+            sw.WriteLine("<title>Результаты расчета</title>");
+            sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+            sw.WriteLine("</head>");
+            sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");
+
+            sw.WriteLine("<h1>Исходные данные</h1>");
+
+            sw.WriteLine("<h2>Параметры машины</h2>");
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td><NOBR>Мощность на роторе P'<sub>2</sub>,&nbsp;Вт:</NOBR></td><td>" + machineData["P'2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Фазное напряжение U<sub>1</sub>,&nbsp;В:</NOBR></td><td>" + machineData["U1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Частота питающей сети f<sub>1</sub>,&nbsp;Гц:</NOBR></td><td>" + machineData["f1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число пар полюсов p:</NOBR></td><td>" + machineData["p"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Механические потери P<sub>мех</sub>,&nbsp;Вт:</NOBR></td><td>" + machineData["Pмех"].ToString() + "</td></tr>");
+
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("<h2>Параметры статора</h2>");
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр расточки D<sub>i</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["Di"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Толщина перегородки Δ<sub>Г1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["ΔГ1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число зубцов Z<sub>1</sub>,&nbsp;шт:</NOBR></td><td>" + statorData["Z1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число пазов на полюс и фазу q<sub>1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["q1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр наружный D<sub>a</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["Da"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число параллельных ветвей обмотки a<sub>1</sub>,&nbsp;шт:</NOBR></td><td>" + statorData["a1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число параллельных цепей обмотки a<sub>2</sub>,&nbsp;шт:</NOBR></td><td>" + statorData["a2"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Суммарная толщина крайнего и нажимного листов Δ<sub>кр</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["Δкр"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр изолированного провода d<sub>из</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["dиз"].ToString() + " </td></tr>");            
+            sw.WriteLine("<tr><td><NOBR>Ширина зубца статора b<sub>z1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["bz1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота силового клина паза h<sub>8</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h8"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота щели между клиньями паза h<sub>7</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h7"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота нажимного клина обмотки h<sub>6</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h6"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина паза у клина b<sub>П1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["bП1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота изоляции от клина до обмотки h<sub>5</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h5"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Толщина изоляции между слоями обмотки h<sub>3</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h3"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота верхнего слоя обмотки h<sub>4</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h4"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина открытия паза a<sub>c</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["ac"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина силового клина паза b<sub>ПН</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["bПН"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота зубца статора h<sub>1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота нижнего слоя обмотки h<sub>2</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["h2"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Длина пакета l<sub>i</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["li"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Суммарная длина свеса перегородки c<sub>з</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["cз"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина паза у дна b<sub>П</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["bП"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число витков в фазе обмотки W<sub>1</sub>,&nbsp;шт:</NOBR></td><td>" + statorData["W1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число эффективных проводников в секции W<sub>c</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["Wc"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Коэффициент K<sub>зап</sub>:</NOBR></td><td>" + statorData["Kзап"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Шаг обмотки по пазам y<sub>1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["y1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Коэффициент β:</NOBR></td><td>" + statorData["β"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Коэффициент длины лобовой части обмотки K<sub>2</sub>:</NOBR></td><td>" + statorData["K2"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр полукруглого паза под клин d<sub>1</sub>,&nbsp;мм:</NOBR></td><td>" + statorData["d1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Коэффициент заполнения пакета сталью K<sub>fe1</sub>:</NOBR></td><td>" + statorData["Kfe1"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Удельное сопротивление материала обмотки в холодном состоянии ρ<sub>1x</sub>,&nbsp;Ом∙мм<sup>2</sup>/м:</NOBR></td><td>" + statorData["ρ1x"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Удельное сопротивление материала перегородки ρ<sub>РУБ</sub>,&nbsp;Ом∙мм<sup>2</sup>/м:</NOBR></td><td>" + statorData["ρРУБ"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Удельное сопротивление материала обмотки в рабочем состоянии ρ<sub>1Г</sub>,&nbsp;Ом∙мм<sup>2</sup>/м:</NOBR></td><td>" + statorData["ρ1Г"].ToString() + " </td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Прямой участок лобовой части обмотки B,&nbsp;мм:</NOBR></td><td>" + statorData["B"].ToString() + " </td></tr>");            
+            sw.WriteLine("<tr><td><NOBR>Удельные потери стали p<sub>10/50</sub>,&nbsp;Вт/кг:</NOBR></td><td>" + statorData["p10_50"].ToString() + " </td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("<h2>Параметры ротора</h2>");
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td><NOBR>Толщина магнитной гильзы Δ<sub>Г2</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["ΔГ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр по стали магнитопровода D<sub>pст</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["Dpст"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Тип пазов b<sub>СК</sub>:</NOBR></td><td>" + rotorData["bСК"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина прямоугольного паза b<sub>П2</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bП2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Число пазов Z<sub>2</sub>,&nbsp;шт:</NOBR></td><td>" + rotorData["Z2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота паза h<sub>p</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["hp"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Внутренний диаметр сверления d<sub>в</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["dв"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина кольца к.з. клетки b<sub>к</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bк"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Удельное сопротивление к.з. клетки в рабочем состоянии ρ<sub>2Г</sub>,&nbsp;Ом∙мм<sup>2</sup>/м:</NOBR></td><td>" + rotorData["ρ2Г"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Коэффициент заполнения пакета сталью K<sub>fe2</sub>:</NOBR></td><td>" + rotorData["Kfe2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота шлица паза h<sub>ш</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["hш"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина шлица паза b<sub>ш</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bш"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр круглого паза d<sub>кп</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["dкп"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина зубца b<sub>ZH</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bZH"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр низа грушевидного паза d<sub>пн</sub>,&nbsp;мм:</NOBR></td><td>" + "???" + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр верха грушевидного паза d<sub>пв</sub>,&nbsp;мм:</NOBR></td><td>" + "???" + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота нижней части паза h<sub>p1</sub>,&nbsp;мм:</NOBR></td><td>" + "???" + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота между клетками h<sub>p2</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["hp2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота кольца к.з. обмотки a<sub>к</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["aк"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Ширина нижнего кольца к.з. клетки b<sub>кн</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bкн"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота нижнего кольца к.з. клетки a<sub>кн</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["aкн"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</div></body>");
+            sw.WriteLine("</html>");
+
+
+            // Закрываем поток для записи в файл
+            sw.Close();
+
+            Services.ServiceIO.LaunchBrowser(file_name);
         }
         bool CanViewResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
@@ -550,7 +660,11 @@ namespace IVMElectro.ViewModel {
                 return ViewResultCommand;
             }
         }
-        void ViewStatorRotorResult() { }
+        void ViewStatorRotorResult()
+        {
+        
+        }
+
         bool CanViewStatorRotorResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
         #endregion
