@@ -903,9 +903,131 @@ namespace IVMElectro.ViewModel
                 return ViewHeatResultCommand;
             }
         }
-        void ViewHeatResult() {
+        void ViewHeatResult()
+        {
             SteelProperties steelPartition = MarkSteelPartitionlDirectory.FirstOrDefault(s => s.Value == Model.Common.ρРУБ);
 
+            // TODO: отчет для теплового расчета электродвигателя
+
+            string file_name = Directory.GetCurrentDirectory() + "\\report_heat_" + Path.GetFileNameWithoutExtension(Services.ServiceIO.FileName) + ".html";
+
+            // Создаем поток для записи в файл
+            StreamWriter sw = new StreamWriter(file_name);
+
+            sw.WriteLine("<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Strict//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd'>");
+            sw.WriteLine("<html>");
+            sw.WriteLine("<head>");
+            sw.WriteLine("<meta http-equiv='content-type' content='text/html; charset=UTF-8' />");
+
+            sw.WriteLine("<link href = 'css/bootstrap.min.css' rel='stylesheet'>");
+
+            sw.WriteLine("<title>Результаты расчета</title>");
+            sw.WriteLine("<style>.table-fit { width: 1px;} h2 {background-color: #d9d9d9;} h3 {background-color: #ccccff}</style>");
+
+            sw.WriteLine("</head>");
+            sw.WriteLine("<body><div class='mx-auto' style='width: 1024px;'>");            
+
+            sw.WriteLine("<h1>Результаты расчета</h1>");
+            
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+
+            double temp;
+            algorithm.Get_HeatCalculation.TryGetValue("P1 окр", out temp);
+            sw.WriteLine("<tr><td><NOBR>Мощность из сети (P1окр*10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Pʹ2", out temp);
+            sw.WriteLine("<tr><td><NOBR>Мощность на роторе (Р’<sub>2</sub>*10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Pмех", out temp);
+            sw.WriteLine("<tr><td><NOBR>Механические потери (P<sub>мех</sub>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Pʹ2-Pмех", out temp);
+            sw.WriteLine("<tr><td><NOBR>Мощность на рабочем колесе (Pʹ<sub>2</sub>-P<sub>мех</sub>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("U1", out temp);
+            sw.WriteLine("<tr><td><NOBR>Напряжение фазное (U<sub>1</sub>),&nbsp;В:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("f1", out temp);
+            sw.WriteLine("<tr><td><NOBR>Частота тока (f<sub>1</sub>),&nbsp;Гц:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("I1Н окр", out temp);
+            sw.WriteLine("<tr><td><NOBR>Ток (I<sub>1Н окр</sub>),&nbsp;А:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("n", out temp);
+            sw.WriteLine("<tr><td><NOBR>Частота вращения ротора (n),&nbsp;об/мин:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("<h2>Тепловые потери в электродвигателе</h2>");
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("PЭ1 окр", out temp);
+            sw.WriteLine("<tr><td><NOBR>Обмотка статора (P<sub>Э1 окр</sub>*10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Pj1 окр", out temp);
+            sw.WriteLine("<tr><td><NOBR>Спинка железа статора (P<sub>j1 окр</sub>*10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Зубцы железа", out temp);
+            sw.WriteLine("<tr><td><NOBR>Зубцы железа статора (P<sub>Z1 окр</sub> + P<sub>пов1 окр</sub> + P<sub>пул1 окр</sub>*10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("PГ окр", out temp);
+            sw.WriteLine("<tr><td><NOBR>Рубашка статора (P<sub>Г окр</sub>*10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Ротор", out temp);
+            sw.WriteLine("<tr><td><NOBR>Ротор (P<sub>Э2 окр</sub> + P<sub>Fe2 окр</sub> + P<sub>пов2 окр</sub> + P<sub>пул2 окр</sub> *10<sup>-3</sup>),&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Суммарные электрические потери", out temp);
+            sw.WriteLine("<tr><td><NOBR>Суммарные электрические потери,&nbsp;кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("<h2>Геометрические характеристики электродвигателя</h2>");
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Dp", out temp);
+            sw.WriteLine("<tr><td><NOBR>Диаметр ротора наружный по гильзе (если есть) (D<sub>p</sub>),&nbsp;мм:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Di", out temp);
+            sw.WriteLine("<tr><td><NOBR>Диаметр расточки статора (D<sub>i</sub>),&nbsp;мм:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Da", out temp);
+            sw.WriteLine("<tr><td><NOBR>Диаметр наружный (D<sub>a</sub>),&nbsp;мм:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("li", out temp);
+            sw.WriteLine("<tr><td><NOBR>Длина железа статора (без нажимных листов) (l<sub>i</sub>),&nbsp;мм:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("2 * Δкр", out temp);
+            sw.WriteLine("<tr><td><NOBR>Суммарная толщина 2 нажимных и крайних листов (2 * Δ<sub>кр</sub>),&nbsp;мм:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            string t;
+
+            algorithm.Get_HeatCalculationStringData.TryGetValue("Материал железа статора", out t);
+            sw.WriteLine("<tr><td><NOBR>Материал железа статора:</NOBR></td><td>" + t.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("Z1", out temp);
+            sw.WriteLine("<tr><td><NOBR>Число пазов статора (Z<sub>1</sub>):</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_HeatCalculation.TryGetValue("ΔГ1", out temp);
+            sw.WriteLine("<tr><td><NOBR>Толщина рубашки статора (Δ<sub>Г1</sub>),&nbsp;мм:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            sw.WriteLine("<tr><td><NOBR>Толщина изоляции рубашки статора (по умолчанию), мм:</NOBR></td><td>&nbsp;</td></tr>");
+
+            sw.WriteLine("<tr><td><NOBR>Материал рубашки статора:</NOBR></td><td>" + steelPartition.Name + "</td></tr>");
+
+            sw.WriteLine("<tr><td><NOBR>Материал изоляции рубашки статора:</NOBR></td><td>&nbsp;</td></tr>");
+
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</div></body>");
+            sw.WriteLine("</html>");
+
+            // Закрываем поток для записи в файл
+            sw.Close();
+
+            Services.ServiceIO.LaunchBrowser(file_name);
         }
         bool CanViewHeatResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
@@ -913,8 +1035,8 @@ namespace IVMElectro.ViewModel
         UserCommand ViewStatorRotorResultCommand { get; set; }
         public ICommand CommandViewStatorRotorResult {
             get {
-                if (ViewResultCommand == null) ViewResultCommand = new UserCommand(ViewStatorRotorResult, CanViewStatorRotorResult);
-                return ViewResultCommand;
+                if (ViewStatorRotorResultCommand == null) ViewStatorRotorResultCommand = new UserCommand(ViewStatorRotorResult, CanViewStatorRotorResult);
+                return ViewStatorRotorResultCommand;
             }
         }
         void ViewStatorRotorResult() { }

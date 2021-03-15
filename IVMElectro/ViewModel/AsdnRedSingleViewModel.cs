@@ -656,8 +656,8 @@ namespace IVMElectro.ViewModel {
         UserCommand ViewStatorRotorResultCommand { get; set; }
         public ICommand CommandViewStatorRotorResult {
             get {
-                if (ViewResultCommand == null) ViewResultCommand = new UserCommand(ViewStatorRotorResult, CanViewStatorRotorResult);
-                return ViewResultCommand;
+                if (ViewStatorRotorResultCommand == null) ViewStatorRotorResultCommand = new UserCommand(ViewStatorRotorResult, CanViewStatorRotorResult);
+                return ViewStatorRotorResultCommand;
             }
         }
         void ViewStatorRotorResult()
