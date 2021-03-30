@@ -93,9 +93,18 @@ namespace IVMElectro.View.PREMAG {
             StringOfVarParametersView view = null;
             switch (((Button)sender).Name) {
                 case "btnAdd":
-                    int maxid = ((PremagFlatArmVM)DataContext).VariationData.Count != 0 ? ((PremagFlatArmVM)DataContext).VariationData.Select(i => i.ID_culc).Max() :
-                        0;
-                    stringOfVar = new StringOfVarParameters { ID_culc = ++maxid }; //new item
+                    int maxid = 0;
+                    if (((PremagFlatArmVM)DataContext).VariationData.Count != 0) {
+                        maxid = ((PremagFlatArmVM)DataContext).VariationData.Select(i => i.ID_culc).Max();
+                        StringOfVarParameters varParametersMaxid = ((PremagFlatArmVM)DataContext).VariationData.FirstOrDefault(i => i.ID_culc == maxid);
+                        stringOfVar = (StringOfVarParameters)varParametersMaxid.Clone();
+                        stringOfVar.ID_culc = ++maxid;
+                    }
+                    else 
+                        stringOfVar = new StringOfVarParameters { ID_culc = ++maxid }; //new item
+                    //int maxid = ((PremagFlatArmVM)DataContext).VariationData.Count != 0 ? ((PremagFlatArmVM)DataContext).VariationData.Select(i => i.ID_culc).Max() :
+                    //    0;
+                    //stringOfVar = new StringOfVarParameters { ID_culc = ++maxid }; //new item
                     //for validation
                     stringOfVar.SetParametersForModelValidation(StringToDouble(((PremagFlatArmVM)DataContext).R0), StringToDouble(((PremagFlatArmVM)DataContext).R10),
                         StringToDouble(((PremagFlatArmVM)DataContext).dпз1), StringToDouble(((PremagFlatArmVM)DataContext).dвст));

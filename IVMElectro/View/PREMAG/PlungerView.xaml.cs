@@ -107,9 +107,15 @@ namespace IVMElectro.View.PREMAG {
             StringOfVarParamsPlngrView view = null;
             switch (((Button)sender).Name) {
                 case "btnAdd":
-                    int maxid = ((PremagPlungerVM)DataContext).VariationData.Count != 0 ? ((PremagPlungerVM)DataContext).VariationData.Select(i => i.ID_culc).Max() :
-                        0;
-                    stringOfVar = new StringOfVarParametersPlunger { ID_culc = ++maxid }; //new item
+                    int maxid = 0;
+                    if (((PremagPlungerVM)DataContext).VariationData.Count != 0) {
+                        maxid = ((PremagPlungerVM)DataContext).VariationData.Select(i => i.ID_culc).Max();
+                        StringOfVarParametersPlunger varParametersMaxid = ((PremagPlungerVM)DataContext).VariationData.FirstOrDefault(i => i.ID_culc == maxid);
+                        stringOfVar = (StringOfVarParametersPlunger)varParametersMaxid.Clone();
+                        stringOfVar.ID_culc = ++maxid;
+                    }
+                    else
+                        stringOfVar = new StringOfVarParametersPlunger { ID_culc = ++maxid }; //new item
                     //for validation
                     stringOfVar.SetParametersForModelValidation(StringToDouble(((PremagPlungerVM)DataContext).R0), StringToDouble(((PremagPlungerVM)DataContext).R10),
                         StringToDouble(((PremagPlungerVM)DataContext).R110), StringToDouble(((PremagPlungerVM)DataContext).R1110), 

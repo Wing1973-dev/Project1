@@ -10,7 +10,8 @@ namespace LibraryAlgorithms {
         double δэ, S1, S11, S12, Sстоп, Sкор, Sпз, lплст, lк, lфл, ν1, ν2, lср, ls, r20, rГ, I, Fм, Qм, Kм, Фδ,
             Fδ, Фp, Bp1, Bp11, Bp12, Fp, Фк, Bк, Fк, Fфл, Фпз, Bпз, Fпз, F, Wp, Fтм, P, Kt, Δt;
         public AlgorithmPremagPlungerEM(Dictionary<string, double> inputData) {
-            U = inputData["U"]; δ = inputData["δ"]; Bδ = inputData["Bδ"]; q = inputData["q"]; ρx = inputData["ρx"]; ρГ = inputData["ρГ"];
+            Bδ = inputData["Bδ"] * 1e4; //Тл -> Гс
+            U = inputData["U"]; δ = inputData["δ"]; q = inputData["q"]; ρx = inputData["ρx"]; ρГ = inputData["ρГ"];
             h = inputData["h"]; R1 = inputData["R1"]; R2 = inputData["R2"]; R3 = inputData["R3"]; hфл = inputData["hфл"];
             R0 = inputData["R0"]; R10 = inputData["R10"]; R110 = inputData["R110"]; R1110 = inputData["R1110"];
             dпз1 = inputData["dпз1"]; dпз2 = inputData["dпз2"]; dвст = inputData["dвст"]; Δk1 = inputData["Δk1"]; qm = inputData["qm"];
@@ -96,12 +97,16 @@ namespace LibraryAlgorithms {
             Δt = kt1 / Kt;
             SolutionIsDone = true;
         }
+        //result of the calculation
+        //B: Гс -> Тл
+        //Fтм: кг -> Н
+        //Ф: Мкс -> Вб
         public Dictionary<string, double> GetResult => new Dictionary<string, double> { { "δэ", δэ }, { "S1", S1 }, { "S11", S11 }, { "S12", S12 },
         { "Sстоп", Sстоп }, { "Sкор", Sкор },  { "Sпз", Sпз }, { "lпл.ст", lплст }, { "lк", lк }, { "lфл", lфл }, { "ν1", ν1 }, { "ν2", ν2 },
-        { "lср", lср }, { "ls", ls }, { "r20", r20 }, { "rГ", rГ }, { "I", I }, { "Fм", Fм }, { "Qм", Qм }, { "Kм", Kм }, { "Фδ", Фδ },
-        { "Bδ", Bδ }, { "Fδ", Fδ }, { "Фp", Фp }, { "Bp1", Bp1 }, { "Bp11", Bp11 }, { "Bp12", Bp12 }, { "Fp", Fp }, { "Фк", Фк }, { "Bк", Bк },
-        { "Fк", Fк }, { "Fфл", Fфл }, { "Фпз", Фпз }, { "Bпз", Bпз }, { "Fпз", Fпз }, { "F", F }, { "Wp", Wp }, { "Fтм", Fтм }, { "P", P },
-        { "Kt", Kt }, { "Δt", Δt } };
+        { "lср", lср }, { "ls", ls }, { "r20", r20 }, { "rГ", rГ }, { "I", I }, { "Fм", Fм }, { "Qм", Qм }, { "Kм", Kм }, { "Фδ", Фδ * 1e-8 },
+        { "Bδ", Bδ * 1e-4 }, { "Fδ", Fδ }, { "Фp", Фp * 1e-8 }, { "Bp1", Bp1 * 1e-4 }, { "Bp11", Bp11 * 1e-4 }, { "Bp12", Bp12 * 1e-4 }, { "Fp", Fp },
+        { "Фк", Фк * 1e-8 }, { "Bк", Bк * 1e-4 }, { "Fк", Fк }, { "Fфл", Fфл }, { "Фпз", Фпз * 1e-8 }, { "Bпз", Bпз * 1e-4 }, { "Fпз", Fпз }, { "F", F },
+        { "Wp", Wp }, { "Fтм", Fтм }, { "P", P }, { "Kt", Kt }, { "Δt", Δt } };
         //readiness of data for output to the interface
         public bool SolutionIsDone { get; private set; }
     }

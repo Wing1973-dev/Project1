@@ -72,7 +72,7 @@
                                 <TextBlock Style="{DynamicResource MaterialDesignTextBlock}">
                                     <Run Text="воздушном зазоре B"/>
                                     <Run Text="δ" FontSize="9" BaselineAlignment="Subscript" />
-                                    <Run Text=", Гс:"/>
+                                    <Run Text=", Тл:"/>
                                 </TextBlock>
                                 <TextBox Name="tbxBδ" Margin="65 0 0 0" MaxLength="6" Style="{DynamicResource validationTextBox}" >
                                     <TextBox.Text>

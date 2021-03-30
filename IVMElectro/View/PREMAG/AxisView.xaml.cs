@@ -91,21 +91,45 @@ namespace IVMElectro.View.PREMAG {
                 case "btnAddUp":
                     if (((PremagAxisVM)DataContext).VariationDataMainData.Count == 0) return;
 
-                    int max_idCulc = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
-                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_culc).Max() :
-                        0;
-                    int max_idSlot = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
-                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_slot).Max() :
-                        ((PremagAxisVM)DataContext).VariationDataMainData.Select(i => i.ID_slot).Max();
-                    //for all slots
-                    for (int i = 0; i < max_idSlot; i++) {
-                        stringOfVar = new StringOfVarParametersAxis { ID_culc = max_idCulc + 1, ID_slot = i + 1 };
-                        varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
-                        view = new StringOfVarParamsAxisView { DataContext = varParamsVM, Owner = this };
-                        view.ShowDialog();
-                        if (!varParamsVM.IsOK) return;
-                        ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model); //add to db
-                        ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(varParamsVM.Model);
+                    //int max_idCulc = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
+                    //    ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_culc).Max() :
+                    //    0;
+                    int max_idCulc = 0;
+                    int max_idSlot = ((PremagAxisVM)DataContext).VariationDataMainData.Select(i => i.ID_slot).Max();
+                    //int max_idSlot = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0 ?
+                    //    ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_slot).Max() :
+                    //    ((PremagAxisVM)DataContext).VariationDataMainData.Select(i => i.ID_slot).Max();
+
+                    if (((PremagAxisVM)DataContext).VariationDataUpMagnets.Count != 0) {
+                        max_idCulc = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_culc).Max();
+                        max_idSlot = ((PremagAxisVM)DataContext).VariationDataUpMagnets.Select(i => i.ID_slot).Max();
+                        //for all slots
+                        for (int i = 0; i < max_idSlot; i++) {
+                            StringOfVarParametersAxis varParametersMaxid = ((PremagAxisVM)DataContext).VariationDataUpMagnets.FirstOrDefault(
+                                i => i.ID_culc == max_idCulc && i.ID_slot == max_idSlot
+                            );
+                            stringOfVar = (StringOfVarParametersAxis)varParametersMaxid.Clone();
+                            stringOfVar.ID_culc = max_idCulc + 1; stringOfVar.ID_slot = i + 1;
+                            //stringOfVar = new StringOfVarParametersAxis { ID_culc = max_idCulc + 1, ID_slot = i + 1 };
+                            varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
+                            view = new StringOfVarParamsAxisView { DataContext = varParamsVM, Owner = this };
+                            view.ShowDialog();
+                            if (!varParamsVM.IsOK) return;
+                            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model); //add to db
+                            ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(varParamsVM.Model);
+                        }
+                    }
+                    else {
+                        //for all slots
+                        for (int i = 0; i < max_idSlot; i++) {
+                            stringOfVar = new StringOfVarParametersAxis { ID_culc = max_idCulc + 1, ID_slot = i + 1 };
+                            varParamsVM = new StringOfVarParamsAxisVM(stringOfVar);
+                            view = new StringOfVarParamsAxisView { DataContext = varParamsVM, Owner = this };
+                            view.ShowDialog();
+                            if (!varParamsVM.IsOK) return;
+                            ((PremagAxisVM)DataContext).VariationDataUpMagnets.Add(varParamsVM.Model); //add to db
+                            ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(varParamsVM.Model);
+                        }
                     }
                     break;
                 case "btnEditUp":
@@ -175,10 +199,15 @@ namespace IVMElectro.View.PREMAG {
             AxisMDView view = null;
             switch (((Button)sender).Name) {
                 case "btnAddMD":
-                    int max_idSlot = ((PremagAxisVM)DataContext).VariationDataMainData.Count != 0 ? 
-                        ((PremagAxisVM)DataContext).VariationDataMainData.Select(i => i.ID_slot).Max() :
-                        0;
-                    stringOfVar = new PremagAxisMainDataModel { ID_slot = ++max_idSlot }; //new item
+                    int max_idSlot = 0;
+                    if (((PremagAxisVM)DataContext).VariationDataMainData.Count != 0) {
+                        max_idSlot = ((PremagAxisVM)DataContext).VariationDataMainData.Select(i => i.ID_slot).Max();
+                        PremagAxisMainDataModel varParametersMaxid = ((PremagAxisVM)DataContext).VariationDataMainData.FirstOrDefault(i => i.ID_slot == max_idSlot);
+                        stringOfVar = (PremagAxisMainDataModel)varParametersMaxid.Clone();
+                        stringOfVar.ID_slot = ++max_idSlot;
+                    }
+                    else
+                        stringOfVar = new PremagAxisMainDataModel { ID_slot = ++max_idSlot }; //new item
                     varParamsVM = new PremagAxisMDVM(stringOfVar);
                     view = new AxisMDView {
                         DataContext = varParamsVM,

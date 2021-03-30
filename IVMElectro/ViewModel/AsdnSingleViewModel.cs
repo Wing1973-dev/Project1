@@ -830,7 +830,6 @@ namespace IVMElectro.ViewModel
         }
         void ViewHeatResult() {
             SteelProperties steelPartition = MarkSteelPartitionlDirectory.FirstOrDefault(s => s.Value == Model.Common.ρРУБ);
-
         }
         bool CanViewHeatResult() => algorithm != null && algorithm.SolutionIsDone;
         #endregion
