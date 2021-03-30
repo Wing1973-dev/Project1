@@ -33,6 +33,8 @@ namespace IVMElectro {
             ItemMenu itemMenu0 = new ItemMenu("Перечень расчетов", null, PackIconKind.ClipboardTextOutline);
 
             Menu.Children.Add(new UserControlMenuItem(itemMenu0, this));
+
+
             Menu.Children.Add(new UserControlMenuItem(itemMenu1, this));
             Menu.Children.Add(new UserControlMenuItem(itemMenu2, this));
         }

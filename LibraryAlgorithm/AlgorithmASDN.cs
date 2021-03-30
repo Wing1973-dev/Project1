@@ -577,6 +577,8 @@ namespace LibraryAlgorithms {
         double get_Bz2( double BδM, double t2, double li, double bz2ср, double lp, double Kfe2 ) => BδM * t2 * li / bz2ср / lp / Kfe2;
         #endregion
         #region результаты работы
+        //B: Гс -> Тл
+        //F: кг -> Н
         //геометрические размеры и параметры машины
         public Dictionary<string, Dictionary<string, double>> Get_DataMachine => SolutionIsDone ?
                     new Dictionary<string, Dictionary<string, double>>() {
@@ -629,16 +631,16 @@ namespace LibraryAlgorithms {
         public Dictionary<string, Dictionary<string, double>> Get_MagneticCircuit => SolutionIsDone ?
                     new Dictionary<string, Dictionary<string, double>>() {
                         { "ротор", new Dictionary<string, double>() {
-                                { "Bz2", Math.Round(Bz2 * 1e-4, 5) },
-                                { "Bj2", Math.Round(Bj2 * 1e-4, 5) },
+                                { "Bz2", Math.Round(Bz2 * 1e-4 * 1e-4, 5) },
+                                { "Bj2", Math.Round(Bj2 * 1e-4 * 1e-4, 5) },
                                 { "Kδ2", Math.Round(Kδ2, 5) },
                                 { "Fz2", Math.Round(Fz2, 5) },
                                 { "Fj2", Math.Round(Fj2, 5) }
                             }
                         },
                         { "статор", new Dictionary<string, double>() {
-                                { "Bz1", Math.Round(Bz1 * 1e-4, 5) },
-                                { "Bj1", Math.Round(Bj1 * 1e-4, 5) },
+                                { "Bz1", Math.Round(Bz1 * 1e-4 * 1e-4, 5) },
+                                { "Bj1", Math.Round(Bj1 * 1e-4 * 1e-4, 5) },
                                 { "Kδ1", Math.Round(Kδ1, 5) },
                                 { "Fz1", Math.Round(Fz1, 5) },
                                 { "Fj1", Math.Round(Fj1, 5) },
@@ -647,7 +649,7 @@ namespace LibraryAlgorithms {
                             }
                         },
                         { "зазор", new Dictionary<string, double>() {
-                                { "BδM", Math.Round(BδM * 1e-4, 5) },
+                                { "BδM", Math.Round(BδM * 1e-4 * 1e-4, 5) },
                                 { "Fδ", Math.Round(Fδ, 5) }
                             }
                         },
@@ -829,7 +831,8 @@ namespace LibraryAlgorithms {
                 { "ac", ac  },
                 { "Провод обмоточный", Math.Round(qГ/dиз, 5)  },
                 { "Pʹ2", Math.Round(Pʹ2, 5) },
-                { "P1", P1 },
+                { "P1", Math.Round(P1_round, 5) },
+                { "SK", Math.Round(SK_round, 5) },
                 { "I1Н", Math.Round(I1Н, 5) },
                 { "nН", Math.Round(nН, 5) },
                 { "I1П", Math.Round(I1П, 5) }

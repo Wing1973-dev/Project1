@@ -6,11 +6,14 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              mc:Ignorable="d" >
     <Grid >
+        <!--header-->
         <materialDesign:PackIcon Kind="{Binding Path=IconKind}" Width="15"  Height="15" Margin="10 16" Foreground="White"/>
-        <ListBoxItem Name="ListViewItemMenu" Content="{Binding Path=Header}" Padding="37 14" FontSize="15" Foreground="White"/>
+        <!--<ListBoxItem Name="ListViewItemMenu" Content="{Binding Path=Header}" Padding="37 14" FontSize="15" Foreground="White" />-->
+        <TextBlock Name="ListViewItemMenu" Text="{Binding Path=Header}" Padding="37 14" FontSize="16" Foreground="White"/>
 
-
-        <Expander Name="ExpanderMenu" Header="{Binding Path=Header}" IsExpanded="False" Width="270" HorizontalAlignment="Right" Background="{x:Null}" Foreground="White" Collapsed="ExpanderMenu_Collapsed">
+        <!--content-->
+        <Expander Name="ExpanderMenu" Header="{Binding Path=Header}" IsExpanded="False" Width="270" HorizontalAlignment="Right" Background="{x:Null}" Foreground="White" 
+                  Collapsed="ExpanderMenu_Collapsed">
             <ListView Name="ListViewMenu" ItemsSource="{Binding Path=SubItems}" Foreground="White" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
