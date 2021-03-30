@@ -121,6 +121,7 @@ namespace IVMElectro.Services {
             }
 
             Process.Start(new ProcessStartInfo(browserName, url));
+            System.Threading.Thread.Sleep(1000);
         }
 
         /// <summary>
