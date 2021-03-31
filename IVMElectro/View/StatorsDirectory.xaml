@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:IVMElectro.View"
         mc:Ignorable="d"
         Height="740" Width="670" MinWidth="670" MinHeight="740" MaxWidth="650" MaxHeight="740"  WindowStartupLocation="CenterOwner"        
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_insert_photo_black_18dp.png">
 
     <Grid >
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
