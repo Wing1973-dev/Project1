@@ -624,6 +624,321 @@ namespace IVMElectro.ViewModel {
             sw.WriteLine("<tr><td><NOBR>Высота нижнего кольца к.з. клетки a<sub>кн</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["aкн"].ToString() + "</td></tr>");
             sw.WriteLine("</table>");
 
+            sw.WriteLine("<h1>Результаты расчета</h1>");
+
+            sw.WriteLine("<h2>Геометрические размеры и параметры машины</h2>");
+
+            sw.WriteLine("<table cellpadding=50><tr valign='top'><td>");
+
+            sw.WriteLine("<h3>Ротор</h3>");
+            Dictionary<string, double> data_machine = new Dictionary<string, double>();
+            algorithm.Get_DataMachine.TryGetValue("ротор", out data_machine);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>l<sub>p</sub>,&nbsp;мм:</td><td>" + data_machine["lp"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>h<sub>j2</sub>,&nbsp;мм:</td><td>" + data_machine["hj2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>b<sub>Z2MIN</sub>,&nbsp;мм:</td><td>" + data_machine["bZ2MIN"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>b<sub>Z2MAX</sub>,&nbsp;мм:</td><td>" + data_machine["bZ2MAX"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>q<sub>с</sub>,&nbsp;мм<sup>2</sup>:</td><td>" + data_machine["qс"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>q<sub>к</sub>,&nbsp;мм<sup>2</sup>:</td><td>" + data_machine["qк"].ToString() + "</td></tr>");            
+            sw.WriteLine("<tr><td>rʹ<sub>2</sub>,&nbsp;Ом:</td><td>" + data_machine["rʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>xʹ<sub>2</sub>,&nbsp;Ом:</td><td>" + data_machine["xʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            sw.WriteLine("<h3>Cтатор</h3>");
+            algorithm.Get_DataMachine.TryGetValue("статор", out data_machine);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>hʹ<sub>j1ʹ</sub>,&nbsp;мм:</td><td>" + data_machine["hj1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>hʹ<sub>Z1ʹ</sub>,&nbsp;мм:</td><td>" + data_machine["hZ1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>K<sub>з</sub>,&nbsp;мм:</td><td>" + data_machine["Kз"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>b<sub>Z1MAX</sub>,&nbsp;мм:</td><td>" + data_machine["bZ1MAX"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>b<sub>Z1MIN</sub>,&nbsp;мм:</td><td>" + data_machine["bZ1MIN"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>b<sub>Z1СР</sub>,&nbsp;мм:</td><td>" + data_machine["bZ1СР"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>l<sub>Г</sub>,&nbsp;мм:</td><td>" + data_machine["lГ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>m<sub>1</sub></td><td>" + data_machine["m1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>L,&nbsp;мм:</td><td>" + data_machine["L"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>l<sub>B</sub>,&nbsp;мм:</td><td>" + data_machine["lB"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>r<sub>1x</sub>,&nbsp;Ом:</td><td>" + data_machine["r1x"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>l<sub>c</sub>,&nbsp;мм:</td><td>" + data_machine["lc"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            sw.WriteLine("<h3>Общие параметры</h3>");
+            algorithm.Get_DataMachine.TryGetValue("общие параметры", out data_machine);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>T<sub>лп</sub></td><td>" + data_machine["Tлп"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            sw.WriteLine("<h3>Обмотка</h3>");
+            algorithm.Get_DataMachine.TryGetValue("обмотка", out data_machine);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>q<sub>ИЗ</sub>,&nbsp;мм<sup>2</sup>:</td><td>" + data_machine["qИЗ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>S<sub>п</sub>,&nbsp;мм<sup>2</sup>:</td><td>" + data_machine["Sп"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Sʹ<sub>п</sub>,&nbsp;мм<sup>2</sup>:</td><td>" + data_machine["Sʹп"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>q<sub>1</sub></td><td>" + data_machine["q1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>W<sub>c</sub></td><td>" + data_machine["Wc"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>n<sub>p</sub></td><td>" + data_machine["np"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>n<sub>эл</sub></td><td>" + data_machine["nэл"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>W<sub>ЭФ</sub></td><td>" + data_machine["WЭФ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>β</td><td>" + data_machine["β"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>k<sub>1<sub></td><td>" + data_machine["k1"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td></tr></table>");
+
+            sw.WriteLine("<h2>Расчет магнитной цепи</h2>");
+
+            sw.WriteLine("<table cellpadding=50><tr valign='top'><td>");
+
+            Dictionary<string, double> magnetic_circuit = new Dictionary<string, double>();
+            algorithm.Get_MagneticCircuit.TryGetValue("ротор", out magnetic_circuit);
+
+            sw.WriteLine("<h3>Ротор</h3>");
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>B<sub>z2</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bz2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>j2</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bj2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>K<sub>δ2</sub></td><td>" + magnetic_circuit["Kδ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>F<sub>z2</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fz2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>F<sub>j2</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fj2"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            algorithm.Get_MagneticCircuit.TryGetValue("статор", out magnetic_circuit);
+
+            sw.WriteLine("<h3>Статор</h3>");
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>B<sub>z1</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bz1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>j1</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bj1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>K<sub>δ1</sub></td><td>" + magnetic_circuit["Kδ1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>F<sub>z1</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fz1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>F<sub>j1</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fj1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>r<sub>1Г</sub>,&nbsp;Ом:</td><td>" + magnetic_circuit["r1Г"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>x<sub>1</sub>,&nbsp;Ом:</td><td>" + magnetic_circuit["x1"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            algorithm.Get_MagneticCircuit.TryGetValue("зазор", out magnetic_circuit);
+
+            sw.WriteLine("<h3>Зазор</h3>");
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>B<sub>δM</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["BδM"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>F<sub>δ</sub>,&nbsp;А:</td><td>" + magnetic_circuit["Fδ"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+           sw.WriteLine("</td></tr></table>");
+
+
+            ///////////////////////////////////////////////////////////////////////////////////
+
+            sw.WriteLine("<h2>Холостой ход</h2>");
+
+            sw.WriteLine("<table cellpadding=50><tr valign='top'><td>");
+
+            Dictionary<string, double> idle = new Dictionary<string, double>();
+
+            algorithm.Get_Idle.TryGetValue("ротор", out idle);
+
+            sw.WriteLine("<h3>Ротор</h3>");
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>P<sub>пов2</sub>,&nbsp;Вт:</td><td>" + idle["Pпов2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пов2&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + idle["Pпов2 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пул2</sub>,&nbsp;Вт:</td><td>" + idle["Pпул2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пул2&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + idle["Pпул2 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            algorithm.Get_Idle.TryGetValue("статор", out idle);
+
+            sw.WriteLine("<h3>Статор</h3>");
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>P<sub>z1</sub>,&nbsp;Вт:</td><td>" + idle["Pz1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>z1&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + idle["Pz1 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>j1</sub>,&nbsp;Вт:</td><td>" + idle["Pj1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>j1 окр</sub>,&nbsp;Вт:</td><td>" + idle["Pj1 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>Г</sub>,&nbsp;Вт:</td><td>" + idle["PГ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>Г&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + idle["PГ окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пов1</sub>,&nbsp;Вт:</td><td>" + idle["Pпов1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пов1&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + idle["Pпов1 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пул1</sub>,&nbsp;Вт:</td><td>" + idle["Pпул1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>пул1&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + idle["Pпул1 окр"].ToString() + "</td></tr>");
+
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            algorithm.Get_Idle.TryGetValue("прочее", out idle);
+
+            sw.WriteLine("<h3>Прочее</h3>");
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>E<sub>1</sub>,&nbsp;В:</td><td>" + idle["E1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>0</sub>,&nbsp;Вт:</td><td>" + idle["P0"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>W<sub>0</sub>,&nbsp;Вт:</td><td>" + idle["W0"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>0А</sub>,&nbsp;A:</td><td>" + idle["I0А"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>ХХА</sub>,&nbsp;A:</td><td>" + idle["IХХА"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>XX</sub>,&nbsp;A:</td><td>" + idle["IXX"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>cosφ<sub>0</sub></td><td>" + idle["cosφ0"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>μ</sub></td><td>" + idle["Iμ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>x<sub>μ</sub></td><td>" + idle["xμ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>K<sub>δ</sub></td><td>" + idle["Kδ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Σ<sub>F</sub></td><td>" + idle["ΣF"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td></tr></table>");
+
+            /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+            sw.WriteLine("<h2>Номинальный режим</h2>");
+
+            sw.WriteLine("<table cellpadding=50><tr valign='top'><td>");
+
+            sw.WriteLine("<h3>Ротор</h3>");
+
+            Dictionary<string, double> nominal_rating = new Dictionary<string, double>();
+
+            algorithm.Get_NominalRating.TryGetValue("ротор", out nominal_rating);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>rʹʹ<sub>2</sub>,&nbsp;Ом:</td><td>" + nominal_rating["rʹʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>xʹʹ<sub>2</sub>,&nbsp;Ом:</td><td>" + nominal_rating["xʹʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>rʹ<sub>2</sub>,&nbsp;Ом:</td><td>" + nominal_rating["rʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>xʹ<sub>2</sub>,&nbsp;Ом:</td><td>" + nominal_rating["xʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Iʹʹ<sub>2Н</sub>,&nbsp;A:</td><td>" + nominal_rating["Iʹʹ2Н"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>n<sub>Н</sub>,&nbsp;<nobr>об/мин</nobr>:</td><td>" + nominal_rating["nН"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>Э2</sub>,&nbsp;Вт:</td><td>" + nominal_rating["PЭ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>Э2 окр</sub>,&nbsp;Вт:</td><td>" + nominal_rating["PЭ2 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Δi<sub>2</sub>,&nbsp;<nobr>A/мм<sup>2</sup></nobr></td><td>" + nominal_rating["Δi2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Δi<sub>К</sub>,&nbsp;<nobr>A/мм<sup>2</sup></nobr></td><td>" + nominal_rating["ΔiК"].ToString() + "</td></tr>");
+           
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            sw.WriteLine("<h3>Статор</h3>");
+
+            algorithm.Get_NominalRating.TryGetValue("статор", out nominal_rating);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>I<sub>1A</sub>,&nbsp;A:</td><td>" + nominal_rating["I1A"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>1R</sub>,&nbsp;A:</td><td>" + nominal_rating["I1R"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>1Н</sub>,&nbsp;A:</td><td>" + nominal_rating["I1Н"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>I<sub>1Н окр</sub>,&nbsp;A:</td><td>" + nominal_rating["I1Н окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>Э1</sub>,&nbsp;Вт:</td><td>" + nominal_rating["PЭ1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>Э1&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + nominal_rating["PЭ1 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Δi<sub>1</sub>,&nbsp;<nobr>A/мм<sup>2</sup></nobr></td><td>" + nominal_rating["Δi1"].ToString() + "</td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td><td>");
+
+            sw.WriteLine("<h3>Прочее</h3>");
+
+            algorithm.Get_NominalRating.TryGetValue("прочее", out nominal_rating);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>M<sub>Н</sub>,&nbsp;Н∙м:</td><td>" + nominal_rating["MН"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>S<sub>Н</sub></td><td>" + nominal_rating["SН"].ToString() + "</td></tr>");            
+   
+           
+            sw.WriteLine("<tr><td>cosφ<sub>Н</sub></td><td>" + nominal_rating["cosφН"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>cosφ<sub>Н&nbsp;окр</sub></td><td>" + nominal_rating["cosφН окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>η<sub>ЭЛ</sub></td><td>" + nominal_rating["ηЭЛ"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>η<sub>ЭЛ окр</sub></td><td>" + nominal_rating["ηЭЛ окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>1</sub>,&nbsp;Вт:</td><td>" + nominal_rating["P1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>P<sub>1&nbsp;окр</sub>,&nbsp;Вт:</td><td>" + nominal_rating["P1 окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>Pʹ<sub>2</sub>,&nbsp;Вт:</td><td>" + nominal_rating["Pʹ2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>S<sub>K</sub>,&nbsp;кВ∙А:</td><td>" + nominal_rating["SK"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>S<sub>K&nbsp;окр</sub>,&nbsp;кВ∙А:</td><td>" + nominal_rating["SK окр"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>A,&nbsp;А/см:</td><td>" + nominal_rating["A"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>c<sub>1</sub></td><td>" + nominal_rating["c1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>rʹ<sub>1</sub>,&nbsp;Ом:</td><td>" + nominal_rating["rʹ1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>xʹ<sub>1</sub>,&nbsp;Ом:</td><td>" + nominal_rating["xʹ1"].ToString() + " </td></tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</td></tr></table>");
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            sw.WriteLine("<h2>Перегрузочная способность</h2>");
+
+            double t;
+
+            algorithm.Get_OverloadCapacity.TryGetValue("E1M", out t);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>E<sub>1M</sub>,&nbsp;B:</td><td>I<sub>1M</sub>,&nbsp;A:</td><td>Iʹʹ<sub>2M</sub>,&nbsp;A:</td><td>P<sub>M</sub>,&nbsp;Вт:</td><td>M<sub>M</sub>,&nbsp;Н∙м</td><td>K<sub>M</sub></td><td>S<sub>M</sub></td><td>n<sub>2</sub></td><td>cosφ<sub>M</sub></td></tr>");
+            sw.WriteLine("<tr>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("I1M", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("Iʹʹ2M", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("PM", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("MM", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("KM", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("SM", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_OverloadCapacity.TryGetValue("cosφM", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            sw.WriteLine("</tr>");
+            sw.WriteLine("</table>");
+
+            ///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            sw.WriteLine("<h2>Пусковой режим</h2>");
+
+            algorithm.Get_StartingConditions.TryGetValue("Iʹʹ2П", out t);
+
+            sw.WriteLine("<table class='table table-striped table-fit'>");
+            sw.WriteLine("<tr><td>Iʹʹ<sub>2П</sub>,&nbsp;A:</td><td>I<sub>1П</sub>,&nbsp;A:</td><td>I<sub>1П&nbsp;окр</sub>,&nbsp;A:</td><td>M<sub>П</sub>,&nbsp;Н∙м:</td><td>K<sub>П</sub></td><td>K<sub>I</sub></td><td>E<sub>1П</sub>,&nbsp;В:</td>");
+            sw.WriteLine("<tr>");
+
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_StartingConditions.TryGetValue("Iʹʹ2П", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_StartingConditions.TryGetValue("I1П", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_StartingConditions.TryGetValue("I1П окр", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_StartingConditions.TryGetValue("MП", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_StartingConditions.TryGetValue("KП", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            algorithm.Get_StartingConditions.TryGetValue("KI", out t);
+            sw.WriteLine("<td>" + t.ToString() + "</td>");
+
+            sw.WriteLine("</tr>");
+            sw.WriteLine("</table>");
+
+            sw.WriteLine("</div></body>");
+            sw.WriteLine("</html>");
+
             sw.WriteLine("</div></body>");
             sw.WriteLine("</html>");
 
