@@ -387,8 +387,8 @@ namespace IVMElectro.ViewModel.Premag {
                 WriteParamToResultFile("Wp", "W<sub>p</sub>,&nbsp;кгс∙см");
                 WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;Н");
                 WriteParamToResultFile("P", "P,&nbsp;Вт");
-                WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С");
-                WriteParamToResultFile("Δt", "Δ<sub>t</sub>,&nbsp;°С");
+                WriteParamToResultFile("Kt", "<nobr>K<sub>t</sub>,&nbsp;Вт/см<sup>2</sup>°С</nobr>");
+                WriteParamToResultFile("Δt", "Δt,&nbsp;°С");
 
                 sw.WriteLine("</table>");
 

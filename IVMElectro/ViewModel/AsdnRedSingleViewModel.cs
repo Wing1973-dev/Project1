@@ -512,15 +512,17 @@ namespace IVMElectro.ViewModel {
                 {"bz1", Model.Common.bz1 }, {"h8", Model.Common.h8 }, {"h7", Model.Common.h7 }, {"h6", Model.Common.h6 }, {"bП1", Model.Common.bП1 },
                 {"h5", Model.Common.h5 }, {"h3", Model.Common.h3 }, {"h4", Model.Common.h4 }, {"ac", Model.Common.ac },
                 {"bПН", Model.Common.bПН }, {"h1", Model.Common.h1 }, {"h2", Model.Common.h2 }, {"li", Model.Common.li }, {"cз", Model.Common.cз },
-                {"bП", Model.Common.bП }, {"W1", Model.Common.W1 }, {"Wc", Model.Common.Wc }, {"Kзап", Model.Common.Kзап }, {"y1", Model.Common.y1 },
-                {"β", Model.Common.β }, {"K2", Model.Common.K2 }, {"d1", Model.Common.d1 }, {"Kfe1", Model.Common.Kfe1 }, {"ρ1x", Model.Common.ρ1x },
-                {"ρРУБ", Model.Common.ρРУБ }, {"ρ1Г", Model.Common.ρ1Г }, {"B", Model.Common.B }, {"p10_50", Model.Common.p10_50 }
+                {"bП", Model.Common.bП }, {"W1", Model.Common.W1 }, {"Wc", Model.Common.Wc }, {"Kзап", Math.Round( Model.Common.Kзап, 5) }, 
+                {"y1", Model.Common.y1 }, {"β", Math.Round( Model.Common.β, 5) }, {"K2", Model.Common.K2 }, {"d1", Model.Common.d1 }, 
+                {"Kfe1", Model.Common.Kfe1 }, {"ρ1x", Model.Common.ρ1x }, {"ρРУБ", Model.Common.ρРУБ }, {"ρ1Г", Model.Common.ρ1Г }, {"B", Model.Common.B }, 
+                {"p10_50", Model.Common.p10_50 }
             };
             Dictionary<string, double> rotorData = new Dictionary<string, double> {
                 {"ΔГ2", Model.Common.ΔГ2 }, {"Dpст", Model.Common.Dpст }, {"bСК", Model.Common.bСК == "скошенные" ? 1 : 0 }, {"bП2", Model.AsdnRedSingle.bП2 },
                 {"hp", Model.Common.hp }, {"dв", Model.AsdnRedSingle.dв }, {"Z2", Model.Common.Z2 }, {"bк", Model.AsdnRedSingle.bк }, {"ρ2Г", Model.Common.ρ2Г },
                 {"Kfe2", Model.Common.Kfe2 }, {"hш", Model.AsdnRedSingle.hш }, {"bш", Model.AsdnRedSingle.bш }, {"dкп", Model.AsdnRedSingle.dкп },
-                {"bZH", Model.AsdnRedSingle.bZH }, {"hp2", Model.AsdnRedSingle.hp2 }, {"bкн", Model.AsdnRedSingle.bкн }, {"aкн", Model.AsdnRedSingle.aкн },
+                {"bZH", Model.AsdnRedSingle.bZH }, {"dпн", Model.AsdnRedSingle.dпн }, {"dпв", Model.AsdnRedSingle.dпв }, {"hp1", Model.AsdnRedSingle.hp1 },
+                {"hp2", Model.AsdnRedSingle.hp2 }, {"bкн", Model.AsdnRedSingle.bкн }, {"aкн", Model.AsdnRedSingle.aкн },
                 {"aк", Model.AsdnRedSingle.aк }
             };
 
@@ -615,9 +617,9 @@ namespace IVMElectro.ViewModel {
             sw.WriteLine("<tr><td><NOBR>Ширина шлица паза b<sub>ш</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bш"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td><NOBR>Диаметр круглого паза d<sub>кп</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["dкп"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td><NOBR>Ширина зубца b<sub>ZH</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bZH"].ToString() + "</td></tr>");
-            sw.WriteLine("<tr><td><NOBR>Диаметр низа грушевидного паза d<sub>пн</sub>,&nbsp;мм:</NOBR></td><td>" + "???" + "</td></tr>");
-            sw.WriteLine("<tr><td><NOBR>Диаметр верха грушевидного паза d<sub>пв</sub>,&nbsp;мм:</NOBR></td><td>" + "???" + "</td></tr>");
-            sw.WriteLine("<tr><td><NOBR>Высота нижней части паза h<sub>p1</sub>,&nbsp;мм:</NOBR></td><td>" + "???" + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр низа грушевидного паза d<sub>пн</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["dпн"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Диаметр верха грушевидного паза d<sub>пв</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["dпв"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td><NOBR>Высота нижней части паза h<sub>p1</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["hp1"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td><NOBR>Высота между клетками h<sub>p2</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["hp2"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td><NOBR>Высота кольца к.з. обмотки a<sub>к</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["aк"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td><NOBR>Ширина нижнего кольца к.з. клетки b<sub>кн</sub>,&nbsp;мм:</NOBR></td><td>" + rotorData["bкн"].ToString() + "</td></tr>");
@@ -876,7 +878,7 @@ namespace IVMElectro.ViewModel {
             algorithm.Get_OverloadCapacity.TryGetValue("E1M", out t);
 
             sw.WriteLine("<table class='table table-striped table-fit'>");
-            sw.WriteLine("<tr><td>E<sub>1M</sub>,&nbsp;B:</td><td>I<sub>1M</sub>,&nbsp;A:</td><td>Iʹʹ<sub>2M</sub>,&nbsp;A:</td><td>P<sub>M</sub>,&nbsp;Вт:</td><td>M<sub>M</sub>,&nbsp;Н∙м</td><td>K<sub>M</sub></td><td>S<sub>M</sub></td><td>n<sub>2</sub></td><td>cosφ<sub>M</sub></td></tr>");
+            sw.WriteLine("<tr><td>I<sub>1M</sub>,&nbsp;A:</td><td>Iʹʹ<sub>2M</sub>,&nbsp;A:</td><td>P<sub>M</sub>,&nbsp;Вт:</td><td>M<sub>M</sub>,&nbsp;Н∙м</td><td>K<sub>M</sub></td><td>S<sub>M</sub></td><td>cosφ<sub>M</sub></td></tr>");
             sw.WriteLine("<tr>");
 
             algorithm.Get_OverloadCapacity.TryGetValue("I1M", out t);

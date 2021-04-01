@@ -451,9 +451,10 @@ namespace IVMElectro.ViewModel
                 {"bz1", Model.Common.bz1 }, {"h8", Model.Common.h8 }, {"h7", Model.Common.h7 }, {"h6", Model.Common.h6 }, {"bП1", Model.Common.bП1 },
                 {"h5", Model.Common.h5 }, {"h3", Model.Common.h3 }, {"h4", Model.Common.h4 }, {"ac", Model.Common.ac },
                 {"bПН", Model.Common.bПН }, {"h1", Model.Common.h1 }, {"h2", Model.Common.h2 }, {"li", Model.Common.li }, {"cз", Model.Common.cз },
-                {"bП", Model.Common.bП }, {"W1", Model.Common.W1 }, {"Wc", Model.Common.Wc }, {"Kзап", Model.Common.Kзап }, {"y1", Model.Common.y1 },
-                {"β", Model.Common.β }, {"K2", Model.Common.K2 }, {"d1", Model.Common.d1 }, {"Kfe1", Model.Common.Kfe1 }, {"ρ1x", Model.Common.ρ1x },
-                {"ρРУБ", Model.Common.ρРУБ }, {"ρ1Г", Model.Common.ρ1Г }, {"B", Model.Common.B }, {"PЗ", Model.AsdnSingle.P3 }, {"p10_50", Model.Common.p10_50 }
+                {"bП", Model.Common.bП }, {"W1", Model.Common.W1 }, {"Wc", Model.Common.Wc }, {"Kзап", Math.Round( Model.Common.Kзап, 5) }, 
+                {"y1", Model.Common.y1 }, {"β", Math.Round( Model.Common.β, 5) }, {"K2", Model.Common.K2 }, {"d1", Model.Common.d1 }, 
+                {"Kfe1", Model.Common.Kfe1 }, {"ρ1x", Model.Common.ρ1x }, {"ρРУБ", Model.Common.ρРУБ }, {"ρ1Г", Model.Common.ρ1Г }, {"B", Model.Common.B }, 
+                {"PЗ", Model.AsdnSingle.P3 }, {"p10_50", Model.Common.p10_50 }
             };
             Dictionary<string, double> rotorData = new Dictionary<string, double> {
                 {"ΔГ2", Model.Common.ΔГ2 }, {"Dpст", Model.Common.Dpст }, {"bСК", Model.Common.bСК == "скошенные" ? 1 : 0 }, {"bП2", Model.AsdnSingle.bП2 },

@@ -805,7 +805,7 @@ namespace LibraryAlgorithms {
                 { "D'p", Dp +  ΔГ2 },
                 { "li", li  },
                 { "Kл", Δкр  },
-                { "F", lB  },
+                { "F", Math.Round(lB, 5)  },
                 { "B", B  },
                 { "ΔГ1", ΔГ1  },
                 { "ΔГ2", ΔГ2  },

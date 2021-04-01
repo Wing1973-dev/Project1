@@ -123,7 +123,6 @@ namespace IVMElectro.ViewModel.Premag {
                 commonResult[$"Слот №{slot.ID_slot}"] = commonResult[$"Слот №{slot.ID_slot}"].Union(resultDownVarData).ToDictionary(i => i.Key, i => i.Value);
             }
             Diagnostic = report.ToString();
-            //OnPropertyChanged("Diagnostic");
         }
         bool CanCalculation() {
             bool isStrVarParam = true, isSlot = true; 
@@ -274,7 +273,7 @@ namespace IVMElectro.ViewModel.Premag {
                         WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;Н", calcs, "верхнего");
                         WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "верхнего");
                         WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "верхнего");
-                        WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "верхнего");
+                        WriteParamToResultFile("Kt", "<nobr>K<sub>t</sub>,&nbsp;Вт/см<sup>2</sup>°С</nobr>", calcs, "верхнего");
                         sw.WriteLine("</table>");
                         sw.WriteLine("</div>");                        
 
@@ -328,7 +327,7 @@ namespace IVMElectro.ViewModel.Premag {
                         WriteParamToResultFile("Fтм", "F<sub>тм</sub>,&nbsp;Н", calcs, "нижнего");
                         WriteParamToResultFile("P", "P,&nbsp;Вт", calcs, "нижнего");
                         WriteParamToResultFile("Δt", "Δt,&nbsp;°С", calcs, "нижнего");
-                        WriteParamToResultFile("Kt", "Вт/см<sup>2</sup>&nbsp;°С", calcs, "нижнего");
+                        WriteParamToResultFile("Kt", "<nobr>K<sub>t</sub>,&nbsp;Вт/см<sup>2</sup>°С</nobr>", calcs, "нижнего");
 
                         sw.WriteLine("</table>");
                         sw.WriteLine("</div>");
