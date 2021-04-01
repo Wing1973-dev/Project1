@@ -706,8 +706,8 @@ namespace IVMElectro.ViewModel {
 
             sw.WriteLine("<h3>Ротор</h3>");
             sw.WriteLine("<table class='table table-striped table-fit'>");
-            sw.WriteLine("<tr><td>B<sub>z2</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bz2"].ToString() + "</td></tr>");
-            sw.WriteLine("<tr><td>B<sub>j2</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bj2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>z2</sub>,&nbsp;Тл:</td><td>" + magnetic_circuit["Bz2"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>j2</sub>,&nbsp;Тл:</td><td>" + magnetic_circuit["Bj2"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>K<sub>δ2</sub></td><td>" + magnetic_circuit["Kδ2"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>F<sub>z2</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fz2"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>F<sub>j2</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fj2"].ToString() + "</td></tr>");
@@ -719,8 +719,8 @@ namespace IVMElectro.ViewModel {
 
             sw.WriteLine("<h3>Статор</h3>");
             sw.WriteLine("<table class='table table-striped table-fit'>");
-            sw.WriteLine("<tr><td>B<sub>z1</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bz1"].ToString() + "</td></tr>");
-            sw.WriteLine("<tr><td>B<sub>j1</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["Bj1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>z1</sub>,&nbsp;Тл:</td><td>" + magnetic_circuit["Bz1"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>j1</sub>,&nbsp;Тл:</td><td>" + magnetic_circuit["Bj1"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>K<sub>δ1</sub></td><td>" + magnetic_circuit["Kδ1"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>F<sub>z1</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fz1"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>F<sub>j1</sub>,&nbsp;A:</td><td>" + magnetic_circuit["Fj1"].ToString() + "</td></tr>");
@@ -734,7 +734,7 @@ namespace IVMElectro.ViewModel {
 
             sw.WriteLine("<h3>Зазор</h3>");
             sw.WriteLine("<table class='table table-striped table-fit'>");
-            sw.WriteLine("<tr><td>B<sub>δM</sub>,&nbsp;Гс:</td><td>" + magnetic_circuit["BδM"].ToString() + "</td></tr>");
+            sw.WriteLine("<tr><td>B<sub>δM</sub>,&nbsp;Тл:</td><td>" + magnetic_circuit["BδM"].ToString() + "</td></tr>");
             sw.WriteLine("<tr><td>F<sub>δ</sub>,&nbsp;А:</td><td>" + magnetic_circuit["Fδ"].ToString() + "</td></tr>");
             sw.WriteLine("</table>");
 
