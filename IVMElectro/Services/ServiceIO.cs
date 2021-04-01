@@ -116,6 +116,20 @@ namespace IVMElectro.Services {
                                 }
                             }
                         }
+                        else if (progIdValue.ToString().ToLower().Contains("msedge"))
+                        {
+                            using (RegistryKey OperaKey = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\App Paths\msedge.exe"))
+                            {
+                                if (OperaKey != null)
+                                {
+                                    object OperaPath = OperaKey.GetValue("");
+                                    if (OperaPath != null)
+                                    {
+                                        browserName = OperaPath.ToString();
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
