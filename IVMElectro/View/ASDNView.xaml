@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Height="1600" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" MouseLeftButtonDown="Window_MouseLeftButtonDown">
+        Height="1600" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" MouseLeftButtonDown="Window_MouseLeftButtonDown"
+        Icon="pack://application:,,,/Resource/Icon/electric-motor.png">
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenFile"/>
         <CommandBinding Command="Save" Executed="SaveFile"/>

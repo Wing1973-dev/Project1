@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Height="900" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310">
+        Height="900" Width="1600" WindowStartupLocation= "Manual" Top="80" Left="310" 
+        Icon="pack://application:,,,/Resource/Icon/magnet.png">
     <Window.CommandBindings>
         <CommandBinding Command="Open" Executed="OpenFile"/>
         <CommandBinding Command="Save" Executed="SaveFile"/>
