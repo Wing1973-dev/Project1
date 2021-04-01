@@ -26,6 +26,5 @@ namespace IVMElectro.Models.MainWindow {
         public string Header { get; private set; }
         public PackIconKind IconKind { get; private set; }
         public List<SubItem> SubItems { get; private set; }
-       
     }
 }

@@ -471,9 +471,6 @@ namespace IVMElectro.ViewModel {
             Model.Common.CreationDataset(); Model.AsdnRedSingle.CreationDataset();
             Dictionary<string, double> _inputAlgorithm = Model.Common.GetDataset.Union(Model.AsdnRedSingle.GetDataset).ToDictionary(i => i.Key, i => i.Value);
             _inputAlgorithm.Add("bСК", Model.Common.bСК == "скошенные" ? 1 : 0);
-            //_inputAlgorithm.Add("dпн", dпн); 
-            //_inputAlgorithm.Add("hр1", hp1); 
-            //_inputAlgorithm.Add("dпв", dпв);
 
             double _pas = 0;
             switch (PAS) {
@@ -1222,8 +1219,11 @@ namespace IVMElectro.ViewModel {
             algorithm.Get_StatorRotorCalculation.TryGetValue("Pʹ2", out temp);
             sw.WriteLine("<tr><td><NOBR>Pʹ<sub>2</sub>&nbsp;,кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
 
-            sw.WriteLine("<tr><td><NOBR>P<sub>1окр</sub>&nbsp;,кВт:</NOBR></td><td>???</td></tr>");
-            sw.WriteLine("<tr><td><NOBR>S<sub>Кокр</sub>&nbsp;,кВА:</NOBR></td><td>???</td></tr>");
+            algorithm.Get_StatorRotorCalculation.TryGetValue("P1", out temp);
+            sw.WriteLine("<tr><td><NOBR>P<sub>1окр</sub>&nbsp;,кВт:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
+
+            algorithm.Get_StatorRotorCalculation.TryGetValue("SK", out temp);
+            sw.WriteLine("<tr><td><NOBR>S<sub>Кокр</sub>&nbsp;,кВА:</NOBR></td><td>" + temp.ToString() + "</td></tr>");
 
             algorithm.Get_StatorRotorCalculation.TryGetValue("I1Н", out temp);
             sw.WriteLine("<tr><td><NOBR>I<sub>1Н</sub>&nbsp;,А:</NOBR></td><td>" + temp.ToString() + "</td></tr>");

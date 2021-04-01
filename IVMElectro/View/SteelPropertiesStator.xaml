@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IVMElectro.View"
         mc:Ignorable="d"
-        Height="300" MinHeight="100" MaxHeight="300"  Width="470" MinWidth="450" MaxWidth="470"  WindowStartupLocation="CenterOwner" WindowStyle="ToolWindow"    
-        FontFamily="{DynamicResource MaterialDesignFont}">
+        Height="300" MinHeight="100" MaxHeight="300"  Width="470" MinWidth="450" MaxWidth="470"  WindowStartupLocation="CenterOwner"     
+        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_speaker_notes_black_18dp.png" >
     <Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <TextBlock Text="Характеристика материала статора" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />

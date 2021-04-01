@@ -31,7 +31,9 @@
                 <Image Source="Resource/OKBM_logo.png" Margin="5" />
             </Grid>
             <ScrollViewer Grid.Row="1" HorizontalAlignment="Stretch" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-                <StackPanel Name="Menu" Margin="10"/>
+                <StackPanel Name="Menu" Margin="10">
+                    <!--<Label>Перечень расчетов</Label>-->
+                </StackPanel>
             </ScrollViewer>
         </Grid>
     </Grid>

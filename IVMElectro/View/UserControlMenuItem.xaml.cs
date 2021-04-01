@@ -47,5 +47,9 @@ namespace IVMElectro.View {
             for (int i = 0; i < ListViewMenu.ItemContainerGenerator.Items.Count; i++)
                 ((ListViewItem)ListViewMenu.ItemContainerGenerator.ContainerFromIndex(i)).IsSelected = false;
         }
+
+        private void ListViewItemMenu_MouseLeftButtonDown(object sender, MouseButtonEventArgs e) {
+
+        }
     }
 }
