@@ -116,6 +116,7 @@ namespace IVMElectro.View.PREMAG {
                     view.ShowDialog();
                     if (!varParamsVM.IsOK) return;
                     ((PremagFlatArmVM)DataContext).VariationData.Add(varParamsVM.Model); //add to db
+                    btnEdit.Visibility = Visibility.Visible;
                     break;
                 case "btnEdit":
                     if (dtgrdVarParams.SelectedItem != null) {
@@ -151,6 +152,7 @@ namespace IVMElectro.View.PREMAG {
                 case "btnDel":
                     if (dtgrdVarParams.SelectedItem != null)
                         ((PremagFlatArmVM)DataContext).VariationData.Remove((StringOfVarParameters)dtgrdVarParams.SelectedItem);
+                    if (((PremagFlatArmVM)DataContext).VariationData.Count == 0) btnEdit.Visibility = Visibility.Hidden;
                     break;
             }
         }

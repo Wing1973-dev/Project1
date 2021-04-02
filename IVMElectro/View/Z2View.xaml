@@ -5,8 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:IVMElectro.View"
         mc:Ignorable="d"
-        Height="500" MinHeight="100" MaxHeight="500" Width="470" MinWidth="450" MaxWidth="470"  WindowStartupLocation="CenterOwner"     
-        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_vertical_split_black_18dp.png">
+        Height="500" MinHeight="100" MaxHeight="500" Width="470" MinWidth="450" MaxWidth="470"  WindowStartupLocation="CenterOwner" 
+        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_vertical_split_black_18dp.png" 
+        ResizeMode="CanMinimize">
     <Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <TextBlock Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22">

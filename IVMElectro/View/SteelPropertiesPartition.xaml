@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:IVMElectro.View"
         mc:Ignorable="d"
         Height="300" MinHeight="100" MaxHeight="300" Width="470" MinWidth="450" MaxWidth="470"  WindowStartupLocation="CenterOwner"     
-        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_format_align_justify_black_18dp.png">
+        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_format_align_justify_black_18dp.png"
+        ResizeMode="CanMinimize">
     <Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <TextBlock Text="Характеристика материала перегородки" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />

@@ -296,14 +296,14 @@
                             </StackPanel>
                             <DataGrid Name="dtgrdVarParams" Margin="10" FontWeight="Normal" 
                                   CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
-                                      CanUserReorderColumns="False" CanUserSortColumns="False"
-                                      AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserReorderColumns="False" CanUserSortColumns="False"
+                                  AutoGenerateColumns="False" IsReadOnly="True"
                                   SelectionMode="Single" SelectionUnit="FullRow"
                                   Height="Auto" 
                                   HorizontalAlignment="Center" VerticalAlignment="Top"
                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                   ItemsSource="{Binding Path=VariationData}" 
-                                      ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
+                                  ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="№п/п" Binding="{Binding Path=ID_culc}" Width="auto" />
                                     <DataGridTextColumn Header="U, В" Binding="{Binding Path=U}" Width="auto"/>

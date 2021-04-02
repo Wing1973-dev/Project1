@@ -364,65 +364,25 @@
                             </StackPanel>
                             <DataGrid Name="dtgrdVarParams" Margin="10" FontWeight="Normal" 
                                   CanUserResizeColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" 
-                                      CanUserReorderColumns="False" CanUserSortColumns="False"
-                                      AutoGenerateColumns="False" IsReadOnly="True"
+                                  CanUserReorderColumns="False" CanUserSortColumns="False"
+                                  AutoGenerateColumns="False" IsReadOnly="True"
                                   SelectionMode="Single" SelectionUnit="FullRow"
                                   Height="Auto" 
                                   HorizontalAlignment="Center" VerticalAlignment="Top"
                                   HorizontalContentAlignment="Center" VerticalContentAlignment="Center"
                                   ItemsSource="{Binding Path=VariationData}" 
-                                      ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
+                                  ColumnHeaderStyle="{StaticResource MaterialDesignFlatButton }" >
                                 <DataGrid.Columns>
                                     <DataGridTextColumn Header="№п/п" Binding="{Binding Path=ID_culc}" Width="auto" />
                                     <DataGridTextColumn Header="U, В" Binding="{Binding Path=U}" Width="auto"/>
                                     <DataGridTextColumn Header="δ, мм" Binding="{Binding Path=δ}" Width="auto"/>
                                     <DataGridTextColumn Header="q, %" Binding="{Binding Path=q}" Width="auto"/>
                                     <DataGridTextColumn Header="h, мм" Binding="{Binding Path=h}" Width="auto"/>
-                                    <DataGridTextColumn Binding="{Binding Path=R1}" Width="auto">
-                                        <DataGridTextColumn.Header >
-                                            <TextBlock >
-                                                <Run Text="R"/>
-                                                <Run Text="1" FontSize="9" BaselineAlignment="Subscript" />
-                                                <Run Text=", мм"/>
-                                            </TextBlock>
-                                        </DataGridTextColumn.Header>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Path=R2}" Width="auto">
-                                        <DataGridTextColumn.Header >
-                                            <TextBlock >
-                                                <Run Text="R"/>
-                                                <Run Text="2" FontSize="9" BaselineAlignment="Subscript" />
-                                                <Run Text=", мм"/>
-                                            </TextBlock>
-                                        </DataGridTextColumn.Header>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Path=R3}" Width="auto">
-                                        <DataGridTextColumn.Header >
-                                            <TextBlock  >
-                                                <Run Text="R"/>
-                                                <Run Text="3" FontSize="9" BaselineAlignment="Subscript" />
-                                                <Run Text=", мм"/>
-                                            </TextBlock>
-                                        </DataGridTextColumn.Header>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Path=qm}" Width="auto">
-                                        <DataGridTextColumn.Header >
-                                            <TextBlock  >
-                                                <Run Text="q"/>
-                                                <Run Text="m" FontSize="9" BaselineAlignment="Subscript" />
-                                                <Run Text=", мм"/>
-                                                <Run Text="2" FontSize="9" BaselineAlignment="Superscript" />
-                                            </TextBlock>
-                                        </DataGridTextColumn.Header>
-                                    </DataGridTextColumn>
-                                    <DataGridTextColumn Binding="{Binding Path=Ws}" Width="auto">
-                                        <DataGridTextColumn.Header >
-                                            <TextBlock  >
-                                                <Run Text="W"/>
-                                                <Run Text="s" FontSize="9" BaselineAlignment="Subscript" />
-                                            </TextBlock>
-                                        </DataGridTextColumn.Header>
-                                    </DataGridTextColumn>
+                                    <DataGridTextColumn Header="R₁, мм" Binding="{Binding Path=R1}" Width="auto"/>
+                                    <DataGridTextColumn Header="R₂, мм" Binding="{Binding Path=R2}" Width="auto"/>
+                                    <DataGridTextColumn Header="R₃, мм" Binding="{Binding Path=R3}" Width="auto"/>
+                                    <DataGridTextColumn Header="qм, мм²" Binding="{Binding Path=qm}" Width="auto"/>
+                                    <DataGridTextColumn Header="Ws" Binding="{Binding Path=Ws}" Width="auto"/>
                                     <DataGridTextColumn Header="α, º" Binding="{Binding Path=α}" Width="auto"/>
                                 </DataGrid.Columns>
                             </DataGrid>

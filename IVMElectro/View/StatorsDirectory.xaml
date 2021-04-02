@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:IVMElectro.View"
         mc:Ignorable="d"
         Height="740" Width="670" MinWidth="670" MinHeight="740" MaxWidth="650" MaxHeight="740"  WindowStartupLocation="CenterOwner"        
-        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_insert_photo_black_18dp.png">
-
+        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_insert_photo_black_18dp.png"
+        ResizeMode="CanMinimize">
     <Grid >
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <TextBlock Text="Эскиз паза статора" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />

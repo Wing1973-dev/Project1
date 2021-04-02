@@ -131,6 +131,7 @@ namespace IVMElectro.View.PREMAG {
                             ((PremagAxisVM)DataContext).VariationDataDownMagnets.Add(varParamsVM.Model);
                         }
                     }
+                    btnEditUp.Visibility = Visibility.Visible; btnEditDwn.Visibility = Visibility.Visible;
                     break;
                 case "btnEditUp":
                     if (dtgrdVarParamsUp.SelectedItem != null) {
@@ -190,6 +191,8 @@ namespace IVMElectro.View.PREMAG {
                             }
                         }
                     }
+                    if(((PremagAxisVM)DataContext).VariationDataUpMagnets.Count==0)
+                        btnEditUp.Visibility = Visibility.Hidden; btnEditDwn.Visibility = Visibility.Hidden;
                     break;
             }
         }
@@ -230,6 +233,8 @@ namespace IVMElectro.View.PREMAG {
                         SortOfVariationDataUpMagnets(); SortOfVariationDataDownMagnets();
                     }
                     #endregion
+                    btnEditMD.Visibility = Visibility.Visible;
+                    //btnEditUp.Visibility = Visibility.Visible; btnEditDwn.Visibility = Visibility.Visible;
                     break;
                 case "btnEditMD":
                     if (dtgrdMainParams.SelectedItem != null) {
@@ -269,6 +274,10 @@ namespace IVMElectro.View.PREMAG {
                                 ((PremagAxisVM)DataContext).VariationDataDownMagnets.Remove(((PremagAxisVM)DataContext).VariationDataDownMagnets[i]);
                             }
                         }
+                    }
+                    if (((PremagAxisVM)DataContext).VariationDataMainData.Count == 0) {
+                        btnEditMD.Visibility = Visibility.Hidden;
+                        btnEditUp.Visibility = Visibility.Hidden; btnEditDwn.Visibility = Visibility.Hidden;
                     }
                     break;
             }

@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:IVMElectro.View"
         mc:Ignorable="d"
         Height="600" Width="650" MinWidth="630" MinHeight="100" MaxHeight="600" MaxWidth="650" WindowStartupLocation="CenterOwner"        
-        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_article_black_18dp.png">
-    
+        FontFamily="{DynamicResource MaterialDesignFont}" Icon="pack://application:,,,/Resource/Icon/baseline_article_black_18dp.png"
+        ResizeMode="CanMinimize">
     <Grid>
         <Grid Height="60" VerticalAlignment="Top" Background="{StaticResource PrimaryHueMidBrush}">
             <TextBlock Text="Характеристики провода статора" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="22" />
