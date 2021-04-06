@@ -18,6 +18,7 @@
     <None Remove="Resource\Icon\baseline_speaker_notes_black_18dp.png" />
     <None Remove="Resource\Icon\baseline_vertical_split_black_18dp.png" />
     <None Remove="Resource\Icon\electric-motor.png" />
+    <None Remove="Resource\Icon\ivm2.ico" />
     <None Remove="Resource\Icon\magnet.png" />
     <None Remove="Resource\OKBM_logo.png" />
     <None Remove="Resource\Stator1.jpg" />
@@ -47,6 +48,7 @@
     <Resource Include="Resource\Icon\baseline_speaker_notes_black_18dp.png" />
     <Resource Include="Resource\Icon\baseline_vertical_split_black_18dp.png" />
     <Resource Include="Resource\Icon\electric-motor.png" />
+    <Resource Include="Resource\Icon\ivm2.ico" />
     <Resource Include="Resource\Icon\magnet.png" />
     <Resource Include="Resource\OKBM_logo.png" />
     <Resource Include="Resource\Stator1.jpg" />

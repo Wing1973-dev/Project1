@@ -38,5 +38,9 @@ namespace IVMElectro {
             Menu.Children.Add(new UserControlMenuItem(itemMenu1, this));
             Menu.Children.Add(new UserControlMenuItem(itemMenu2, this));
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e) {
+            About about = new About(); about.ShowDialog();
+        }
     }
 }

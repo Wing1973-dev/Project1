@@ -1,0 +1,53 @@
+﻿<Window x:Class="IVMElectro.View.About"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:local="clr-namespace:IVMElectro.View"
+        mc:Ignorable="d"
+        Title="О программе IVMElectro" Height="430" Width="800" ResizeMode="NoResize" WindowStartupLocation="CenterOwner" 
+        FontFamily="{StaticResource MaterialDesignFont}"
+        WindowStyle="ToolWindow" >
+    <Grid>
+        <FlowDocumentScrollViewer Margin="10" BorderBrush="{StaticResource PrimaryHueMidBrush}" BorderThickness="3">
+            <FlowDocument ColumnWidth="400" IsOptimalParagraphEnabled="True">
+                <Section FontSize="12">
+                    <Paragraph FontFamily="{StaticResource MaterialDesignFont}" FontSize="15" Foreground="White" Background="{StaticResource PrimaryHueMidBrush}" TextAlignment="Center">
+                        <Bold>IVMElectro.</Bold> Виртуальный полигон испытания электромагнитов
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource PrimaryHueMidBrush}" Background="GhostWhite" TextAlignment="Justify">
+                        Программный комплекс позволяет осуществлять шаблонное проектирование и экспертную параметрическую оптимизацию геометрических 
+                        характеристик электродвигателей с целью получения требуемых рабочих характеристик изделия.
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource PrimaryHueMidBrush}" Background="GhostWhite" TextAlignment="Left">
+                        Программный комплекс позволяет производить следующие виды расчетов:
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource PrimaryHueMidBrush}" Background="GhostWhite" TextAlignment="Justify">
+                        1.	Расчет асинхронных электродвигателей с мягкой (всыпной) двухслойной обмоткой и полузакрытыми пазами статора электронасосов.
+                        <LineBreak/>
+                        Целью расчета является определение по заданным параметрам (мощности на роторе, габаритным размерам, напряжению и частоте питающей сети, 
+                        данным обмотки статора и короткозамкнутой клетки ротора) энергетических показателей и механических характеристик асинхронного двигателя.
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource PrimaryHueMidBrush}" Background="GhostWhite" TextAlignment="Justify">
+                        2.	Расчет герметичных асинхронных электродвигателей электронасосов с шихтованным ротором.
+                        <LineBreak/>
+                        Целью расчета является определение по заданным параметрам (мощности на роторе, габаритным размерам, напряжению и частоте питающей сети, 
+                        данным обмотки статора и короткозамкнутой клетки ротора) энергетических показателей и механических характеристик 
+                        асинхронного двигателя с шихтованным ротором.
+                    </Paragraph>
+                    <Paragraph Foreground="{StaticResource PrimaryHueMidBrush}" Background="GhostWhite" TextAlignment="Justify">
+                        3.	Расчет электромагнитов постоянного тока.
+                        <LineBreak/>
+                        Применяется для расчета тяговой характеристики электромагнитов по его размерам и параметрам катушки. 
+                        С помощью данного блока выполняются расчеты электромагнитов системы управления и защиты реакторов.
+                    </Paragraph>
+                    <Paragraph FontFamily="{StaticResource MaterialDesignFont}" Foreground="White" Background="{StaticResource PrimaryHueMidBrush}" 
+                               TextAlignment="Right">
+                        <Bold>АО "ОКБМ Африкантов"</Bold> 2020 - 2021
+                    </Paragraph>
+                </Section>
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+    </Grid>
+</Window>

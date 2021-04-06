@@ -6,7 +6,8 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:IVMElectro"
         mc:Ignorable="d"
-        Title="IVMElectro" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        Title="IVMElectro" Height="450" Width="800" WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Icon="pack://application:,,,/Resource/Icon/ivm2.ico">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -18,8 +19,8 @@
         </Grid.ColumnDefinitions>
 
         <StackPanel Grid.ColumnSpan="2" Orientation="Horizontal" FlowDirection="RightToLeft" Background="{StaticResource PrimaryHueMidBrush}">
-            <Button Margin="10" ToolTip="О программе" ToolTipService.ShowDuration="10000" ToolTipService.InitialShowDelay="1">
-                <materialDesign:PackIcon Kind="Help" Margin="3" Foreground="White"/>
+            <Button Margin="10" ToolTip="О программе" ToolTipService.ShowDuration="10000" ToolTipService.InitialShowDelay="1" Click="Button_Click">
+                <materialDesign:PackIcon Kind="Help" Margin="3" Foreground="White" />
             </Button>
         </StackPanel>
         <Grid HorizontalAlignment="Stretch" Grid.Row="1" Background="{StaticResource PrimaryHueMidBrush}">

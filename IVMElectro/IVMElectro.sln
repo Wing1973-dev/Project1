@@ -10,6 +10,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IVMElectro", "IVMElectro.cs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LibraryAlgorithms", "..\LibraryAlgorithm\LibraryAlgorithms.csproj", "{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IVMElectroLauncher", "..\IVMElectroLauncher\IVMElectroLauncher.csproj", "{7161BD77-569B-469A-AF1F-DB7498D2E19F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5920D6FD-B2CE-48CE-BE0A-197F5C719D2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7161BD77-569B-469A-AF1F-DB7498D2E19F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7161BD77-569B-469A-AF1F-DB7498D2E19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7161BD77-569B-469A-AF1F-DB7498D2E19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7161BD77-569B-469A-AF1F-DB7498D2E19F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
