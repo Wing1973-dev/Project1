@@ -24,68 +24,7 @@ namespace LibraryAlgorithms {
         }
         //the calculation is performed in Gauss (B - magnetic induction)
         public void Run() {
-            SolutionIsDone = false;
-            double Bdelta = Bδ;
-            Sзаз = R0 >= R10 ? Math.PI * (R1 - R0) * (R1 + R0) : Math.PI * (R1 - R10) * (R1 + R10);
-            Sзаз1 = Math.PI * (R1 - R0) * (R1 + R0);
-            Sзаз2 = Math.PI * (R3 - R2) * (R3 + R2);
-            Sяр = 2 * Math.PI * hяр * (2 * R1 + R2) / 3;
-            Sяк = 2 * Math.PI * hяк * (2 * R1 + R2) / 3;
-            lяр = R2 - R1;
-            lяк = R2 - R1 + Math.PI * hяк / 2;
-            lпол = h + Math.PI * hяр / 4;
-            double P1 = 0.1256 * Math.PI * (R3 - R2) * (R3 + R2) / δ;
-            double P8v = 0.2512 * R3 * Math.Log(1 + R1 / δ);
-            double P12v = 0.5024 * R2 * (Math.Log(R2 - R1) - Math.Log(Math.PI * δ));
-            double Pfa = 0.204728 * R3 + 0.409456 * R2 + P8v + P12v;
-            double P1_dash = 0.1256 * Math.PI * (R1 - R10) * (R1 + R10) / δ;
-            double P8v_dash = 0.2512 * R0 * Math.Log(1 + R1 / δ);
-            double P12v_dash = 0.5024 * R1 * (Math.Log(R2 - R1) - Math.Log(Math.PI * δ));
-            double Pfi = 0.204728 * R0 + 0.409456 * R1 + P8v_dash + P12v_dash;
-            double Pl = 0.1256 * (R2 + R1) * (1.57 * h * 1 / (R2 - R1) - 0.5 * (1 - Math.PI * δ / (R2 - R1)));
-            double Pa = (P1 + Pfa) * (P1_dash + Pfi) / (P1_dash + Pfi + P1 + Pfa);
-            double Pu = P1 * P1_dash / (P1 + P1_dash);
-            ν = (Pa + Pl) / Pu;
-            double Rsr = 0.5 * (R2 + R1 + Δk1 + dпз1 + dвст) - 0.25;
-            lср = 2 * Math.PI * Rsr;
-            ls = 2 * Math.PI * Rsr * Ws;
-            r20 = ρx * 0.001 * ls / qm;
-            rГ = ρГ * r20 / ρx;
-            I = U / rГ;
-            Fм = I * Ws;
-            Qм = qm * Ws;
-            double Swindow = h * (R2 - R1 - dпз1 - dвст);
-            Kм = Qм / Swindow;
-            do {
-                Фδ = Bdelta * Sзаз * 0.01;
-                Fδ = 0.16 * Bdelta * δ;
-                Фяр = ν * Фδ;
-                Bяр = 100 * Фяр / Sяр;
-                Fяр = 0.1 * lяр * Get_AWH(mrkStl, Bяр);
-                Фяк = Pa * Фδ / Pu;
-                Bяк = 100 * Фяк / Sяк;
-                Fяк = 0.1 * Get_AWH(mrkStl, Bяк) * lяк;
-                Фp = Фяк + 2 * Pl * Фδ / (3 * Pu);
-                Bp1 = 100 * Фp / Sзаз1;
-                Fp1 = 0.1 * lпол * Get_AWH(mrkStl, Bp1);
-                Bp2 = 100 * Фp / Sзаз2;
-                Fp2 = 0.1 * lпол * Get_AWH(mrkStl, Bp2);
-                F = Fδ + Fяр + Fяк + Fp1 + Fp2;
-
-                if (Math.Abs(F - Fм) / Fм > 0.01)
-                    Bdelta = F < Fм ? Bdelta * 1.002 : Bdelta * 0.999;
-            }
-            while (Math.Abs(F - Fм) / Fм > 0.01);
-            //сохранить значение Bδ на вывод
-            Bδ = Bdelta;
-            Wp = 5.1E-8 * Фδ * Fδ;
-            Fтм = 10 * Wp / δ;
-            P = U * I;
-            double Scool = 2 * Math.PI * h * (R2 + R1 + dпз1 + dвст);
-            Scool += 2 * Math.PI * (R2 * R2 - (R1 + dпз1 + dвст) * (R1 + dпз1 + dвст));
-            double kt1 = P * q * 100 / Scool;
-            Kt = Get_TEPLO(kt1);
-            Δt = kt1 / Kt;
+            
             SolutionIsDone = true;
         }
         //result of the calculation
